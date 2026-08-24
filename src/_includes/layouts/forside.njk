@@ -1,0 +1,8 @@
+---
+layout: layouts/base.njk
+---
+<article class="side forside">
+  <h1>{{ tittel }}</h1>
+  {{ content | safe }}
+</article>
+{% include "komponenter/jsonld.njk" %}

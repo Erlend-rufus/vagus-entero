@@ -1,0 +1,11 @@
+{%- set sidefelter = {
+  status: status,
+  jsonld_type: jsonld_type,
+  tittel: tittel,
+  meta_beskrivelse: meta_beskrivelse,
+  url: page.url
+} -%}
+{%- set strukturert = sidefelter | jsonld(klinikk) -%}
+{%- if strukturert %}
+<script type="application/ld+json">{{ strukturert | safe }}</script>
+{%- endif %}

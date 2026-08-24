@@ -1,0 +1,4 @@
+# Baseline for skann av commit-meldinger. Tom = hele historikken skannes.
+# Når et NYTT ord legges i en liste og et gammelt, uskyldig commit treffer,
+# settes gjeldende HEAD-SHA her (én linje) etter manuell gjennomgang — da
+# skannes bare commits etter baselinen. Se docs/VAKTER.md.

@@ -1,0 +1,3 @@
+# Hviteliste for eksterne verter. TOM med vilje — nettstedet skal ikke
+# referere noe utenfor eget domene (brief punkt 5 og 8). En ny oppføring her
+# er en sikkerhets- og personvernbeslutning som krever godkjenning.
