@@ -43,10 +43,16 @@ jobs:
           npx eleventy --output=dist-produksjon
           node vakter/kjor-alle.js --dist dist-produksjon
 
-      - name: Lenkesjekk (interne lenker og ankre, begge varianter)
+      - name: Lenkesjekk (interne lenker og ankre, forhåndsvisningsvariant)
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --offline --include-fragments --no-progress dist dist-produksjon
+          args: --offline --include-fragments --no-progress --root-dir ${{ github.workspace }}/dist dist
+          fail: true
+
+      - name: Lenkesjekk (interne lenker og ankre, produksjonsvariant)
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --offline --include-fragments --no-progress --root-dir ${{ github.workspace }}/dist-produksjon dist-produksjon
           fail: true
 
       - name: Tilgjengelighet (pa11y-ci med axe, alle sider)
@@ -96,5 +102,5 @@ jobs:
       - name: Lenkesjekk (også eksterne mål)
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --no-progress --cache --max-cache-age 1d dist
+          args: --no-progress --cache --max-cache-age 1d --root-dir ${{ github.workspace }}/dist dist
           fail: true
