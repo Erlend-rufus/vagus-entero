@@ -1,8 +1,10 @@
 # Netlify-oppsett for Vagus Entero AS.
 #
 # Miljøvariabler settes i Netlify-dashbordet, aldri her:
-# - PREVIEW_BRUKER / PREVIEW_PASSORD: alle kontekster (Basic-Auth på alt som
-#   ikke er produksjonsbygg). Bygget FEILER uten disse i previews, med vilje.
+# - PREVIEW_BRUKER / PREVIEW_PASSORD (valgfritt, besluttet 24.08.2026): settes
+#   de, får alle ikke-produksjonsbygg Basic-Auth automatisk. Uten dem bygges
+#   previews åpne — men alltid noindexet. Anbefales PÅ når pasienttekst i
+#   UTKAST begynner å flyte inn.
 # - PRODUKSJON=1 + SITE_URL: KUN production-konteksten, settes manuelt på
 #   lanseringsdagen (krever manuelt trigget deploy etterpå). Se docs/LANSERING.md.
 #

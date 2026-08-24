@@ -164,7 +164,7 @@ fs.writeFileSync(
     produksjon: false,
     context: 'deploy-preview',
     ciSyntetisk: false,
-    basicAuthPakrevd: true,
+    basicAuthAktiv: true,
     siteUrl: null,
     sider: [{ url: '/testside/', sidetype: 'undersokelse', status: 'UTKAST' }]
   })
@@ -205,7 +205,7 @@ krev(
 );
 krev(
   noindexFeil.some((m) => m.includes('Basic-Auth')),
-  'noindex: krever Basic-Auth i Netlify-bygg utenfor produksjon'
+  'noindex: krever Basic-Auth-linjen når den var aktiv i bygget'
 );
 
 // Produksjonsmanifest med UTKAST-side → godkjent-status skal feile.
@@ -217,7 +217,7 @@ fs.writeFileSync(
     produksjon: true,
     context: 'production',
     ciSyntetisk: true,
-    basicAuthPakrevd: false,
+    basicAuthAktiv: false,
     siteUrl: 'https://example.invalid',
     sider: [{ url: '/testside/', sidetype: 'undersokelse', status: 'UTKAST' }]
   })
