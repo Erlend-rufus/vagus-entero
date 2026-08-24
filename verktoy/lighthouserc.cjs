@@ -12,12 +12,16 @@ module.exports = {
       url: manifest.sider.map((side) => `http://localhost:${port}${side.url}`),
       startServerCommand: `node verktoy/server.js ${process.env.LHCI_DIST || 'dist'} ${port}`,
       startServerReadyPattern: 'Serverer',
-      numberOfRuns: 1,
+      // Tre kjøringer med median: delte CI-runnere gir enkeltmålinger med
+      // stor støy (simulert throttling ganger observert CPU-tid med 4×) —
+      // budsjettallene under er uendret, det er målingen som stabiliseres.
+      numberOfRuns: 3,
       settings: {
         chromeFlags: '--no-sandbox --disable-dev-shm-usage'
       }
     },
     assert: {
+      aggregationMethod: 'median-run',
       assertions: {
         'categories:performance': ['error', { minScore: 0.95 }],
         'categories:accessibility': ['error', { minScore: 1 }],
