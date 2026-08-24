@@ -1,0 +1,17 @@
+# Sikkerhetsoppdateringer for et nettsted som skal vedlikeholdes billig i
+# mange år: månedlig, samlet, uten støy.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 3
+    groups:
+      alle:
+        patterns: ['*']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

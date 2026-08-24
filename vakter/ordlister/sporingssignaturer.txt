@@ -1,0 +1,15 @@
+# Signaturer på tredjepartssporing. Alt her er delstrengtreff (~) med vilje —
+# de skal fange domenenavn og funksjonskall uansett kontekst.
+~fbq
+~gtag
+~googletagmanager
+~google-analytics
+~connect.facebook.net
+~hotjar
+~clarity.ms
+~_linkedin
+~ttq.
+~ttq(
+~doubleclick
+~snap.licdn
+~analytics.tiktok

@@ -1,0 +1,18 @@
+# Netlify-oppsett for Vagus Entero AS.
+#
+# Miljøvariabler settes i Netlify-dashbordet, aldri her:
+# - PREVIEW_BRUKER / PREVIEW_PASSORD: alle kontekster (Basic-Auth på alt som
+#   ikke er produksjonsbygg). Bygget FEILER uten disse i previews, med vilje.
+# - PRODUKSJON=1 + SITE_URL: KUN production-konteksten, settes manuelt på
+#   lanseringsdagen (krever manuelt trigget deploy etterpå). Se docs/LANSERING.md.
+#
+# Headere (CSP, noindex, Basic-Auth) settes IKKE her — de genereres av bygget
+# til _headers fra sikkerhet/policy.json + miljøet, fordi netlify.toml-headere
+# ikke kan variere per deploy-kontekst.
+
+[build]
+  command = "npm run bygg"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "24"

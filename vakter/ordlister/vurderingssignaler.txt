@@ -1,0 +1,13 @@
+# Signaler på pasientomtaler, vurderinger og stjernerangeringer — forbudt
+# innholdstype (jf. forbudslisten i prosjektbriefen og helsepersonelloven
+# § 13). JSON-LD-typene Review/AggregateRating/Rating stoppes i tillegg av
+# vakter/jsonld.js.
+pasienthistorie
+pasienthistorier
+anmeldelse
+anmeldelser
+fornøyd pasient
+fornøyde pasienter
+våre pasienter sier
+suksesshistorie
+stjernerangering

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ui.schema.json",
+  "title": "Grensesnittstrenger",
+  "description": "Det ENESTE stedet norske strenger finnes utenfor src/innhold/. Nye noekler krever godkjenning fra Erlend Bognoey. Vakten norsk-i-maler.js krysssjekker at alle noekler brukes og at alle ui.*-oppslag finnes her.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "hopp_til_innhold",
+    "brodsmulesti",
+    "hovednavigasjon",
+    "bunntekst",
+    "utkast_banner",
+    "til_toppen"
+  ],
+  "properties": {
+    "hopp_til_innhold": { "type": "string", "minLength": 1 },
+    "brodsmulesti": { "type": "string", "minLength": 1 },
+    "hovednavigasjon": { "type": "string", "minLength": 1 },
+    "bunntekst": { "type": "string", "minLength": 1 },
+    "utkast_banner": { "type": "string", "minLength": 1 },
+    "til_toppen": { "type": "string", "minLength": 1 }
+  }
+}

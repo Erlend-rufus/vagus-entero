@@ -1,0 +1,6 @@
+# Navn på leverandører (journal- og utstyrsleverandører) skal ikke
+# forekomme i repoet — omtal dem som kategori i stedet.
+Olympus
+Infodoc
+Storz
+Pentax Medical

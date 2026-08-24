@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="nb">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if sidetype == 'forside' %}{{ tittel }}{% else %}{{ tittel }} – {{ klinikk.juridisk_navn }}{% endif %}</title>
+  <meta name="description" content="{{ meta_beskrivelse }}">
+  {%- if miljo.noindex %}
+  <meta name="robots" content="noindex, nofollow">
+  {%- endif %}
+  {%- if miljo.produksjon and miljo.siteUrl %}
+  <link rel="canonical" href="{{ miljo.siteUrl }}{{ page.url }}">
+  {%- endif %}
+  <link rel="preload" href="/fonter/source-sans-3-norsk.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/stiler/hoved.css">
+</head>
+<body>
+  <a class="hopp-lenke" href="#innhold">{{ ui.hopp_til_innhold }}</a>
+  {%- if status and status != 'GODKJENT' %}
+  {% include "komponenter/utkast-banner.njk" %}
+  {%- endif %}
+  {% include "komponenter/header.njk" %}
+  <main id="innhold">
+{{ content | safe }}
+  </main>
+  {% include "komponenter/footer.njk" %}
+</body>
+</html>

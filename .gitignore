@@ -1,0 +1,8 @@
+node_modules/
+dist/
+dist-produksjon/
+*.manifest.json
+.lighthouseci/
+.cache/
+*.log
+.DS_Store

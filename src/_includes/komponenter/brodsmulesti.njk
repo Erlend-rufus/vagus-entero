@@ -1,0 +1,9 @@
+{%- set forside = collections.innhold | forside %}
+{%- if forside and sidetype != 'forside' %}
+<nav class="brodsmulesti" aria-label="{{ ui.brodsmulesti }}">
+  <ol>
+    <li><a href="/">{{ forside.data.tittel }}</a></li>
+    <li aria-current="page">{{ tittel }}</li>
+  </ol>
+</nav>
+{%- endif %}
