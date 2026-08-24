@@ -1,0 +1,11 @@
+# Forbudte formuleringer om ventetid (markedsføringsloven §§ 6 og 8 —
+# villedende). Faktisk ventetid med dato er påbudt i stedet, og hentes
+# datadrevet fra src/_data/klinikk.json.
+kort ventetid
+korte ventetider
+ingen ventetid
+uten ventetid
+rask time
+raske timer
+raskt til time
+time på dagen

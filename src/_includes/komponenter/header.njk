@@ -1,0 +1,17 @@
+<header class="topp">
+  <div class="topp-indre">
+    {%- set forsiden = collections.innhold | forside %}
+    {%- if forsiden %}
+    <a class="merke" href="/">{{ klinikk.juridisk_navn }}</a>
+    {%- else %}
+    <span class="merke">{{ klinikk.juridisk_navn }}</span>
+    {%- endif %}
+    <nav aria-label="{{ ui.hovednavigasjon }}">
+      <ul class="hovedmeny">
+        {%- for side in collections.nav %}
+        <li><a href="{{ side.url }}"{% if side.url == page.url %} aria-current="page"{% endif %}>{{ side.data.tittel }}</a></li>
+        {%- endfor %}
+      </ul>
+    </nav>
+  </div>
+</header>

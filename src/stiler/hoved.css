@@ -1,0 +1,384 @@
+/* ==========================================================================
+   Designsystem for Vagus Entero AS — rolig og klinisk.
+   Kontrastverdier er målt (WCAG-relativ luminans) og dokumentert i planen:
+     tekst på hvit          #1E2A2D  14,7:1
+     dempet tekst på hvit   #46555A   7,8:1
+     primær på hvit         #0F5960   8,0:1  (hvit på primær: 8,0:1)
+     primær mørk på hvit    #0C444B  10,8:1
+     ramme på hvit          #748688   3,8:1  (krav 3:1, WCAG 1.4.11)
+   Endres en farge, skal kontrasten måles på nytt før merge.
+   ========================================================================== */
+
+/* ---- Tokens -------------------------------------------------------------- */
+:root {
+  --farge-bakgrunn: #ffffff;
+  --farge-flate: #f4f6f6;
+  --farge-flate-markert: #e8eeee;
+  --farge-tekst: #1e2a2d;
+  --farge-tekst-dempet: #46555a;
+  --farge-primaer: #0f5960;
+  --farge-primaer-mork: #0c444b;
+  --farge-ramme: #748688;
+  --farge-delelinje: #c9d2d3;
+
+  --skrift:
+    'Source Sans 3 Norsk', 'Source Sans 3 Reserve', system-ui, -apple-system,
+    'Segoe UI', sans-serif;
+
+  --tekst-1: 1.125rem;   /* 18 px basis — målgruppen skjever eldre */
+  --tekst-2: 1.40625rem; /* 22,5 px */
+  --tekst-3: 1.75rem;    /* 28 px */
+  --tekst-4: clamp(2rem, 1.5rem + 2vw, 2.1875rem); /* 32–35 px */
+  --tekst-5: clamp(2.25rem, 1.75rem + 2.5vw, 2.75rem); /* 36–44 px */
+
+  --avstand-1: 0.25rem;
+  --avstand-2: 0.5rem;
+  --avstand-3: 0.75rem;
+  --avstand-4: 1rem;
+  --avstand-5: 1.5rem;
+  --avstand-6: 2rem;
+  --avstand-7: 3rem;
+  --avstand-8: 4rem;
+  --avstand-9: 6rem;
+
+  --radius: 4px;
+  --maks-bredde: 70rem;
+  --maks-linje: 65ch;
+}
+
+/* Reservefont kalibrert mot Source Sans 3 for å unngå CLS ved fontbytte. */
+@font-face {
+  font-family: 'Source Sans 3 Norsk';
+  src: url('/fonter/source-sans-3-norsk.woff2') format('woff2-variations');
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Source Sans 3 Reserve';
+  src: local('Arial');
+  size-adjust: 101%;
+  ascent-override: 99%;
+  descent-override: 27%;
+  line-gap-override: 0%;
+}
+
+/* ---- Grunnlag ------------------------------------------------------------ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--skrift);
+  font-size: var(--tekst-1);
+  line-height: 1.6;
+  color: var(--farge-tekst);
+  background: var(--farge-bakgrunn);
+  -webkit-text-size-adjust: 100%;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  font-weight: 650;
+  margin-block: 0 var(--avstand-4);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--tekst-5);
+  margin-block-start: var(--avstand-6);
+}
+
+h2 {
+  font-size: var(--tekst-3);
+  margin-block-start: var(--avstand-6);
+}
+
+h3 {
+  font-size: var(--tekst-2);
+  margin-block-start: var(--avstand-5);
+}
+
+p,
+ul,
+ol {
+  margin-block: 0 var(--avstand-4);
+  max-width: var(--maks-linje);
+}
+
+a {
+  color: var(--farge-primaer-mork);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.15em;
+}
+
+a:hover {
+  color: var(--farge-primaer);
+}
+
+:focus-visible {
+  outline: 3px solid var(--farge-primaer-mork);
+  outline-offset: 2px;
+  border-radius: var(--radius);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---- Hopp-lenke og banner ------------------------------------------------ */
+.hopp-lenke {
+  position: absolute;
+  left: var(--avstand-4);
+  top: var(--avstand-2);
+  background: var(--farge-primaer-mork);
+  color: var(--farge-bakgrunn);
+  padding: var(--avstand-2) var(--avstand-4);
+  border-radius: var(--radius);
+  transform: translateY(-300%);
+}
+
+.hopp-lenke:focus-visible {
+  transform: none;
+  z-index: 10;
+  color: var(--farge-bakgrunn);
+}
+
+.utkast-banner {
+  background: var(--farge-primaer-mork);
+  color: var(--farge-bakgrunn);
+  text-align: center;
+  padding: var(--avstand-2) var(--avstand-4);
+}
+
+.utkast-banner p {
+  margin: 0;
+  max-width: none;
+  font-weight: 650;
+  letter-spacing: 0.03em;
+}
+
+/* ---- Topp og navigasjon (JS-fri) ---------------------------------------- */
+.topp {
+  border-block-end: 1px solid var(--farge-delelinje);
+  background: var(--farge-bakgrunn);
+}
+
+.topp-indre {
+  max-width: var(--maks-bredde);
+  margin-inline: auto;
+  padding: var(--avstand-4) var(--avstand-5);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--avstand-4) var(--avstand-6);
+}
+
+.merke {
+  font-size: var(--tekst-2);
+  font-weight: 700;
+  color: var(--farge-primaer-mork);
+  text-decoration: none;
+}
+
+.hovedmeny {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--avstand-2) var(--avstand-5);
+  max-width: none;
+}
+
+.hovedmeny a {
+  display: inline-block;
+  padding-block: var(--avstand-2); /* klikkflate ≥ 44 px med linjehøyde */
+  text-decoration: none;
+  color: var(--farge-tekst);
+}
+
+.hovedmeny a:hover,
+.hovedmeny a[aria-current='page'] {
+  color: var(--farge-primaer-mork);
+  text-decoration: underline;
+  text-decoration-thickness: 0.12em;
+  text-underline-offset: 0.3em;
+}
+
+/* ---- Innhold ------------------------------------------------------------- */
+main {
+  max-width: var(--maks-bredde);
+  margin-inline: auto;
+  padding: 0 var(--avstand-5) var(--avstand-8);
+}
+
+.side {
+  max-width: var(--maks-linje);
+}
+
+.ingress {
+  font-size: var(--tekst-2);
+  color: var(--farge-tekst-dempet);
+}
+
+.brodsmulesti ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--avstand-2);
+  padding: 0;
+  margin-block: var(--avstand-4) 0;
+  color: var(--farge-tekst-dempet);
+  max-width: none;
+}
+
+.brodsmulesti li + li::before {
+  content: '›';
+  margin-inline-end: var(--avstand-2);
+}
+
+/* ---- Komponenter --------------------------------------------------------- */
+.knapp {
+  display: inline-block;
+  min-height: 44px;
+  padding: var(--avstand-3) var(--avstand-5);
+  border-radius: var(--radius);
+  background: var(--farge-primaer);
+  color: var(--farge-bakgrunn);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.knapp:hover {
+  background: var(--farge-primaer-mork);
+  color: var(--farge-bakgrunn);
+}
+
+.knapp-sekundaer {
+  background: var(--farge-bakgrunn);
+  color: var(--farge-primaer-mork);
+  border: 2px solid var(--farge-primaer);
+}
+
+.knapp-sekundaer:hover {
+  background: var(--farge-flate);
+}
+
+.kortliste {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: var(--avstand-5);
+  max-width: none;
+}
+
+.kort {
+  background: var(--farge-flate);
+  border-radius: var(--radius);
+  padding: var(--avstand-5);
+}
+
+.kort h3 {
+  margin-block-start: 0;
+}
+
+.infoboks {
+  background: var(--farge-flate-markert);
+  border-inline-start: 4px solid var(--farge-primaer);
+  border-radius: var(--radius);
+  padding: var(--avstand-4) var(--avstand-5);
+  margin-block-end: var(--avstand-4);
+}
+
+.infoboks p:last-child {
+  margin-block-end: 0;
+}
+
+.pristabell {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: var(--maks-linje);
+  margin-block-end: var(--avstand-5);
+}
+
+.pristabell th,
+.pristabell td {
+  text-align: start;
+  padding: var(--avstand-3) var(--avstand-4);
+  border-block-end: 1px solid var(--farge-delelinje);
+  font-weight: 400;
+}
+
+.pris-belop {
+  text-align: end;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.pris-merknad {
+  color: var(--farge-tekst-dempet);
+}
+
+.skjult {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.katalog-del {
+  border-block-start: 1px solid var(--farge-delelinje);
+  padding-block-start: var(--avstand-5);
+  margin-block-start: var(--avstand-6);
+}
+
+/* ---- Bunn ---------------------------------------------------------------- */
+.bunn {
+  border-block-start: 1px solid var(--farge-delelinje);
+  background: var(--farge-flate);
+  color: var(--farge-tekst);
+  margin-block-start: var(--avstand-8);
+}
+
+.bunn-indre {
+  max-width: var(--maks-bredde);
+  margin-inline: auto;
+  padding: var(--avstand-6) var(--avstand-5);
+}
+
+.bunn-navn {
+  font-weight: 650;
+}
+
+.bunn-lenker {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--avstand-2) var(--avstand-5);
+  max-width: none;
+}

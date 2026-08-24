@@ -1,0 +1,9 @@
+# Navn på forsikringsselskaper skal ikke forekomme i repoet — omtal dem som
+# «behandlingsforsikring» generelt.
+Gjensidige
+Tryg
+Fremtind
+Storebrand
+Vertikal Helse
+If Skadeforsikring
+If Forsikring

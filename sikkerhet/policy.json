@@ -1,0 +1,26 @@
+{
+  "kommentar": "Eneste kilde for sikkerhetsheaderne. Leses av både _headers-generatoren (eleventy.config.js) og CI-vakten (vakter/headere.js) — de kan ikke drifte fra hverandre. Endringer her er en sikkerhetsbeslutning.",
+  "csp": [
+    "default-src 'none'",
+    "script-src 'self'",
+    "style-src 'self'",
+    "img-src 'self'",
+    "font-src 'self'",
+    "connect-src 'self'",
+    "manifest-src 'self'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    "object-src 'none'",
+    "upgrade-insecure-requests"
+  ],
+  "faste": {
+    "Referrer-Policy": "no-referrer",
+    "Strict-Transport-Security": "max-age=63072000; includeSubDomains",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Permissions-Policy": "accelerometer=(), autoplay=(), camera=(), display-capture=(), encrypted-media=(), fullscreen=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), usb=(), web-share=(), xr-spatial-tracking=(), browsing-topics=()",
+    "Cross-Origin-Opener-Policy": "same-origin",
+    "Cross-Origin-Resource-Policy": "same-origin"
+  }
+}

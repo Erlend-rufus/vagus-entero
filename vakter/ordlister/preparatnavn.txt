@@ -1,0 +1,23 @@
+# Varemerkenavn på legemidler. Reklame for reseptpliktige legemidler til
+# allmennheten er forbudt, og indirekte kobling rammes også — derfor skal
+# disse navnene ikke forekomme noe sted i repoet eller i commit-meldinger.
+# Virkestoffnavn (f.eks. botulinumtoksin) er tillatt og står IKKE her.
+#
+# Slik utvider du listen: legg til ett navn per linje og lagre. Skriv ALDRI
+# selve navnet i commit-meldingen — skriv «utvid preparatnavn-listen».
+Wegovy
+Ozempic
+Rybelsus
+Mounjaro
+Zepbound
+Saxenda
+Victoza
+Trulicity
+Botox
+Dysport
+Bocouture
+Xeomin
+Azzalure
+Xenical
+Mysimba
+Contrave

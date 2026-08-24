@@ -1,0 +1,70 @@
+---
+layout: layouts/base.njk
+permalink: /komponentkatalog/
+tittel: Komponentkatalog
+meta_beskrivelse: Intern komponentkatalog for designutvikling. Bygges aldri i produksjon.
+status: null
+sidetype: null
+eleventyExcludeFromCollections: true
+---
+{# Intern side for designutvikling. Utelates fra produksjonsbygg av
+   produksjonsgaten i eleventy.config.js, og vakter/godkjent-status.js feiler
+   hvis den likevel dukker opp der. Fylltekst er ikke-språklig med vilje —
+   norsk pasienttekst finnes kun i src/innhold/. Denne filen er unntatt fra
+   norsk-i-maler-vakten (dokumentert i docs/VAKTER.md). #}
+<article class="side">
+  <h1>Komponentkatalog</h1>
+
+  <section class="katalog-del">
+    <h2>Typografi</h2>
+    <p class="ingress">Xxxx xxxxx xx xxxxxxx xxxxx xxx xxxxxx, xxx xxxxx xxxxxxx xxx xxxxxxxx xxxxxx æ ø å.</p>
+    <p>Xxxx xxxxx xx xxxxxxx xxxxx xxx xxxxxx. Xxx xxxxx xxxxxxx xxx xxxxxxxx xxxxxx, xx xxxxx xxxxx xxxx xxxxxxxx. Æ ø å Æ Ø Å 0123456789 – — « » ’</p>
+    <h3>Xxxxx xxxxxx</h3>
+    <p>Xxxx xxxxx xx <a href="/komponentkatalog/">xxxxxxx xxxxx</a> xxx xxxxxx.</p>
+  </section>
+
+  <section class="katalog-del">
+    <h2>Knapper</h2>
+    <p>
+      <a class="knapp" href="/komponentkatalog/">Xxxxx xxxx</a>
+      <a class="knapp knapp-sekundaer" href="/komponentkatalog/">Xxxxx xxxx</a>
+    </p>
+  </section>
+
+  <section class="katalog-del">
+    <h2>Kort</h2>
+    <ul class="kortliste">
+      <li class="kort">
+        <h3><a href="/komponentkatalog/">Xxxxxxxxx</a></h3>
+        <p>Xxxx xxxxx xx xxxxxxx xxxxx xxx xxxxxx xxx xxxxx.</p>
+      </li>
+      <li class="kort">
+        <h3><a href="/komponentkatalog/">Xxxxxxxxx</a></h3>
+        <p>Xxxx xxxxx xx xxxxxxx xxxxx xxx xxxxxx xxx xxxxx.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="katalog-del">
+    <h2>Infoboks</h2>
+    <div class="infoboks">
+      <p>Xxxx xxxxx xx xxxxxxx xxxxx xxx xxxxxx, xxx xxxxx xxxxxxx xxx xxxxxxxx.</p>
+    </div>
+  </section>
+
+  <section class="katalog-del">
+    <h2>Pristabell</h2>
+    <table class="pristabell">
+      <tbody>
+        <tr>
+          <th scope="row">Xxxxxxxxx xxxx</th>
+          <td class="pris-belop">{{ 0 | kroner }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Xxxxxxxxx xxxx <span class="pris-merknad">(xxxx)</span></th>
+          <td class="pris-belop">{{ 0 | kroner }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</article>

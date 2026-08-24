@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "innhold.schema.json",
+  "title": "Innholdskontrakt v1 for Vagus Entero AS",
+  "description": "Frontmatter-skjema for filer i src/innhold/. Manglende obligatorisk felt skal feile bygget. Ingen standardverdier.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "sidetype",
+    "url",
+    "malgruppe",
+    "tittel",
+    "meta_beskrivelse",
+    "status",
+    "godkjent_av",
+    "godkjent_dato",
+    "jsonld_type",
+    "interne_lenker_ut",
+    "apne_punkter",
+    "i_navigasjon",
+    "rekkefolge"
+  ],
+  "properties": {
+    "sidetype": {
+      "enum": [
+        "forside",
+        "undersokelse",
+        "tilstand",
+        "behandling",
+        "pris",
+        "henviser",
+        "forsikring",
+        "statisk"
+      ]
+    },
+    "url": {
+      "type": "string",
+      "pattern": "^/([a-z0-9-]+/)*$"
+    },
+    "malgruppe": {
+      "enum": ["selvbetalende", "henviser", "forsikring"]
+    },
+    "tittel": {
+      "type": "string",
+      "minLength": 15,
+      "maxLength": 60
+    },
+    "meta_beskrivelse": {
+      "type": "string",
+      "minLength": 70,
+      "maxLength": 155
+    },
+    "status": {
+      "enum": ["UTKAST", "KLAR_FOR_MEDISINSK_GJENNOMGANG", "GODKJENT"]
+    },
+    "godkjent_av": {
+      "type": ["string", "null"],
+      "minLength": 2
+    },
+    "godkjent_dato": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "jsonld_type": {
+      "enum": ["MedicalProcedure", "MedicalClinic", "Physician", null]
+    },
+    "interne_lenker_ut": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^/([a-z0-9-]+/)*$"
+      }
+    },
+    "apne_punkter": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "i_navigasjon": {
+      "type": "boolean"
+    },
+    "rekkefolge": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "sist_oppdatert": {
+      "type": "string",
+      "format": "date"
+    },
+    "bilder": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["fil", "alt"],
+        "properties": {
+          "fil": { "type": "string", "minLength": 1 },
+          "alt": { "type": "string" },
+          "bildetekst": { "type": "string" },
+          "dekorativt": { "type": "boolean" }
+        }
+      }
+    },
+    "priser": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["navn", "belop_nok"],
+        "properties": {
+          "navn": { "type": "string", "minLength": 2 },
+          "belop_nok": { "type": "number", "exclusiveMinimum": 0 },
+          "merknad": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "klinikk.schema.json",
+  "title": "Klinikkfakta for Vagus Entero AS",
+  "description": "Alle fakta om klinikken. Ukjent = null. Bygget utelater null-felter — det gjettes aldri. Feltene org_nr, adresse, telefon/epost er lanseringskritiske (ehandelsloven § 9) og haandheves av vakter/klinikk-lansering.js i produksjonsbygg.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "juridisk_navn",
+    "org_nr",
+    "adresse",
+    "telefon",
+    "epost",
+    "lege",
+    "apningstider",
+    "ventetid"
+  ],
+  "properties": {
+    "juridisk_navn": { "type": ["string", "null"] },
+    "org_nr": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9]{9}$"
+    },
+    "adresse": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["gate", "postnummer", "poststed"],
+      "properties": {
+        "gate": { "type": "string" },
+        "postnummer": { "type": "string", "pattern": "^[0-9]{4}$" },
+        "poststed": { "type": "string" }
+      }
+    },
+    "telefon": { "type": ["string", "null"] },
+    "epost": { "type": ["string", "null"], "format": "email" },
+    "lege": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["navn", "hpr_nummer"],
+      "properties": {
+        "navn": { "type": "string" },
+        "hpr_nummer": { "type": "string" },
+        "spesialitet": { "type": "string" }
+      }
+    },
+    "apningstider": { "type": ["array", "null"] },
+    "ventetid": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["uker", "oppdatert"],
+      "properties": {
+        "uker": { "type": "integer", "minimum": 0 },
+        "oppdatert": { "type": "string", "format": "date" }
+      }
+    }
+  }
+}

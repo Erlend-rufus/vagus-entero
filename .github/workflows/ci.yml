@@ -1,0 +1,100 @@
+# CI for Vagus Entero AS-nettstedet. Alt her FEILER — ingenting advarer.
+# Se docs/VAKTER.md for hvordan forbudslistene utvides.
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  schedule:
+    # Ukentlig sjekk av eksterne lenker (mandag 06:15 UTC) — de er for
+    # upålitelige til å blokkere hver PR.
+    - cron: '15 6 * * 1'
+
+jobs:
+  bygg-og-vakter:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Installer avhengigheter (låst)
+        run: npm ci
+
+      - name: Vaktenes selvtester
+        run: npm test
+
+      - name: Bygg forhåndsvisningsvariant + alle vakter
+        run: |
+          npx eleventy
+          node vakter/kjor-alle.js --dist dist
+
+      - name: Bygg syntetisk produksjonsvariant + alle vakter
+        env:
+          PRODUKSJON: '1'
+          SITE_URL: 'https://example.invalid'
+          CI_SYNTETISK: '1'
+        run: |
+          npx eleventy --output=dist-produksjon
+          node vakter/kjor-alle.js --dist dist-produksjon
+
+      - name: Lenkesjekk (interne lenker og ankre, begge varianter)
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --offline --include-fragments --no-progress dist dist-produksjon
+          fail: true
+
+      - name: Tilgjengelighet (pa11y-ci med axe, alle sider)
+        run: |
+          node verktoy/server.js dist 8878 &
+          sleep 2
+          npx pa11y-ci --config verktoy/pa11yci.cjs
+
+      - name: Ytelsesbudsjett (Lighthouse CI)
+        run: npx lhci autorun --config=verktoy/lighthouserc.cjs
+
+  historikk:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full historikk — commit-meldingsskannet feiler hvis klonen er grunn.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Skann av commit-meldinger
+        run: node vakter/kjor-alle.js --historikk
+
+  eksterne-lenker:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Bygg
+        run: npx eleventy
+
+      - name: Lenkesjekk (også eksterne mål)
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --no-progress --cache --max-cache-age 1d dist
+          fail: true
