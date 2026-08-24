@@ -61,12 +61,6 @@ export default function (eleventyConfig) {
       }
     }
 
-    if (!miljo.produksjon && miljo.basicAuthPakrevd && !(miljo.basicAuthBruker && miljo.basicAuthPassord)) {
-      throw new Error(
-        'Netlify-bygg utenfor production-konteksten uten PREVIEW_BRUKER/PREVIEW_PASSORD. ' +
-          'Previews skal alltid være tilgangsbeskyttet — sett variablene i Netlify-dashbordet.'
-      );
-    }
   });
 
   // ---- Produksjonsgaten: UTKAST finnes ikke i produksjonsbygg -------------
@@ -160,7 +154,7 @@ export default function (eleventyConfig) {
       produksjon: miljo.produksjon,
       context: miljo.context,
       ciSyntetisk: miljo.ciSyntetisk,
-      basicAuthPakrevd: miljo.basicAuthPakrevd,
+      basicAuthAktiv: miljo.basicAuthAktiv,
       siteUrl: miljo.siteUrl,
       sider
     };

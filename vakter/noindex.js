@@ -6,7 +6,8 @@ export const navn = 'noindex';
 
 // Miljøgaten etterprøvd mot faktiske utdata:
 // - Uten PRODUKSJON: noindex overalt (header + meta), Disallow i robots.txt,
-//   ingen sitemap, og Basic-Auth når bygget skjer hos Netlify.
+//   ingen sitemap — og Basic-Auth-linjen til stede hvis bygget hadde
+//   passordvariabler (valgfri beskyttelse, besluttet 24.08.2026).
 // - Med PRODUKSJON: ingen gjenglemt noindex/Disallow/Basic-Auth, sitemap finnes.
 export function kjorDist(distKatalog) {
   const manifest = lesManifest(distKatalog);
@@ -51,8 +52,8 @@ export function kjorDist(distKatalog) {
     if (fs.existsSync(sitemapSti)) {
       feil.push('sitemap.xml finnes i bygg uten PRODUKSJON — den skal ikke genereres der');
     }
-    if (manifest.basicAuthPakrevd && !headers.includes('Basic-Auth: ')) {
-      feil.push('_headers: mangler Basic-Auth i Netlify-bygg utenfor production-konteksten');
+    if (manifest.basicAuthAktiv && !headers.includes('Basic-Auth: ')) {
+      feil.push('_headers: Basic-Auth var aktiv i bygget, men linjen mangler i _headers');
     }
     for (const fil of htmlFiler) {
       if (!/<meta name="robots" content="noindex, nofollow">/.test(lesTekst(fil))) {

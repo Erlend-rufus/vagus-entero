@@ -4,8 +4,12 @@ Målet: lansert og indeksert **senest medio november 2026**. Indeksering tar
 tid (robots.txt caches i inntil ~24 timer, opptak i indeksen tar dager), så
 selve flippen skal skje **1–2 uker før** fristen.
 
-Frem til flippen er alt automatisk trygt: alle bygg uten `PRODUKSJON` er
-noindexet, `robots.txt` sier `Disallow: /`, og alt er bak Basic-Auth.
+Frem til flippen er alt automatisk uindekserbart: alle bygg uten `PRODUKSJON`
+er noindexet og `robots.txt` sier `Disallow: /`. Basic-Auth er valgfri
+(besluttet 24.08.2026): settes `PREVIEW_BRUKER`/`PREVIEW_PASSORD` i Netlify,
+beskyttes alt utenfor produksjon automatisk — **anbefales slått på senest når
+pasienttekst i UTKAST begynner å flyte inn**, siden noindex hindrer
+indeksering, ikke tilgang.
 
 ## Forutsetninger som må være grønne FØR flippen
 
@@ -18,7 +22,7 @@ noindexet, `robots.txt` sier `Disallow: /`, og alt er bak Basic-Auth.
 - [ ] Netlify-DPA-beslutningen signert (se `docs/NETLIFY-BESLUTNING.md`)
 - [ ] CI helgrønn på main
 
-## Dager i forveien (innholdet er fortsatt bak passord)
+## Dager i forveien (alt er fortsatt noindexet)
 
 1. Domene registrert og DNS pekt til Netlify.
 2. TLS-sertifikat provisjonert og verifisert i Netlify.
@@ -30,8 +34,8 @@ noindexet, `robots.txt` sier `Disallow: /`, og alt er bak Basic-Auth.
 1. Sett `PRODUKSJON=1` i Netlify-dashbordet, **scopet til
    production-konteksten**. Dobbeltsjekk scopingen — previews skal aldri ha
    den (bygget tvinger uansett noindex utenfor production-konteksten).
-2. Skru av Netlifys passordbeskyttelse for produksjon.
-   (`PREVIEW_BRUKER`/`PREVIEW_PASSORD` beholdes — previews forblir beskyttet.)
+2. Er passordvariablene i bruk: la dem stå — produksjonsbygget utelater
+   Basic-Auth-linjen av seg selv, previews forblir beskyttet.
 3. **Trigg et deploy manuelt.** Endring av miljøvariabler bygger ikke på nytt
    av seg selv.
 4. Verifiser live med curl mot produksjonsdomenet:
@@ -40,8 +44,8 @@ noindexet, `robots.txt` sier `Disallow: /`, og alt er bak Basic-Auth.
      `sikkerhet/policy.json`
    - `curl -s https://<domene>/robots.txt` → `Allow: /` + sitemap-lenke
    - `curl -s https://<domene>/sitemap.xml` → kun GODKJENT-sider
-5. Verifiser at en preview-URL fortsatt krever Basic-Auth og svarer med
-   noindex.
+5. Verifiser at en preview-URL fortsatt svarer med noindex (og krever
+   Basic-Auth hvis passordvariablene er i bruk).
 
 ## Etter flippen
 

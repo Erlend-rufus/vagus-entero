@@ -7,7 +7,9 @@
 // - CONTEXT settes av Netlify (production | deploy-preview | branch-deploy).
 //   Er CONTEXT satt og ulik "production", tvinges noindex uansett PRODUKSJON —
 //   previews kan aldri indekseres, uansett feilkonfigurasjon.
-// - Basic-Auth kreves på alle Netlify-bygg som ikke er produksjonsbygg.
+// - Basic-Auth er VALGFRI (besluttet av Erlend 24.08.2026): settes
+//   PREVIEW_BRUKER/PREVIEW_PASSORD i Netlify, beskyttes alle ikke-produksjons-
+//   bygg automatisk; uten dem bygges de åpne, men alltid noindexet.
 
 export function lesMiljo(env = process.env) {
   const produksjonSatt = Boolean(env.PRODUKSJON);
@@ -20,9 +22,9 @@ export function lesMiljo(env = process.env) {
   const siteUrl = env.SITE_URL || null;
   const ciSyntetisk = Boolean(env.CI_SYNTETISK);
 
-  const basicAuthPakrevd = !produksjon && context !== null;
   const basicAuthBruker = env.PREVIEW_BRUKER || null;
   const basicAuthPassord = env.PREVIEW_PASSORD || null;
+  const basicAuthAktiv = !produksjon && Boolean(basicAuthBruker && basicAuthPassord);
 
   return {
     produksjon,
@@ -31,7 +33,7 @@ export function lesMiljo(env = process.env) {
     noindex,
     siteUrl,
     ciSyntetisk,
-    basicAuthPakrevd,
+    basicAuthAktiv,
     basicAuthBruker,
     basicAuthPassord
   };

@@ -68,7 +68,7 @@ det punktet. Nye synder fanges alltid.
 | `lenker` | interne lenker uten mål i bygget |
 | `godkjent-status` | side uten GODKJENT i produksjonsbygg; komponentkatalogen i produksjon |
 | `klinikk-lansering` | tomme lovpålagte klinikkfelter i ekte produksjonsbygg (ehandelsloven § 9) |
-| `noindex` | manglende noindex/Basic-Auth utenfor produksjon; gjenglemt noindex/Basic-Auth i produksjon |
+| `noindex` | manglende noindex utenfor produksjon (og manglende Basic-Auth-linje når passordvariablene var satt i bygget); gjenglemt noindex/Disallow/Basic-Auth i produksjon |
 | `headere` | avvik mellom bygde `_headers` og `sikkerhet/policy.json` |
 
 Kjør alt lokalt: `npm run vakter` (kildefiler) eller `npm run bygg`
