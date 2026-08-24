@@ -18,6 +18,9 @@ const FELTMELDINGER = {
   i_navigasjon: 'i_navigasjon må være true eller false',
   rekkefolge: 'rekkefolge må være et heltall (0 eller høyere) for menyrekkefølgen',
   sist_oppdatert: 'sist_oppdatert må være en dato på formen ÅÅÅÅ-MM-DD',
+  ingress: 'ingress (vises under overskriften på forsiden) må være 30–300 tegn',
+  undersokelser_tittel:
+    'undersokelser_tittel (overskrift for det automatiske undersøkelsesutvalget) må være 3–60 tegn',
   bilder: 'hvert bilde må ha fil og alt (alt kan bare være tom sammen med dekorativt: true)',
   priser: 'hver prislinje må ha navn og belop_nok (kroner inkl. mva, over 0)'
 };

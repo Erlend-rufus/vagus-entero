@@ -109,6 +109,11 @@ export default function (eleventyConfig) {
     'forside',
     (sider) => (sider || []).find((side) => side.data.sidetype === 'forside') || null
   );
+  eleventyConfig.addFilter('sidetype', (sider, type) =>
+    (sider || [])
+      .filter((side) => side.data.sidetype === type)
+      .sort((a, b) => a.data.rekkefolge - b.data.rekkefolge)
+  );
   eleventyConfig.addFilter('kroner', (belop) =>
     new Intl.NumberFormat('nb-NO', {
       style: 'currency',
