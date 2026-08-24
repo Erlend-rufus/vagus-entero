@@ -26,6 +26,10 @@ apne_punkter:      # liste med uavklarte [BEKREFT]-punkter. MÅ være tom
 i_navigasjon:      # true = i hovedmenyen, false = ev. i bunnteksten (statisk)
 rekkefolge:        # heltall — plassering i menyen (lavest først)
 sist_oppdatert:    # valgfri: ÅÅÅÅ-MM-DD, datostempling av medisinsk innhold
+ingress:           # valgfri (brukes på forsiden): 30–300 tegn, vises under H1
+undersokelser_tittel: # valgfri (forsiden): overskrift for det automatiske
+                   #   utvalget av undersøkelsessider. Kortene genereres av
+                   #   bygget fra undersokelse-sidenes tittel/meta_beskrivelse
 bilder:            # valgfri liste, se under
 priser:            # kun sidetype pris, se under
 ---

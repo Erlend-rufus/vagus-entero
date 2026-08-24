@@ -233,6 +233,45 @@ main {
   padding: 0 var(--avstand-5) var(--avstand-8);
 }
 
+/* ---- Forside ------------------------------------------------------------- */
+.hero {
+  padding-block: var(--avstand-7) var(--avstand-6);
+  border-block-end: 1px solid var(--farge-delelinje);
+  margin-block-end: var(--avstand-6);
+}
+
+.hero h1 {
+  margin-block-start: 0;
+  max-width: 22ch;
+}
+
+.hero .ingress {
+  max-width: 55ch;
+}
+
+.hero-handlinger {
+  margin-block-start: var(--avstand-5);
+}
+
+.forside-innhold {
+  max-width: var(--maks-linje);
+}
+
+.forside-innhold ol {
+  padding-inline-start: 1.4em;
+}
+
+.forside-innhold ol li,
+.forside-innhold ul li {
+  margin-block-end: var(--avstand-2);
+}
+
+.forside-seksjon {
+  border-block-start: 1px solid var(--farge-delelinje);
+  padding-block-start: var(--avstand-6);
+  margin-block-start: var(--avstand-7);
+}
+
 .side {
   max-width: var(--maks-linje);
 }
