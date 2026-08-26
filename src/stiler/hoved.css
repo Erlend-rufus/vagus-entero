@@ -20,6 +20,11 @@
   --farge-primaer-mork: #0c444b;
   --farge-ramme: #748688;
   --farge-delelinje: #c9d2d3;
+  /* Utvidelser fra designleveransen 26.08.2026 (kontrast målt):
+     dyp petrol: hvit tekst 13,4:1 · lys petrol på dyp: 7,2:1 · vask: brødtekst 12,4:1 */
+  --farge-primaer-dyp: #08343a;
+  --farge-primaer-lys: #9fc4c7;
+  --farge-flate-vask: #e3eded;
 
   --skrift:
     'Source Sans 3 Norsk', 'Source Sans 3 Reserve', system-ui, -apple-system,
@@ -421,3 +426,216 @@ main {
   gap: var(--avstand-2) var(--avstand-5);
   max-width: none;
 }
+
+/* ==========================================================================
+   «Reisen» — forsidens scrollfortelling (designleveranse 26.08.2026).
+   Uten JS (eller med redusert bevegelse) vises kun det statiske innholdet;
+   .js-aktiv settes av /js/reisen.js. Opplevelses-laget er aria-skjult —
+   det statiske innholdet under er den likeverdige utgaven.
+   ========================================================================== */
+.reise { background: var(--farge-primaer-dyp); }
+
+body:has(.reise) main {
+  max-width: none;
+  padding: 0;
+}
+
+body:has(.reise) .utkast-banner {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 60;
+}
+
+.k-topp {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 40;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--avstand-2) var(--avstand-5);
+  padding: 22px 48px;
+}
+.k-topp .m { font-size: var(--tekst-2); font-weight: 700; color: #fff; }
+.k-topp nav { display: flex; gap: 28px; }
+.k-topp nav a { color: var(--farge-primaer-lys); text-decoration: none; font-size: 17px; padding-block: var(--avstand-2); }
+.k-topp nav a:hover { color: #fff; text-decoration: underline; text-underline-offset: 0.3em; }
+.k-topp.k-lys { background: var(--farge-bakgrunn); border-bottom: 1px solid var(--farge-delelinje); }
+.k-topp.k-lys .m { color: var(--farge-primaer-mork); }
+.k-topp.k-lys nav a { color: var(--farge-tekst); }
+.k-topp.k-lys nav a:hover { color: var(--farge-primaer-mork); }
+
+/* Reserve: dokumentets H1/ingress. I js-modus visuelt skjult, men i
+   tilgjengelighetstreet — aldri display:none. */
+.reserve { max-width: 840px; margin-inline: auto; padding: 16vh var(--avstand-5) 8vh; color: #fff; }
+.reserve h1 { color: #fff; font-size: clamp(44px, 6vw, 76px); line-height: 1.03; margin: 0 0 18px; max-width: 15ch; }
+.reserve .ingress { color: var(--farge-primaer-lys); max-width: 48ch; margin: 0; font-size: 21px; }
+.js-aktiv .reserve {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  padding: 0;
+}
+
+/* Prolog — inn i mennesket */
+#prolog { position: relative; height: 280vh; display: none; }
+.js-aktiv #prolog { display: block; }
+#pscene {
+  position: sticky; top: 0; height: 100vh; overflow: hidden;
+  background: var(--farge-primaer-dyp);
+  display: grid; grid-template-columns: minmax(340px, 40%) 1fr;
+  align-items: center; gap: 2vw; padding: 80px 5vw 0;
+}
+#ptekst { text-align: left; max-width: 540px; }
+#ptekst .p-tittel { font-size: clamp(44px, 4.6vw, 72px); font-weight: 650; line-height: 1.1; letter-spacing: -0.015em; margin: 0 0 18px; color: #fff; }
+#ptekst .p-tekst { font-size: 21px; color: var(--farge-primaer-lys); margin: 0; max-width: 42ch; }
+#pfig { will-change: transform; line-height: 0; position: relative; justify-self: center; }
+#pfig img {
+  display: block; height: min(calc(100vh - 180px), 880px); width: auto; max-width: 44vw;
+  object-fit: contain;
+  filter: grayscale(1) invert(1) contrast(1.5) brightness(0.98);
+  mix-blend-mode: screen; opacity: 0.95;
+}
+.p-anno {
+  position: absolute; font-size: 13.5px; font-weight: 650; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--farge-primaer-lys); white-space: nowrap; opacity: 0;
+}
+.p-anno::before {
+  content: ''; display: inline-block; width: 26px; height: 1px;
+  background: var(--farge-primaer-lys); vertical-align: middle; margin-right: 10px;
+}
+#pmerk {
+  position: absolute; left: 51%; top: 42%; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--farge-primaer-lys); transform: translate(-50%, -50%);
+  animation: pulsdott 2.6s ease-in-out infinite;
+}
+@keyframes pulsdott {
+  0%, 100% { box-shadow: 0 0 0 7px rgba(159, 196, 199, 0.22); }
+  50% { box-shadow: 0 0 0 18px rgba(159, 196, 199, 0.08); }
+}
+.pkred { position: absolute; right: 24px; bottom: 18px; font-size: 13.5px; color: var(--farge-primaer-lys); opacity: 0.75; margin: 0; }
+#phint { display: flex; align-items: center; gap: 12px; color: var(--farge-primaer-lys); font-size: 16px; margin-top: 40px; }
+.v-pil { display: inline-block; }
+#phint .v-pil { animation: duppned 2.2s ease-in-out infinite; }
+@keyframes duppned { 50% { transform: translateY(8px); } }
+#pdekke { position: absolute; inset: 0; background: var(--farge-primaer-dyp); opacity: 0; pointer-events: none; }
+@media (max-width: 960px) {
+  #pscene { grid-template-columns: 1fr; gap: 3vh; padding: 96px var(--avstand-5) 0; align-content: start; }
+  #pfig img { height: min(calc(100vh - 420px), 520px); max-width: 86vw; }
+  #phint { margin-top: 20px; }
+}
+
+/* Scenen — reisen gjennom kroppen */
+#spor { position: relative; display: none; }
+.js-aktiv #spor { display: block; }
+#scene { position: sticky; top: 0; height: 100vh; overflow: hidden; background: var(--farge-primaer-dyp); color: #fff; }
+#verden { position: absolute; top: 0; left: 0; height: 100vh; will-change: transform; }
+#linjer { position: absolute; inset: 0; }
+#grunn { stroke: var(--farge-primaer); }
+#tegnet { stroke: var(--farge-primaer-lys); }
+#prikk { fill: #fff; }
+#prikk2 { fill: rgba(159, 196, 199, 0.22); }
+.m-prikk { fill: var(--farge-primaer); }
+
+.v-intro { position: absolute; top: 0; height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 48px; }
+.vi-tittel { font-size: clamp(48px, 6.5vw, 88px); font-weight: 650; line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 22px; color: #fff; max-width: 14ch; }
+.v-intro .ingress { color: var(--farge-primaer-lys); font-size: 21px; max-width: 44ch; margin: 0; }
+.v-hint { display: flex; align-items: center; gap: 12px; color: var(--farge-primaer-lys); font-size: 16px; margin-top: 44px; }
+.v-hint .v-pil { animation: sidle 2.2s ease-in-out infinite; }
+@keyframes sidle { 50% { transform: translateX(10px); } }
+
+.h-st {
+  position: absolute; width: 520px;
+  transform: translateX(-50%) translateY(16px) scale(0.97);
+  opacity: 0; transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.h-st.vis { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+.h-st .over { font-size: 14px; font-weight: 650; letter-spacing: 0.14em; text-transform: uppercase; color: var(--farge-primaer-lys); margin: 0 0 12px; }
+.h-st .st-tittel { font-size: clamp(28px, 2.6vw, 38px); font-weight: 650; line-height: 1.08; margin: 0 0 6px; color: #fff; text-wrap: balance; }
+.h-st .fag { font-size: 20px; color: var(--farge-primaer-lys); margin: 0 0 12px; }
+.h-st .tekst { font-size: 18.5px; color: #fff; margin: 0; max-width: 50ch; }
+.chips { display: flex; gap: 10px 22px; margin-top: 18px; flex-wrap: wrap; }
+.chip { display: flex; align-items: center; gap: 9px; font-size: 15.5px; font-weight: 650; color: var(--farge-primaer-lys); }
+.chip-ikon { width: 21px; height: 21px; flex: none; line-height: 0; }
+.chip-ikon svg { width: 100%; height: 100%; }
+
+.h-node {
+  position: absolute; transform: translate(-50%, -50%); width: 56px; height: 56px;
+  border-radius: 50%; background: var(--farge-primaer-dyp);
+  border: 3px solid var(--farge-primaer-lys); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 650; font-size: 18px; font-variant-numeric: tabular-nums; z-index: 2;
+  transition: background 0.4s, color 0.4s, border-color 0.4s, box-shadow 0.4s;
+}
+.h-node.aktiv { background: var(--farge-primaer-lys); color: var(--farge-primaer-dyp); border-color: #fff; box-shadow: 0 0 0 8px rgba(159, 196, 199, 0.15); }
+.h-ghost {
+  position: absolute; transform: translateX(-50%); top: 12vh;
+  font-size: 10.5vw; font-weight: 650; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--farge-primaer); opacity: 0; white-space: nowrap; z-index: 0; pointer-events: none;
+}
+.v-utro { position: absolute; top: 0; height: 100vh; display: flex; align-items: center; justify-content: center; opacity: 0; }
+.vu-tittel { font-size: clamp(34px, 3.8vw, 52px); font-weight: 650; color: #fff; margin: 0; max-width: 18ch; text-align: center; }
+
+.h-rail { position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%); display: flex; gap: 10px; z-index: 30; align-items: center; }
+.h-rail::before { content: ''; position: absolute; left: 12px; right: 12px; top: 50%; height: 2px; background: var(--farge-primaer); }
+.h-rail button {
+  position: relative; width: 30px; height: 30px; border-radius: 50%;
+  border: 2px solid var(--farge-primaer); background: var(--farge-primaer-dyp);
+  color: var(--farge-primaer-lys); font: 650 11px var(--skrift); cursor: pointer; padding: 0;
+}
+.h-rail button.aktiv { background: #fff; border-color: #fff; color: var(--farge-primaer-dyp); }
+.frem { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--farge-primaer); z-index: 30; }
+.frem i { position: absolute; left: 0; top: 0; height: 100%; width: 100%; background: var(--farge-primaer-lys); transform-origin: left; transform: scaleX(0); }
+.hvitt { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; z-index: 20; }
+
+/* Etter reisen — det statiske, tilgjengelige innholdet */
+.etter { background: var(--farge-bakgrunn); color: var(--farge-tekst); position: relative; z-index: 5; }
+.trad { width: 3px; height: 84px; background: var(--farge-primaer); margin: 0 auto; }
+.rute { max-width: 840px; margin-inline: auto; padding: 40px var(--avstand-5) 48px; }
+.rute h2 { text-align: center; font-size: 36px; margin: 0 0 8px; }
+.rute .u { text-align: center; color: var(--farge-tekst-dempet); margin: 0 auto 56px; max-width: 52ch; }
+.stopp { display: grid; grid-template-columns: 64px 1fr; gap: var(--avstand-5); position: relative; padding-bottom: 44px; }
+.stopp::before { content: ''; position: absolute; left: 30px; top: 0; bottom: 0; width: 3px; background: var(--farge-primaer); }
+.stopp:last-of-type { padding-bottom: 0; }
+.stopp:last-of-type::before { bottom: auto; height: 32px; }
+.node2 {
+  position: relative; z-index: 1; width: 64px; height: 64px; border-radius: 50%;
+  background: var(--farge-bakgrunn); border: 3px solid var(--farge-primaer);
+  color: var(--farge-primaer-mork); font-weight: 650; font-size: 20px;
+  display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums;
+}
+.stopp h3 { margin: 6px 0 2px; font-size: 26px; }
+.stopp h3 a { color: var(--farge-tekst); text-decoration: none; }
+.stopp h3 a:hover { color: var(--farge-primaer-mork); text-decoration: underline; text-underline-offset: 0.2em; }
+.stopp .fag { color: var(--farge-tekst-dempet); font-size: 19px; margin: 0 0 8px; }
+.stopp p { margin: 0; max-width: 56ch; }
+@media (max-width: 640px) { .stopp { grid-template-columns: 48px 1fr; gap: var(--avstand-4); } .node2 { width: 48px; height: 48px; font-size: 17px; } .stopp::before { left: 22px; } }
+
+.bill-sek { background: var(--farge-flate-vask); padding: 80px 48px; }
+.bill-indre { max-width: 1100px; margin-inline: auto; }
+.bill-indre h2 { text-align: center; margin: 0 0 8px; font-size: 34px; }
+.bill-indre .u { text-align: center; color: var(--farge-tekst-dempet); margin: 0 auto 44px; max-width: 52ch; }
+.billetter { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; position: relative; }
+.billetter::before { content: ''; position: absolute; left: 10%; right: 10%; top: 32px; border-top: 3px dashed var(--farge-primaer-lys); }
+.billett { position: relative; padding: 0 28px; text-align: center; }
+.billett .node2 { margin: 0 auto 20px; background: var(--farge-flate-vask); }
+.billett h3 { margin: 0 0 8px; font-size: 22px; }
+.billett p { margin: 0 auto; font-size: 18px; max-width: 34ch; }
+.bill-cta { text-align: center; margin-top: 48px; }
+@media (max-width: 860px) { .bill-sek { padding: 64px var(--avstand-5); } .billetter { grid-template-columns: 1fr; gap: var(--avstand-6); } .billetter::before { content: none; } }
+
+.pris-sek { background: var(--farge-bakgrunn); }
+.pris-sek .indre { max-width: 840px; margin-inline: auto; padding: 76px var(--avstand-5); text-align: center; }
+.pris-sek h2 { font-size: 34px; margin: 0 0 14px; }
+.pris-sek p { margin: 0 auto 24px; max-width: 56ch; }
+
+.k-bunn {
+  background: var(--farge-primaer-dyp); padding: var(--avstand-6) 56px;
+  display: flex; justify-content: space-between; flex-wrap: wrap;
+  gap: var(--avstand-4) var(--avstand-5); font-size: 16.5px; color: var(--farge-primaer-lys);
+}
+.k-bunn strong { color: #fff; }

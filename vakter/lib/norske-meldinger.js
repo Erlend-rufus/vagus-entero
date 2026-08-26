@@ -19,6 +19,8 @@ const FELTMELDINGER = {
   rekkefolge: 'rekkefolge må være et heltall (0 eller høyere) for menyrekkefølgen',
   sist_oppdatert: 'sist_oppdatert må være en dato på formen ÅÅÅÅ-MM-DD',
   ingress: 'ingress (vises under overskriften på forsiden) må være 30–300 tegn',
+  reisen:
+    'reisen-blokken (forsidens scrollfortelling) mangler noe eller har ugyldig struktur — se docs/INNHOLDSKONTRAKT.md for feltene (intro, avslutning, stasjoner med punkter, rutekart, billetter, pris_seksjon, etiketter)',
   undersokelser_tittel:
     'undersokelser_tittel (overskrift for det automatiske undersøkelsesutvalget) må være 3–60 tegn',
   bilder: 'hvert bilde må ha fil og alt (alt kan bare være tom sammen med dekorativt: true)',

@@ -13,6 +13,7 @@
     "server": "eleventy --serve",
     "vakter": "node vakter/kjor-alle.js",
     "test": "node vakter/tester/kjor-selvtester.js",
+    "test:a11y": "node verktoy/a11y-test.mjs",
     "subsett-font": "python3 verktoy/subsett-font.py"
   },
   "dependencies": {
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@lhci/cli": "0.15.1",
-    "pa11y-ci": "4.1.1"
+    "axe-core": "4.13.0",
+    "puppeteer-core": "24.43.1"
   }
 }

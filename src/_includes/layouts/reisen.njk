@@ -1,0 +1,121 @@
+---
+layout: layouts/base.njk
+skjul_ramme: true
+---
+{# «Reisen» — forsidens scrollfortelling (fra designleveransen 26.08.2026).
+   Alt synlig språk kommer fra innholdsfilens reisen-blokk. Uten JS (eller med
+   redusert bevegelse) vises kun det statiske innholdet — komplett og
+   likeverdig. Hele opplevelses-laget er skjult for hjelpemidler; det statiske
+   innholdet under er den tilgjengelige utgaven av nøyaktig samme informasjon. #}
+<div class="reise">
+  <div class="k-topp" id="reise-topp">
+    <span class="m">{{ klinikk.juridisk_navn }}</span>
+    <nav aria-label="{{ ui.hovednavigasjon }}">
+      {%- for side in collections.nav %}
+      <a href="{{ side.url }}"{% if side.url == page.url %} aria-current="page"{% endif %}>{{ side.data.tittel }}</a>
+      {%- endfor %}
+    </nav>
+  </div>
+
+  <div class="reserve">
+    <h1>{{ reisen.intro.tittel }}</h1>
+    <p class="ingress">{{ ingress }}</p>
+  </div>
+
+  {%- if reisen.prolog %}
+  <div id="prolog" aria-hidden="true"><div id="pscene">
+    <div id="ptekst">
+      <p class="p-tittel">{{ reisen.prolog.tittel }}</p>
+      <p class="p-tekst">{{ reisen.prolog.tekst }}</p>
+      <div id="phint"><span class="v-pil">↓</span><span>{{ reisen.prolog.hint }}</span></div>
+    </div>
+    <div id="pfig">
+      <img src="/bilder/{{ reisen.prolog.bilde }}" alt="" width="1036" height="1600" decoding="async">
+      <span id="pmerk"></span>
+      {%- for anno in reisen.prolog.annotasjoner %}
+      <span class="p-anno" data-x="{{ anno.x }}" data-y="{{ anno.y }}">{{ anno.tekst }}</span>
+      {%- endfor %}
+    </div>
+    {%- if reisen.prolog.bildekred %}
+    <p class="pkred">{{ reisen.prolog.bildekred }}</p>
+    {%- endif %}
+    <div id="pdekke"></div>
+  </div></div>
+  {%- endif %}
+
+  <div id="spor" aria-hidden="true"><div id="scene">
+    <div id="verden">
+      <svg id="linjer"><path id="grunn" fill="none" stroke-width="2.5"></path><g id="mstre"></g><path id="tegnet" fill="none" stroke-width="3.5" stroke-linecap="round"></path><circle id="prikk2" r="16" cx="-40" cy="-40"></circle><circle id="prikk" r="8" cx="-20" cy="-20"></circle></svg>
+      <div class="v-intro" id="intro">
+        <p class="vi-tittel">{{ reisen.intro.tittel }}</p>
+        <p class="ingress">{{ reisen.intro.ingress }}</p>
+        <div class="v-hint"><span class="v-pil">→</span><span>{{ reisen.intro.hint }}</span></div>
+      </div>
+      {%- for stasjon in reisen.stasjoner %}
+      <div class="h-st" data-nummer="{{ stasjon.nummer }}" data-sone="{{ stasjon.sone }}">
+        <p class="over">{{ reisen.etiketter.stasjon }} {{ stasjon.nummer }}</p>
+        <p class="st-tittel">{{ stasjon.tittel }}</p>
+        <p class="fag">{{ stasjon.fagterm }}</p>
+        <p class="tekst">{{ stasjon.tekst }}</p>
+        <div class="chips">
+          {%- for punkt in stasjon.punkter %}
+          <span class="chip"><span class="chip-ikon">{% set navn = punkt.ikon %}{% include "komponenter/reisen-ikon.njk" %}</span>{{ punkt.tekst }}</span>
+          {%- endfor %}
+        </div>
+      </div>
+      {%- endfor %}
+      <div class="v-utro" id="utro"><p class="vu-tittel">{{ reisen.avslutning }}</p></div>
+    </div>
+    <div class="h-rail" id="rail" data-til="{{ reisen.etiketter.til_stasjon }}"></div>
+    <div class="frem"><i id="fremfyll"></i></div>
+    <div class="hvitt" id="hvitt"></div>
+  </div></div>
+
+  <section class="etter">
+    <div class="trad"></div>
+    <div class="rute">
+      <h2>{{ reisen.rutekart.tittel }}</h2>
+      <p class="u">{{ reisen.rutekart.undertittel }}</p>
+      {%- for stasjon in reisen.stasjoner %}
+      <div class="stopp"><span class="node2">{{ stasjon.nummer }}</span><div>
+        <h3>{% if stasjon.url and (collections.innhold | finnesUrl(stasjon.url)) %}<a href="{{ stasjon.url }}">{{ stasjon.tittel }}</a>{% else %}{{ stasjon.tittel }}{% endif %}</h3>
+        <p class="fag">{{ stasjon.fagterm }}</p>
+        <p>{{ stasjon.kort_tekst }}</p>
+      </div></div>
+      {%- endfor %}
+    </div>
+  </section>
+
+  <section class="bill-sek"><div class="bill-indre">
+    <h2>{{ reisen.billetter.tittel }}</h2>
+    <p class="u">{{ reisen.billetter.undertittel }}</p>
+    <div class="billetter">
+      {%- for steg in reisen.billetter.steg %}
+      <div class="billett"><span class="node2">{{ steg.bokstav }}</span><h3>{{ steg.tittel }}</h3><p>{{ steg.tekst }}</p></div>
+      {%- endfor %}
+    </div>
+    {%- if reisen.billetter.knapp_tekst and klinikk.telefon %}
+    <div class="bill-cta"><a class="knapp" href="tel:{{ klinikk.telefon | replace(' ', '') }}">{{ reisen.billetter.knapp_tekst }} {{ klinikk.telefon }}</a></div>
+    {%- endif %}
+  </div></section>
+
+  <section class="pris-sek"><div class="indre">
+    <h2>{{ reisen.pris_seksjon.tittel }}</h2>
+    <p>{{ reisen.pris_seksjon.tekst }}</p>
+    {%- set prissider = collections.innhold | sidetype('pris') %}
+    {%- if reisen.pris_seksjon.knapp_tekst and prissider.length > 0 %}
+    <a class="knapp knapp-sekundaer" href="{{ prissider[0].url }}">{{ reisen.pris_seksjon.knapp_tekst }}</a>
+    {%- endif %}
+  </div></section>
+
+  {%- if reisen.bunn %}
+  <footer class="k-bunn">
+    <span><strong>{{ klinikk.juridisk_navn }}</strong> · {{ reisen.bunn.beskrivelse }}</span>
+    <span>{{ reisen.bunn.sted }}</span>
+  </footer>
+  {%- else %}
+  {% include "komponenter/footer.njk" %}
+  {%- endif %}
+</div>
+{% include "komponenter/jsonld.njk" %}
+<script src="/js/reisen.js" defer></script>

@@ -91,6 +91,146 @@
       "minLength": 30,
       "maxLength": 300
     },
+    "reisen": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["intro", "avslutning", "stasjoner", "rutekart", "billetter", "pris_seksjon", "etiketter"],
+      "properties": {
+        "prolog": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["tittel", "tekst", "hint", "bilde"],
+          "properties": {
+            "tittel": { "type": "string", "minLength": 3 },
+            "tekst": { "type": "string", "minLength": 10 },
+            "hint": { "type": "string", "minLength": 3 },
+            "bilde": { "type": "string", "minLength": 1 },
+            "bildekred": { "type": "string" },
+            "annotasjoner": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["tekst", "x", "y"],
+                "properties": {
+                  "tekst": { "type": "string" },
+                  "x": { "type": "number", "minimum": 0, "maximum": 100 },
+                  "y": { "type": "number", "minimum": 0, "maximum": 100 }
+                }
+              }
+            }
+          }
+        },
+        "intro": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["tittel", "ingress", "hint"],
+          "properties": {
+            "tittel": { "type": "string", "minLength": 3 },
+            "ingress": { "type": "string", "minLength": 10 },
+            "hint": { "type": "string", "minLength": 3 }
+          }
+        },
+        "avslutning": { "type": "string", "minLength": 3 },
+        "stasjoner": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["nummer", "sone", "tittel", "fagterm", "tekst", "kort_tekst", "punkter"],
+            "properties": {
+              "nummer": { "type": "string", "pattern": "^[0-9]{2}$" },
+              "sone": { "type": "string", "minLength": 2 },
+              "tittel": { "type": "string", "minLength": 5 },
+              "fagterm": { "type": "string", "minLength": 2 },
+              "tekst": { "type": "string", "minLength": 10 },
+              "kort_tekst": { "type": "string", "minLength": 10 },
+              "url": { "type": "string", "pattern": "^/([a-z0-9-]+/)*$" },
+              "punkter": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 3,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["ikon", "tekst"],
+                  "properties": {
+                    "ikon": {
+                      "enum": ["video", "message-circle", "clock", "file-text", "stethoscope", "calendar-check", "route", "heart-pulse"]
+                    },
+                    "tekst": { "type": "string", "minLength": 3 }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "rutekart": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["tittel", "undertittel"],
+          "properties": {
+            "tittel": { "type": "string", "minLength": 3 },
+            "undertittel": { "type": "string", "minLength": 10 }
+          }
+        },
+        "billetter": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["tittel", "undertittel", "steg"],
+          "properties": {
+            "tittel": { "type": "string", "minLength": 3 },
+            "undertittel": { "type": "string", "minLength": 10 },
+            "steg": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["bokstav", "tittel", "tekst"],
+                "properties": {
+                  "bokstav": { "type": "string", "pattern": "^[A-Z]$" },
+                  "tittel": { "type": "string", "minLength": 3 },
+                  "tekst": { "type": "string", "minLength": 10 }
+                }
+              }
+            },
+            "knapp_tekst": { "type": "string", "minLength": 3 }
+          }
+        },
+        "pris_seksjon": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["tittel", "tekst"],
+          "properties": {
+            "tittel": { "type": "string", "minLength": 3 },
+            "tekst": { "type": "string", "minLength": 10 },
+            "knapp_tekst": { "type": "string", "minLength": 3 }
+          }
+        },
+        "etiketter": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["stasjon", "til_stasjon"],
+          "properties": {
+            "stasjon": { "type": "string", "minLength": 2 },
+            "til_stasjon": { "type": "string", "minLength": 2 }
+          }
+        },
+        "bunn": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["beskrivelse", "sted"],
+          "properties": {
+            "beskrivelse": { "type": "string", "minLength": 5 },
+            "sted": { "type": "string", "minLength": 5 }
+          }
+        }
+      }
+    },
     "undersokelser_tittel": {
       "type": "string",
       "minLength": 3,
