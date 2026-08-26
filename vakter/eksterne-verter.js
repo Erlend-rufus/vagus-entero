@@ -100,6 +100,9 @@ export function kjorDist(distKatalog) {
     ABSOLUTT_I_JS.lastIndex = 0;
     let m;
     while ((m = ABSOLUTT_I_JS.exec(js)) !== null) {
+      // XML-navnerom (createElementNS) er identifikatorer, aldri
+      // nettverksressurser — samme unntak som schema.org i JSON-LD.
+      if (m[0] === 'http://www.w3.org/2000/svg') continue;
       vurderUrl(m[0], fil, verter, feil);
     }
   }

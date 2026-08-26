@@ -55,11 +55,8 @@ jobs:
           args: --offline --include-fragments --no-progress --root-dir ${{ github.workspace }}/dist-produksjon dist-produksjon
           fail: true
 
-      - name: Tilgjengelighet (pa11y-ci med axe, alle sider)
-        run: |
-          node verktoy/server.js dist 8878 &
-          sleep 2
-          npx pa11y-ci --config verktoy/pa11yci.cjs
+      - name: Tilgjengelighet (direkte axe-kjøring, alle sider)
+        run: A11Y_CHROME="$(which google-chrome)" node verktoy/a11y-test.mjs dist 8878
 
       - name: Ytelsesbudsjett (Lighthouse CI)
         run: npx lhci autorun --config=verktoy/lighthouserc.cjs

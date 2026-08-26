@@ -33,6 +33,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy('src/stiler');
   eleventyConfig.addPassthroughCopy('src/fonter');
   eleventyConfig.addPassthroughCopy('src/bilder');
+  eleventyConfig.addPassthroughCopy('src/js');
 
   // ---- Validering FØR bygget: hele innholdssettet, samlet -----------------
   eleventyConfig.on('eleventy.before', () => {
@@ -85,7 +86,11 @@ export default function (eleventyConfig) {
   // ---- Kontraktfelter → Eleventy-mekanikk ---------------------------------
   eleventyConfig.addGlobalData('eleventyComputed', {
     permalink: (data) => (data.sidetype ? data.url : data.permalink),
-    layout: (data) => (data.sidetype ? LAYOUT_PER_SIDETYPE[data.sidetype] : data.layout)
+    layout: (data) => {
+      if (!data.sidetype) return data.layout;
+      if (data.sidetype === 'forside' && data.reisen) return 'layouts/reisen.njk';
+      return LAYOUT_PER_SIDETYPE[data.sidetype];
+    }
   });
 
   eleventyConfig.addCollection('innhold', (api) =>
@@ -113,6 +118,9 @@ export default function (eleventyConfig) {
     (sider || [])
       .filter((side) => side.data.sidetype === type)
       .sort((a, b) => a.data.rekkefolge - b.data.rekkefolge)
+  );
+  eleventyConfig.addFilter('finnesUrl', (sider, url) =>
+    (sider || []).some((side) => side.url === url)
   );
   eleventyConfig.addFilter('kroner', (belop) =>
     new Intl.NumberFormat('nb-NO', {

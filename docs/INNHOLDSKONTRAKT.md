@@ -82,6 +82,18 @@ priser:
     merknad: ""                 # valgfri, f.eks. hva som inngår
 ```
 
+## Forsidens reisen-blokk
+
+Forsiden bruker en egen fortellingsstruktur («reisen») definert i frontmatter
+under nøkkelen `reisen` — se `skjema/innhold.schema.json` for alle felter.
+Kort: `intro` (tittel/ingress/hint), valgfri `prolog` (anatomisk plansje med
+annotasjoner), `stasjoner` (3–8 stasjoner med nummer, sone, tittel, fagterm,
+tekst, kort_tekst og 1–3 punkter med ikon fra en fast liste), `rutekart`,
+`billetter` (tre steg A–C), `pris_seksjon`, `etiketter` og valgfri `bunn`.
+Uten JavaScript (eller med redusert bevegelse) vises kun det statiske
+innholdet — komplett og likeverdig. Lenker og knapper aktiveres automatisk
+når målsidene (og telefonnummeret i `klinikk.json`) finnes.
+
 ## Klinikkfakta
 
 Alt faktisk om klinikken (org.nr, adresse, telefon, e-post, lege, faktisk

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Liten statisk server med gzip for CI-måling: LHCI/pa11y måler dermed
+// Liten statisk server med gzip for CI-måling: LHCI/axe måler dermed
 // reell overført (komprimert) størrelse, slik ytelsesbudsjettet krever.
 // Bruk: node verktoy/server.js [katalog] [port]
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% if sidetype == 'forside' %}{{ tittel }}{% else %}{{ tittel }} – {{ klinikk.juridisk_navn }}{% endif %}</title>
+  <title>{{ tittel }} – {{ klinikk.juridisk_navn }}</title>
   <meta name="description" content="{{ meta_beskrivelse }}">
   {%- if miljo.noindex %}
   <meta name="robots" content="noindex, nofollow">
@@ -19,10 +19,14 @@
   {%- if status and status != 'GODKJENT' %}
   {% include "komponenter/utkast-banner.njk" %}
   {%- endif %}
+  {%- if not skjul_ramme %}
   {% include "komponenter/header.njk" %}
+  {%- endif %}
   <main id="innhold">
 {{ content | safe }}
   </main>
+  {%- if not skjul_ramme %}
   {% include "komponenter/footer.njk" %}
+  {%- endif %}
 </body>
 </html>
