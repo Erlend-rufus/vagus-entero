@@ -6,16 +6,9 @@ import { lagHeadersInnhold, lagRobotsInnhold } from './verktoy/headere.js';
 import { lesInnhold } from './vakter/lib/les-innhold.js';
 import { validerInnhold } from './vakter/lib/innholdsvalidering.js';
 
-const LAYOUT_PER_SIDETYPE = {
-  forside: 'layouts/forside.njk',
-  undersokelse: 'layouts/side.njk',
-  tilstand: 'layouts/side.njk',
-  behandling: 'layouts/side.njk',
-  pris: 'layouts/pris.njk',
-  henviser: 'layouts/side.njk',
-  forsikring: 'layouts/side.njk',
-  statisk: 'layouts/side.njk'
-};
+// Alle sidetyper deler samme layout: forskjellene ligger i innholdets
+// seksjonsblokker, ikke i malen.
+const SIDELAYOUT = 'layouts/side.njk';
 
 const LANSERINGSKRITISKE_KLINIKKFELT = ['juridisk_navn', 'org_nr', 'adresse', 'telefon', 'epost'];
 
@@ -33,7 +26,6 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy('src/stiler');
   eleventyConfig.addPassthroughCopy('src/fonter');
   eleventyConfig.addPassthroughCopy('src/bilder');
-  eleventyConfig.addPassthroughCopy('src/js');
 
   // ---- Validering FØR bygget: hele innholdssettet, samlet -----------------
   eleventyConfig.on('eleventy.before', () => {
@@ -86,11 +78,7 @@ export default function (eleventyConfig) {
   // ---- Kontraktfelter → Eleventy-mekanikk ---------------------------------
   eleventyConfig.addGlobalData('eleventyComputed', {
     permalink: (data) => (data.sidetype ? data.url : data.permalink),
-    layout: (data) => {
-      if (!data.sidetype) return data.layout;
-      if (data.sidetype === 'forside' && data.reisen) return 'layouts/reisen.njk';
-      return LAYOUT_PER_SIDETYPE[data.sidetype];
-    }
+    layout: (data) => (data.sidetype ? SIDELAYOUT : data.layout)
   });
 
   eleventyConfig.addCollection('innhold', (api) =>
@@ -105,7 +93,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addCollection('bunn', (api) =>
     api
       .getAll()
-      .filter((side) => side.data.sidetype === 'statisk' && !side.data.i_navigasjon)
+      .filter((side) => side.data.sidetype && side.data.i_bunntekst)
       .sort((a, b) => a.data.rekkefolge - b.data.rekkefolge)
   );
 
@@ -121,6 +109,21 @@ export default function (eleventyConfig) {
   );
   eleventyConfig.addFilter('finnesUrl', (sider, url) =>
     (sider || []).some((side) => side.url === url)
+  );
+  // En knapp er synlig først når fakta finnes: bestillingsportalen i
+  // klinikk.json, telefonnummeret, eller en intern side som er med i bygget.
+  // Logikken bor her og ikke i malene, slik at malene bare rendrer.
+  eleventyConfig.addFilter('synlige', (knapper, klinikk, sider) => {
+    const urler = new Set((sider || []).map((side) => side.url));
+    return (knapper || []).filter((k) => {
+      if (k.handling === 'bestilling') return Boolean(klinikk.bestilling && klinikk.bestilling.url);
+      if (k.handling === 'telefon') return Boolean(klinikk.telefon);
+      return urler.has(k.url);
+    });
+  });
+  eleventyConfig.addFilter(
+    'finnSide',
+    (sider, url) => (url ? (sider || []).find((side) => side.url === url) || null : null)
   );
   eleventyConfig.addFilter('kroner', (belop) =>
     new Intl.NumberFormat('nb-NO', {

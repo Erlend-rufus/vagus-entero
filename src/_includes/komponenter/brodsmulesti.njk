@@ -1,9 +1,13 @@
-{%- set forside = collections.innhold | forside %}
-{%- if forside and sidetype != 'forside' %}
+{%- set forsiden = collections.innhold | forside %}
+{%- if forsiden and sidetype != 'forside' %}
+{%- set foreldre = collections.innhold | finnSide(overordnet) %}
 <nav class="brodsmulesti" aria-label="{{ ui.brodsmulesti }}">
   <ol>
-    <li><a href="/">{{ forside.data.tittel }}</a></li>
-    <li aria-current="page">{{ tittel }}</li>
+    <li><a href="/">{{ forsiden.data.menytittel or forsiden.data.tittel }}</a></li>
+    {%- if foreldre %}
+    <li><a href="{{ foreldre.url }}">{{ foreldre.data.menytittel or foreldre.data.tittel }}</a></li>
+    {%- endif %}
+    <li aria-current="page">{{ menytittel or tittel }}</li>
   </ol>
 </nav>
 {%- endif %}

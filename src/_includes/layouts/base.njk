@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ tittel }} – {{ klinikk.juridisk_navn }}</title>
+  <title>{{ tittel }} – {{ klinikk.visningsnavn or klinikk.juridisk_navn }}</title>
   <meta name="description" content="{{ meta_beskrivelse }}">
   {%- if miljo.noindex %}
   <meta name="robots" content="noindex, nofollow">
@@ -11,7 +11,9 @@
   {%- if miljo.produksjon and miljo.siteUrl %}
   <link rel="canonical" href="{{ miljo.siteUrl }}{{ page.url }}">
   {%- endif %}
-  <link rel="preload" href="/fonter/source-sans-3-norsk.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="icon" href="/bilder/merke-favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/fonter/work-sans-norsk.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonter/eb-garamond-norsk.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/stiler/hoved.css">
 </head>
 <body>
@@ -19,14 +21,10 @@
   {%- if status and status != 'GODKJENT' %}
   {% include "komponenter/utkast-banner.njk" %}
   {%- endif %}
-  {%- if not skjul_ramme %}
   {% include "komponenter/header.njk" %}
-  {%- endif %}
   <main id="innhold">
 {{ content | safe }}
   </main>
-  {%- if not skjul_ramme %}
   {% include "komponenter/footer.njk" %}
-  {%- endif %}
 </body>
 </html>

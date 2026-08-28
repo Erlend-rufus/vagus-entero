@@ -4,3 +4,7 @@ Olympus
 Infodoc
 Storz
 Pentax Medical
+# Pasientportal-/journalleverandør: navnet skal ikke stå i pasientteksten.
+# Skal portalen likevel navngis når timebestilling åpnes, er det en bevisst
+# beslutning som føres i unntak/leverandorer.txt.
+Pasientsky

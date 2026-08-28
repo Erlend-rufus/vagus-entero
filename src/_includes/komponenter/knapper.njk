@@ -1,0 +1,20 @@
+{#- Knapper er datadrevne: filteret «synlige» siler bort alt som mangler
+    fakta — bestillingsportal, telefonnummer eller en intern side som ikke
+    finnes. Mangler alt, forsvinner hele raden; nettstedet lover aldri noe
+    det ikke kan holde. -#}
+
+{%- macro knapp(k, klinikk, sider) -%}
+  {%- set klasse = 'knapp' if (k.stil or 'primaer') == 'primaer' else ('knapp knapp-invers' if k.stil == 'invers' else 'knapp-sekundaer') -%}
+  {%- if k.handling == 'bestilling' and klinikk.bestilling and klinikk.bestilling.url -%}
+    <a class="{{ klasse }}" href="{{ klinikk.bestilling.url }}" target="_blank" rel="noopener">{{ k.tekst }}<span aria-hidden="true">↗</span></a>
+  {%- elif k.handling == 'telefon' and klinikk.telefon -%}
+    <a class="{{ klasse }}" href="tel:{{ klinikk.telefon | replace(' ', '') }}">{{ k.tekst }}</a>
+  {%- elif k.handling == 'intern' and (sider | finnesUrl(k.url)) -%}
+    <a class="{{ klasse }}" href="{{ k.url }}">{{ k.tekst }}</a>
+  {%- endif -%}
+{%- endmacro -%}
+
+{%- macro knapperad(knapper, klinikk, sider, klasse) -%}
+  {%- set synlige = knapper | synlige(klinikk, sider) -%}
+  {%- if synlige.length > 0 %}<div class="{{ klasse }}">{% for k in synlige %}{{ knapp(k, klinikk, sider) }}{% endfor %}</div>{% endif -%}
+{%- endmacro -%}

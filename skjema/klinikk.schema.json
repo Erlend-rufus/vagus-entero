@@ -7,50 +7,198 @@
   "additionalProperties": false,
   "required": [
     "juridisk_navn",
+    "visningsnavn",
+    "domene",
     "org_nr",
     "adresse",
     "telefon",
     "epost",
     "lege",
+    "tilsyn",
+    "bestilling",
     "apningstider",
     "ventetid"
   ],
   "properties": {
-    "juridisk_navn": { "type": ["string", "null"] },
+    "juridisk_navn": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "visningsnavn": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Navnet klinikken markedsfoeres under, brukt i topp og bunn. Det juridiske navnet staar i tillegg i bunnteksten (ehandelsloven § 9)."
+    },
+    "domene": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[a-z0-9.-]+\\.[a-z]{2,}$",
+      "description": "Domenet slik det vises i bunnteksten. Absolutte URL-er utledes av SITE_URL, ikke av dette feltet."
+    },
     "org_nr": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "pattern": "^[0-9]{9}$"
     },
     "adresse": {
-      "type": ["object", "null"],
+      "type": [
+        "object",
+        "null"
+      ],
       "additionalProperties": false,
-      "required": ["gate", "postnummer", "poststed"],
+      "required": [
+        "gate",
+        "postnummer",
+        "poststed"
+      ],
       "properties": {
-        "gate": { "type": "string" },
-        "postnummer": { "type": "string", "pattern": "^[0-9]{4}$" },
-        "poststed": { "type": "string" }
+        "gate": {
+          "type": "string"
+        },
+        "postnummer": {
+          "type": "string",
+          "pattern": "^[0-9]{4}$"
+        },
+        "poststed": {
+          "type": "string"
+        }
       }
     },
-    "telefon": { "type": ["string", "null"] },
-    "epost": { "type": ["string", "null"], "format": "email" },
+    "telefon": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "epost": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "email"
+    },
     "lege": {
-      "type": ["object", "null"],
+      "type": [
+        "object",
+        "null"
+      ],
       "additionalProperties": false,
-      "required": ["navn", "hpr_nummer"],
+      "required": [
+        "navn",
+        "hpr_nummer"
+      ],
       "properties": {
-        "navn": { "type": "string" },
-        "hpr_nummer": { "type": "string" },
-        "spesialitet": { "type": "string" }
+        "navn": {
+          "type": "string"
+        },
+        "hpr_nummer": {
+          "type": "string"
+        },
+        "spesialitet": {
+          "type": "string"
+        }
       }
     },
-    "apningstider": { "type": ["array", "null"] },
-    "ventetid": {
-      "type": ["object", "null"],
+    "tilsyn": {
+      "type": [
+        "object",
+        "null"
+      ],
       "additionalProperties": false,
-      "required": ["uker", "oppdatert"],
+      "required": [
+        "yrkestittel",
+        "land",
+        "tillatelse",
+        "myndighet"
+      ],
+      "description": "Opplysningene tjenesteloven krever om regulert yrke: yrkestittel, landet tittelen er gitt i, tillatelsen med referanse, og myndigheten som har gitt den.",
       "properties": {
-        "uker": { "type": "integer", "minimum": 0 },
-        "oppdatert": { "type": "string", "format": "date" }
+        "yrkestittel": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "land": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tillatelse": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "myndighet": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "bestilling": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "url"
+      ],
+      "description": "Timebestilling hos ekstern pasientportal. Er feltet null, utelates Bestill time-knappen helt, og verten staar ikke i CSP-en. Settes url, MAA verten foeres opp i vakter/ordlister/eksterne-hvitliste.txt og i sikkerhet/policy.json — det er en bevisst beslutning, ikke en konfigurasjonsdetalj.",
+      "properties": {
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^https://"
+        },
+        "merknad": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Kort setning som forklarer hvor brukeren sendes. Navngir den en leverandoer, maa navnet foeres opp i vakter/ordlister/unntak/leverandorer.txt som en bevisst beslutning."
+        }
+      }
+    },
+    "apningstider": {
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "ventetid": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "uker",
+        "oppdatert"
+      ],
+      "properties": {
+        "uker": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "oppdatert": {
+          "type": "string",
+          "format": "date"
+        }
       }
     }
   }

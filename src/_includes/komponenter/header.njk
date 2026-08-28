@@ -1,17 +1,25 @@
+{%- from "komponenter/knapper.njk" import knapperad -%}
+{%- set toppknapper = [
+  { tekst: ui.bestill_time, handling: 'bestilling', stil: 'primaer' },
+  { tekst: ui.ring_oss, handling: 'telefon', stil: 'sekundaer' }
+] -%}
 <header class="topp">
   <div class="topp-indre">
     {%- set forsiden = collections.innhold | forside %}
     {%- if forsiden %}
-    <a class="merke" href="/">{{ klinikk.juridisk_navn }}</a>
+    <a class="merke" href="/"><img src="/bilder/merke.svg" alt="" width="46" height="46">{{ klinikk.visningsnavn or klinikk.juridisk_navn }}</a>
     {%- else %}
-    <span class="merke">{{ klinikk.juridisk_navn }}</span>
+    <span class="merke"><img src="/bilder/merke.svg" alt="" width="46" height="46">{{ klinikk.visningsnavn or klinikk.juridisk_navn }}</span>
     {%- endif %}
+    {%- if collections.nav.length > 0 %}
     <nav aria-label="{{ ui.hovednavigasjon }}">
       <ul class="hovedmeny">
         {%- for side in collections.nav %}
-        <li><a href="{{ side.url }}"{% if side.url == page.url %} aria-current="page"{% endif %}>{{ side.data.tittel }}</a></li>
+        <li><a href="{{ side.url }}"{% if side.url == page.url %} aria-current="page"{% endif %}>{{ side.data.menytittel or side.data.tittel }}</a></li>
         {%- endfor %}
       </ul>
     </nav>
+    {%- endif %}
+    {{ knapperad(toppknapper, klinikk, collections.innhold, 'topp-handlinger') }}
   </div>
 </header>

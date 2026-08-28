@@ -11,14 +11,82 @@
     "hovednavigasjon",
     "bunntekst",
     "utkast_banner",
-    "til_toppen"
+    "les_mer",
+    "bestill_time",
+    "ring_oss",
+    "kontakt",
+    "fagansvar",
+    "medisinsk_fagansvarlig",
+    "yrkestittel",
+    "tillatelse",
+    "tilsynsmyndighet",
+    "org_nr_etikett",
+    "hpr_etikett"
   ],
   "properties": {
-    "hopp_til_innhold": { "type": "string", "minLength": 1 },
-    "brodsmulesti": { "type": "string", "minLength": 1 },
-    "hovednavigasjon": { "type": "string", "minLength": 1 },
-    "bunntekst": { "type": "string", "minLength": 1 },
-    "utkast_banner": { "type": "string", "minLength": 1 },
-    "til_toppen": { "type": "string", "minLength": 1 }
+    "hopp_til_innhold": {
+      "type": "string",
+      "minLength": 1
+    },
+    "brodsmulesti": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hovednavigasjon": {
+      "type": "string",
+      "minLength": 1
+    },
+    "bunntekst": {
+      "type": "string",
+      "minLength": 1
+    },
+    "utkast_banner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "les_mer": {
+      "type": "string",
+      "minLength": 2
+    },
+    "bestill_time": {
+      "type": "string",
+      "minLength": 2
+    },
+    "ring_oss": {
+      "type": "string",
+      "minLength": 2
+    },
+    "kontakt": {
+      "type": "string",
+      "minLength": 2
+    },
+    "fagansvar": {
+      "type": "string",
+      "minLength": 2
+    },
+    "medisinsk_fagansvarlig": {
+      "type": "string",
+      "minLength": 2
+    },
+    "yrkestittel": {
+      "type": "string",
+      "minLength": 2
+    },
+    "tillatelse": {
+      "type": "string",
+      "minLength": 2
+    },
+    "tilsynsmyndighet": {
+      "type": "string",
+      "minLength": 2
+    },
+    "org_nr_etikett": {
+      "type": "string",
+      "minLength": 2
+    },
+    "hpr_etikett": {
+      "type": "string",
+      "minLength": 2
+    }
   }
 }

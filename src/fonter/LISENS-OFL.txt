@@ -1,9 +1,15 @@
-Google Inc.
+Nettstedet bruker to selvhostede fonter, begge under SIL Open Font License 1.1:
 
-This Font Software is licensed under the SIL Open Font License, Version 1.1.
-This license is copied below, and is also available with a FAQ at:
-http://scripts.sil.org/OFL
+  EB Garamond (overskrifter og ordmerke)
+  Copyright 2017 The EB Garamond Project Authors
+  https://github.com/octaviopardo/EBGaramond12
 
+  Work Sans (brødtekst)
+  Copyright 2019 The Work Sans Project Authors
+  https://github.com/weiweihuanghuang/Work-Sans
+
+Filene i denne katalogen er subsett til norsk tegnsett, laget med
+verktoy/subsett-font.py. Lisensteksten gjelder uendret for subsettene.
 
 -----------------------------------------------------------
 SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007

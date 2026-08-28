@@ -1,9 +1,68 @@
 ---
 layout: layouts/base.njk
 ---
-{% include "komponenter/brodsmulesti.njk" %}
-<article class="side">
-  <h1>{{ tittel }}</h1>
-  {{ content | safe }}
-</article>
+{%- from "komponenter/seksjoner.njk" import seksjoner as visSeksjoner -%}
+{%- from "komponenter/illustrasjon.njk" import illustrasjon as visIllustrasjon -%}
+{%- from "komponenter/knapper.njk" import knapperad -%}
+
+<div class="seksjon-indre">
+  {% include "komponenter/brodsmulesti.njk" %}
+
+  <div class="sidehode">
+    <div>
+      <h1>{{ tittel }}</h1>
+      {%- if ingress %}
+      <p class="ingress">{{ ingress }}</p>
+      {%- endif %}
+      {%- if hode_knapper %}{{ knapperad(hode_knapper, klinikk, collections.innhold, 'hode-handlinger') }}{% endif %}
+      {%- if hode_knapper and klinikk.bestilling and klinikk.bestilling.merknad %}
+      <p class="hode-merknad">{{ klinikk.bestilling.merknad }}</p>
+      {%- endif %}
+    </div>
+    {%- if illustrasjon %}
+    <div class="hodeil">{{ visIllustrasjon(illustrasjon, '') }}</div>
+    {%- endif %}
+  </div>
+
+  {%- if fakta %}
+  <dl class="fakta">
+    {%- for punkt in fakta %}
+    <div><dt>{{ punkt.term }}</dt><dd>{{ punkt.verdi }}</dd></div>
+    {%- endfor %}
+  </dl>
+  {%- endif %}
+</div>
+
+{%- if content | trim %}
+<div class="seksjon-indre sek">
+  <div class="side">
+{{ content | safe }}
+  </div>
+</div>
+{%- endif %}
+
+{%- if sidetype == 'pris' %}
+{%- set medBelop = [] %}
+{%- for linje in priser %}{% if linje.belop_nok %}{% set _ = medBelop.append(linje) %}{% endif %}{% endfor %}
+{%- if medBelop.length > 0 %}
+<div class="seksjon-indre sek">
+  <table class="pristabell">
+    <caption class="skjult">{{ tittel }}</caption>
+    <tbody>
+      {%- for linje in medBelop %}
+      <tr>
+        <th scope="row">{{ linje.navn }}{% if linje.merknad %} <span class="pris-merknad">({{ linje.merknad }})</span>{% endif %}</th>
+        <td class="pris-belop">{{ linje.belop_nok | kroner }}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+</div>
+{%- endif %}
+{%- endif %}
+
+{%- if seksjoner %}
+{{ visSeksjoner(seksjoner, klinikk, collections.innhold, ui) }}
+{%- endif %}
+
 {% include "komponenter/jsonld.njk" %}
