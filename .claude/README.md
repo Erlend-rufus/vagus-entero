@@ -41,6 +41,25 @@ Oppdater en av dem ved å hente inn nyeste `SKILL.md` på nytt
 (`npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines`,
 eller `playwright-cli install --skills`) og committe diffen.
 
+## Designreferanser (`design-md/`)
+
+74 ferdiganalyserte `DESIGN.md`-profiler fra [VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md)
+— designspråket til kjente nettsteder (Apple, Linear, Notion, Stripe, Vercel,
+Figma, Spotify, Nike, Wise m.fl.) skrevet som tokens og regler en AI-agent kan
+lese direkte.
+
+Dette er et referansebibliotek, ikke en skill. Slik brukes det:
+
+```bash
+cp .claude/design-md/linear.app/DESIGN.md DESIGN.md
+```
+
+Legg profilen du vil låne fra i prosjektrota som `DESIGN.md`, så plukker
+kodeagenter den opp av seg selv. Hver mappe har også en `README.md` som
+oppsummerer profilen, så du kan bla før du velger.
+
+Filene er hentet uendret fra kildeprosjektet; `design-md/LICENSE` følger med.
+
 ## MCP-servere
 
 `.mcp.json` i prosjektrota registrerer **21st MCP** (tidligere Magic MCP) —
