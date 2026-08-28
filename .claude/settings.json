@@ -1,0 +1,16 @@
+{
+  "extraKnownMarketplaces": {
+    "rtd": {
+      "source": {
+        "source": "github",
+        "repo": "ryanthedev/rtd-claude-inn",
+        "ref": "main"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "code-foundations@rtd": true,
+    "design-for-ai@rtd": true,
+    "oberskills@rtd": true
+  }
+}
