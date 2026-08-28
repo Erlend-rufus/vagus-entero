@@ -1,0 +1,14 @@
+{#- Strektegningene er dekor: de gjentar det overskriften allerede sier, og
+    får derfor tom alt-tekst. Målene er SVG-enes egne, slik at plassen er
+    reservert før filen er lastet (ingen layouthopp). -#}
+{%- macro illustrasjon(navn, klasse) -%}
+  {%- if navn == 'fordoyelse-hero' -%}
+    <img class="{{ klasse }}" src="/bilder/illustrasjoner/{{ navn }}.svg" alt="" width="300" height="430">
+  {%- else -%}
+    <img class="{{ klasse }}" src="/bilder/illustrasjoner/{{ navn }}.svg" alt="" width="200" height="200">
+  {%- endif -%}
+{%- endmacro -%}
+
+{%- macro merke(navn, klasse, bredde) -%}
+  <img class="{{ klasse }}" src="/bilder/illustrasjoner/{{ navn }}.svg" alt="" width="{{ bredde }}" height="{{ bredde }}">
+{%- endmacro -%}

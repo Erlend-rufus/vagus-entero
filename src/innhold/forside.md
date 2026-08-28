@@ -1,125 +1,88 @@
 ---
-sidetype: forside
-url: /
-malgruppe: selvbetalende
-tittel: Følg maten gjennom kroppen
-meta_beskrivelse: Privat klinikk for utredning og behandling av mage-, tarm- og endetarmsplager på Straume i Øygarden. Åpner 1. januar 2027.
-ingress: Privat klinikk for utredning og behandling av plager i mage, tarm og endetarm på Straume i Øygarden. Rutekartet under viser reisen, stasjon for stasjon. Vi åpner 1. januar 2027.
-status: UTKAST
+sidetype: "forside"
+url: "/"
+malgruppe: "selvbetalende"
+tittel: "Klinikk for mage, tarm og endetarm"
+menytittel: "Forside"
+meta_beskrivelse: "Privat klinikk for utredning og behandling av plager i mage, tarm og endetarm. Vi åpner på Straume i Øygarden 1. januar 2027."
+ingress: "Privat klinikk for utredning og behandling av plager i mage, tarm og endetarm. Vi åpner på Straume i Øygarden 1. januar 2027."
+status: "UTKAST"
 godkjent_av: null
 godkjent_dato: null
-jsonld_type: MedicalClinic
+jsonld_type: "MedicalClinic"
 interne_lenker_ut: []
 apne_punkter:
-  - Rettighetsklarere den anatomiske plansjen i prologen — nåværende bilde er et utkast fra designleveransen
-  - Varighets- og samme-dag-formuleringer (koloskopi-varighet, behandling samme dag) er bevisst utelatt til klinikken har fastsatt dem
-  - Omtale av spesialist/lege avventer bekreftet fagansvarlig
-  - Hele teksten skal gjennom medisinsk godkjenning med signatur før GODKJENT
+  - "Hele teksten skal gjennom medisinsk gjennomgang og signeres av fagansvarlig lege før status kan bli GODKJENT"
+  - "Prisene er ikke fastsatt — beløpene står som null og utelates fra siden"
 i_navigasjon: false
+i_bunntekst: false
 rekkefolge: 0
-reisen:
-  prolog:
-    tittel: Dette er deg.
-    tekst: I over 500 år har vi studert mennesket utenfra. Svarene på mage- og tarmplager finnes på innsiden — bli med inn.
-    hint: Bla for å se innover
-    bilde: kroppsfigur-plansje.webp
-    bildekred: Illustrasjonsutkast — erstattes med rettighetsklarert plansje
-    annotasjoner:
-      - tekst: Spiserøret
-        x: 64
-        y: 24
-      - tekst: Magesekken
-        x: 64
-        y: 34
-      - tekst: Tykktarmen og endetarmen
-        x: 64
-        y: 44
-  intro:
-    tittel: Følg maten gjennom kroppen.
-    ingress: En reise gjennom fordøyelsen — fra spiserøret til endetarmen. Underveis ser du hva vi undersøker og behandler.
-    hint: Bla for å reise
-  avslutning: Reisen er slutt. Slik begynner din.
-  stasjoner:
-    - nummer: "01"
-      sone: Spiserøret og magesekken
-      tittel: Kikkertundersøkelse av spiserør og magesekk
-      fagterm: (gastroskopi)
-      tekst: Reisen starter her. Med et tynt, bøyelig kamera gjennom munnen undersøker legen spiserøret og magesekken.
-      kort_tekst: Et tynt, bøyelig kamera gjennom munnen. Legen går gjennom funnene med deg.
-      punkter:
-        - ikon: video
-          tekst: Tynt, bøyelig kamera
-        - ikon: message-circle
-          tekst: Funnene gjennomgås med deg
-    - nummer: "02"
-      sone: Tykktarmen
-      tittel: Kikkertundersøkelse av tykktarmen
-      fagterm: (koloskopi)
-      tekst: Tarmens lengste strekning. Legen undersøker innsiden av tykktarmen og går gjennom funnene med deg.
-      kort_tekst: Tarmens lengste strekning. Du får tydelig beskjed om forberedelser i god tid.
-      punkter:
-        - ikon: file-text
-          tekst: Tydelig forberedelse i god tid
-        - ikon: message-circle
-          tekst: Funnene gjennomgås med deg
-    - nummer: "03"
-      sone: Endetarmen
-      tittel: Undersøkelse av endetarmen
-      fagterm: (anoskopi og rektoskopi)
-      tekst: Reisens siste stopp. En kort og enkel undersøkelse av endetarmen og endetarmsåpningen.
-      kort_tekst: En kort og enkel undersøkelse av endetarmen og endetarmsåpningen.
-      punkter:
-        - ikon: clock
-          tekst: Kort undersøkelse
-        - ikon: file-text
-          tekst: Tydelig informasjon på forhånd
-    - nummer: "04"
-      sone: Endetarmsplager
-      tittel: Små inngrep ved endetarmsplager
-      fagterm: (proktologi)
-      tekst: Mange plager kan behandles med små inngrep — med tydelig informasjon på forhånd.
-      kort_tekst: Mange plager kan behandles med små inngrep, med tydelig informasjon på forhånd.
-      punkter:
-        - ikon: calendar-check
-          tekst: Små inngrep
-        - ikon: file-text
-          tekst: Tydelig informasjon på forhånd
-    - nummer: "05"
-      sone: Hele kroppen
-      tittel: Utredning og behandling av overvekt og fedme
-      fagterm: (medisinsk)
-      tekst: Fordøyelsen henger sammen med resten av kroppen. Vi tilbyr medisinsk utredning og behandling av overvekt og fedme.
-      kort_tekst: Fordøyelsen henger sammen med resten av kroppen — utredning og oppfølging over tid.
-      punkter:
-        - ikon: route
-          tekst: Oppfølging over tid
-        - ikon: heart-pulse
-          tekst: Hele kroppen sees under ett
-  rutekart:
-    tittel: Hele reisen, stasjon for stasjon
-    undertittel: Fem stasjoner — samme rute som du nettopp reiste. Egne sider om hver undersøkelse kommer frem mot åpningen.
-  billetter:
-    tittel: Slik begynner din reise
-    undertittel: Klinikken er privat, og du kan ta kontakt direkte — fastlegen din kan også henvise deg til oss.
+illustrasjon: "fordoyelse-hero"
+hode_knapper:
+  - tekst: "Bestill time"
+    handling: "bestilling"
+  - tekst: "Ring oss"
+    handling: "telefon"
+    stil: "sekundaer"
+seksjoner:
+  - type: "kort"
+    tittel: "Undersøkelser og behandling"
+    under: "Egne sider om hver undersøkelse kommer her etter hvert – med tydelig informasjon om forberedelser, gjennomføring og hva du kan forvente."
+    kort:
+      - tittel: "Kikkertundersøkelse av spiserør og magesekk"
+        fagterm: "(gastroskopi)"
+        illustrasjon: "gastroskopi"
+        url: "/gastroskopi/"
+      - tittel: "Kikkertundersøkelse av tykktarmen"
+        fagterm: "(koloskopi)"
+        illustrasjon: "koloskopi"
+        url: "/koloskopi/"
+      - tittel: "Undersøkelse av endetarmen"
+        fagterm: "(anoskopi og rektoskopi)"
+        illustrasjon: "endetarm"
+        url: "/endetarmsundersokelse/"
+      - tittel: "Små inngrep ved endetarmsplager"
+        fagterm: "(proktologi)"
+        illustrasjon: "proktologi"
+        url: "/proktologi/"
+  - type: "kort_bred"
+    tittel: "Overvekt og fedme"
+    flate: "sand"
+    avsnitt:
+      - "Medisinsk utredning og behandling av overvekt og fedme."
+    illustrasjon: "overvekt"
+    knapp:
+      tekst: "Les om tilbudet"
+      handling: "intern"
+      url: "/overvekt-og-fedme/"
+      stil: "sekundaer"
+  - type: "steg"
+    tittel: "Slik foregår det"
     steg:
-      - bokstav: A
-        tittel: Ta kontakt
-        tekst: Du kan ta kontakt direkte, eller fastlegen din kan henvise deg.
-      - bokstav: B
-        tittel: Før undersøkelsen
-        tekst: Du får tydelig beskjed om hvordan du forbereder deg, i god tid før timen.
-      - bokstav: C
-        tittel: Under og etter
-        tekst: Legen går gjennom funnene med deg, og dere avtaler eventuell videre oppfølging.
-    knapp_tekst: Ring
-  pris_seksjon:
-    tittel: Pris og betaling
-    tekst: Du betaler for undersøkelsen selv, eller den dekkes av en behandlingsforsikring – sjekk vilkårene med forsikringsselskapet ditt før du bestiller. Fullstendig prisliste publiseres før klinikken åpner, med totalpriser og tydelig beskjed om hva som er inkludert.
-    knapp_tekst: Priser og betaling
-  etiketter:
-    stasjon: Stasjon
-    til_stasjon: Til stasjon
-  bunn:
-    beskrivelse: Privat klinikk for mage-, tarm- og endetarmshelse
-    sted: Straume i Øygarden · Åpner 1. januar 2027
+      - tittel: "Ta kontakt"
+        tekst: "Direkte, eller via fastlegen."
+      - tittel: "Før undersøkelsen"
+        tekst: "Tydelig beskjed om forberedelser i god tid."
+      - tittel: "Under og etter"
+        tekst: "Legen går gjennom funnene med deg, og dere avtaler oppfølging."
+    strek: true
+  - type: "pris"
+    tittel: "Pris og betaling"
+    avsnitt:
+      - "Klinikken har ingen offentlig driftsavtale. Du betaler selv, eller behandlingsforsikring dekker undersøkelsen."
+      - "Fullstendig prisliste publiseres før åpning."
+    knapper:
+      - tekst: "Bestill time"
+        handling: "bestilling"
+        stil: "invers"
+      - tekst: "Ring oss"
+        handling: "telefon"
+        stil: "sekundaer"
+    priser:
+      - navn: "Gastroskopi"
+        belop_nok: null
+      - navn: "Koloskopi"
+        belop_nok: null
+      - navn: "Anoskopi og rektoskopi"
+        belop_nok: null
 ---

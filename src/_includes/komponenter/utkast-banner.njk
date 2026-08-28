@@ -1,3 +1,6 @@
+{#- Statusen står allerede i banner-teksten for UTKAST-sider; for sider som
+    venter på medisinsk gjennomgang legges den til, slik at det er tydelig
+    hvor i løpet siden er. -#}
 <div class="utkast-banner" role="status">
-  <p>{{ ui.utkast_banner }} · {{ status }}</p>
+  <p>{{ ui.utkast_banner }}{% if status != 'UTKAST' %} · {{ status }}{% endif %}</p>
 </div>

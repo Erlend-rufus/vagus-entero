@@ -114,12 +114,92 @@ const gyldigSide = {
   interne_lenker_ut: [],
   apne_punkter: [],
   i_navigasjon: true,
+  i_bunntekst: false,
   rekkefolge: 1
 };
 krev(
   validerInnhold([{ fil: 'test.md', data: gyldigSide }]).length === 0,
   'innholdskontrakt: gyldig side passerer'
 );
+// --- seksjonsblokker ---------------------------------------------------------
+const medSeksjoner = (seksjoner, ekstra = {}) => ({
+  ...gyldigSide,
+  ...ekstra,
+  seksjoner
+});
+krev(
+  validerInnhold([
+    {
+      fil: 'test.md',
+      data: medSeksjoner([
+        { type: 'tekst', tittel: 'En overskrift', avsnitt: ['Et avsnitt med tekst.'] }
+      ])
+    }
+  ]).length === 0,
+  'seksjoner: gyldig tekstblokk passerer'
+);
+krev(
+  validerInnhold([
+    { fil: 'test.md', data: medSeksjoner([{ type: 'finnespaaikke', tittel: 'Noe' }]) }
+  ]).length > 0,
+  'seksjoner: ukjent blokktype feiler'
+);
+krev(
+  validerInnhold([
+    { fil: 'test.md', data: medSeksjoner([{ type: 'tidslinje', tittel: 'Uten punkter' }]) }
+  ]).length > 0,
+  'seksjoner: tidslinje uten punkter feiler'
+);
+krev(
+  validerInnhold([
+    {
+      fil: 'test.md',
+      data: {
+        ...gyldigSide,
+        hode_knapper: [{ tekst: 'Les mer', handling: 'intern' }]
+      }
+    }
+  ]).length > 0,
+  'knapper: intern handling uten url feiler'
+);
+krev(
+  validerInnhold([
+    {
+      fil: 'test.md',
+      data: {
+        ...gyldigSide,
+        hode_knapper: [{ tekst: 'Les mer', handling: 'intern', url: '/finnes-ikke/' }]
+      }
+    }
+  ]).length > 0,
+  'knapper: intern lenke uten mål feiler'
+);
+krev(
+  validerInnhold([
+    {
+      fil: 'pris.md',
+      data: {
+        ...gyldigSide,
+        sidetype: 'pris',
+        status: 'GODKJENT',
+        godkjent_av: 'Testlege',
+        godkjent_dato: '2026-01-01',
+        priser: [{ navn: 'Undersøkelse', belop_nok: null }]
+      }
+    }
+  ]).length > 0,
+  'pris: GODKJENT prisside med uavklart beløp feiler'
+);
+krev(
+  validerInnhold([
+    {
+      fil: 'test.md',
+      data: { ...gyldigSide, overordnet: '/finnes-ikke/' }
+    }
+  ]).length > 0,
+  'brødsmulesti: overordnet uten mål feiler'
+);
+
 const { tittel: _utelatt, ...utenTittel } = gyldigSide;
 krev(
   validerInnhold([{ fil: 'test.md', data: utenTittel }]).length > 0,

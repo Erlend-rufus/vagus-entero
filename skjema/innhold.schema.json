@@ -18,7 +18,8 @@
     "interne_lenker_ut",
     "apne_punkter",
     "i_navigasjon",
-    "rekkefolge"
+    "rekkefolge",
+    "i_bunntekst"
   ],
   "properties": {
     "sidetype": {
@@ -38,11 +39,15 @@
       "pattern": "^/([a-z0-9-]+/)*$"
     },
     "malgruppe": {
-      "enum": ["selvbetalende", "henviser", "forsikring"]
+      "enum": [
+        "selvbetalende",
+        "henviser",
+        "forsikring"
+      ]
     },
     "tittel": {
       "type": "string",
-      "minLength": 15,
+      "minLength": 10,
       "maxLength": 60
     },
     "meta_beskrivelse": {
@@ -51,18 +56,33 @@
       "maxLength": 155
     },
     "status": {
-      "enum": ["UTKAST", "KLAR_FOR_MEDISINSK_GJENNOMGANG", "GODKJENT"]
+      "enum": [
+        "UTKAST",
+        "KLAR_FOR_MEDISINSK_GJENNOMGANG",
+        "GODKJENT"
+      ]
     },
     "godkjent_av": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "minLength": 2
     },
     "godkjent_dato": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "format": "date"
     },
     "jsonld_type": {
-      "enum": ["MedicalProcedure", "MedicalClinic", "Physician", null]
+      "enum": [
+        "MedicalProcedure",
+        "MedicalClinic",
+        "Physician",
+        null
+      ]
     },
     "interne_lenker_ut": {
       "type": "array",
@@ -73,7 +93,9 @@
     },
     "apne_punkter": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "i_navigasjon": {
       "type": "boolean"
@@ -91,162 +113,29 @@
       "minLength": 30,
       "maxLength": 300
     },
-    "reisen": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["intro", "avslutning", "stasjoner", "rutekart", "billetter", "pris_seksjon", "etiketter"],
-      "properties": {
-        "prolog": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["tittel", "tekst", "hint", "bilde"],
-          "properties": {
-            "tittel": { "type": "string", "minLength": 3 },
-            "tekst": { "type": "string", "minLength": 10 },
-            "hint": { "type": "string", "minLength": 3 },
-            "bilde": { "type": "string", "minLength": 1 },
-            "bildekred": { "type": "string" },
-            "annotasjoner": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "required": ["tekst", "x", "y"],
-                "properties": {
-                  "tekst": { "type": "string" },
-                  "x": { "type": "number", "minimum": 0, "maximum": 100 },
-                  "y": { "type": "number", "minimum": 0, "maximum": 100 }
-                }
-              }
-            }
-          }
-        },
-        "intro": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["tittel", "ingress", "hint"],
-          "properties": {
-            "tittel": { "type": "string", "minLength": 3 },
-            "ingress": { "type": "string", "minLength": 10 },
-            "hint": { "type": "string", "minLength": 3 }
-          }
-        },
-        "avslutning": { "type": "string", "minLength": 3 },
-        "stasjoner": {
-          "type": "array",
-          "minItems": 3,
-          "maxItems": 8,
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": ["nummer", "sone", "tittel", "fagterm", "tekst", "kort_tekst", "punkter"],
-            "properties": {
-              "nummer": { "type": "string", "pattern": "^[0-9]{2}$" },
-              "sone": { "type": "string", "minLength": 2 },
-              "tittel": { "type": "string", "minLength": 5 },
-              "fagterm": { "type": "string", "minLength": 2 },
-              "tekst": { "type": "string", "minLength": 10 },
-              "kort_tekst": { "type": "string", "minLength": 10 },
-              "url": { "type": "string", "pattern": "^/([a-z0-9-]+/)*$" },
-              "punkter": {
-                "type": "array",
-                "minItems": 1,
-                "maxItems": 3,
-                "items": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "required": ["ikon", "tekst"],
-                  "properties": {
-                    "ikon": {
-                      "enum": ["video", "message-circle", "clock", "file-text", "stethoscope", "calendar-check", "route", "heart-pulse"]
-                    },
-                    "tekst": { "type": "string", "minLength": 3 }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "rutekart": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["tittel", "undertittel"],
-          "properties": {
-            "tittel": { "type": "string", "minLength": 3 },
-            "undertittel": { "type": "string", "minLength": 10 }
-          }
-        },
-        "billetter": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["tittel", "undertittel", "steg"],
-          "properties": {
-            "tittel": { "type": "string", "minLength": 3 },
-            "undertittel": { "type": "string", "minLength": 10 },
-            "steg": {
-              "type": "array",
-              "minItems": 3,
-              "maxItems": 3,
-              "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "required": ["bokstav", "tittel", "tekst"],
-                "properties": {
-                  "bokstav": { "type": "string", "pattern": "^[A-Z]$" },
-                  "tittel": { "type": "string", "minLength": 3 },
-                  "tekst": { "type": "string", "minLength": 10 }
-                }
-              }
-            },
-            "knapp_tekst": { "type": "string", "minLength": 3 }
-          }
-        },
-        "pris_seksjon": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["tittel", "tekst"],
-          "properties": {
-            "tittel": { "type": "string", "minLength": 3 },
-            "tekst": { "type": "string", "minLength": 10 },
-            "knapp_tekst": { "type": "string", "minLength": 3 }
-          }
-        },
-        "etiketter": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["stasjon", "til_stasjon"],
-          "properties": {
-            "stasjon": { "type": "string", "minLength": 2 },
-            "til_stasjon": { "type": "string", "minLength": 2 }
-          }
-        },
-        "bunn": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["beskrivelse", "sted"],
-          "properties": {
-            "beskrivelse": { "type": "string", "minLength": 5 },
-            "sted": { "type": "string", "minLength": 5 }
-          }
-        }
-      }
-    },
-    "undersokelser_tittel": {
-      "type": "string",
-      "minLength": 3,
-      "maxLength": 60
-    },
     "bilder": {
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["fil", "alt"],
+        "required": [
+          "fil",
+          "alt"
+        ],
         "properties": {
-          "fil": { "type": "string", "minLength": 1 },
-          "alt": { "type": "string" },
-          "bildetekst": { "type": "string" },
-          "dekorativt": { "type": "boolean" }
+          "fil": {
+            "type": "string",
+            "minLength": 1
+          },
+          "alt": {
+            "type": "string"
+          },
+          "bildetekst": {
+            "type": "string"
+          },
+          "dekorativt": {
+            "type": "boolean"
+          }
         }
       }
     },
@@ -255,13 +144,738 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["navn", "belop_nok"],
+        "required": [
+          "navn",
+          "belop_nok"
+        ],
         "properties": {
-          "navn": { "type": "string", "minLength": 2 },
-          "belop_nok": { "type": "number", "exclusiveMinimum": 0 },
-          "merknad": { "type": "string" }
+          "navn": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 120
+          },
+          "belop_nok": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "exclusiveMinimum": 0
+          },
+          "merknad": {
+            "type": "string"
+          }
         }
       }
+    },
+    "illustrasjon": {
+      "$ref": "#/$defs/illustrasjonsnavn"
+    },
+    "hode_knapper": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "items": {
+        "$ref": "#/$defs/knapp"
+      }
+    },
+    "fakta": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "term",
+          "verdi"
+        ],
+        "properties": {
+          "term": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 40
+          },
+          "verdi": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          }
+        }
+      }
+    },
+    "seksjoner": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "$ref": "#/$defs/blokk"
+      }
+    },
+    "overordnet": {
+      "type": "string",
+      "pattern": "^/[a-z0-9/-]*$"
+    },
+    "menytittel": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 30
+    },
+    "i_bunntekst": {
+      "type": "boolean"
+    }
+  },
+  "$defs": {
+    "avsnitt": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 900
+      }
+    },
+    "knapp": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tekst",
+        "handling"
+      ],
+      "properties": {
+        "tekst": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 40
+        },
+        "handling": {
+          "enum": [
+            "bestilling",
+            "telefon",
+            "intern"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^/[a-z0-9/-]*$"
+        },
+        "stil": {
+          "enum": [
+            "primaer",
+            "sekundaer",
+            "invers"
+          ]
+        }
+      }
+    },
+    "blokk_felles": {
+      "tittel": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 80
+      },
+      "under": {
+        "type": "string",
+        "minLength": 10,
+        "maxLength": 400
+      },
+      "flate": {
+        "enum": [
+          "krem",
+          "sand"
+        ]
+      }
+    },
+    "blokk": {
+      "type": "object",
+      "discriminator": {
+        "propertyName": "type"
+      },
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "tittel",
+            "avsnitt"
+          ],
+          "properties": {
+            "type": {
+              "const": "tekst"
+            },
+            "tittel": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 80
+            },
+            "under": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 400
+            },
+            "flate": {
+              "enum": [
+                "krem",
+                "sand"
+              ]
+            },
+            "avsnitt": {
+              "$ref": "#/$defs/avsnitt"
+            },
+            "merknad": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 400
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "tittel",
+            "punkter"
+          ],
+          "properties": {
+            "type": {
+              "const": "tidslinje"
+            },
+            "tittel": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 80
+            },
+            "under": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 400
+            },
+            "flate": {
+              "enum": [
+                "krem",
+                "sand"
+              ]
+            },
+            "eksempelmerknad": {
+              "type": "string",
+              "minLength": 20,
+              "maxLength": 400
+            },
+            "punkter": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 8,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "naar",
+                  "tekst"
+                ],
+                "properties": {
+                  "naar": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 40
+                  },
+                  "tekst": {
+                    "type": "string",
+                    "minLength": 20,
+                    "maxLength": 600
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "tittel",
+            "steg"
+          ],
+          "properties": {
+            "type": {
+              "const": "steg"
+            },
+            "tittel": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 80
+            },
+            "under": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 400
+            },
+            "flate": {
+              "enum": [
+                "krem",
+                "sand"
+              ]
+            },
+            "strek": {
+              "type": "boolean"
+            },
+            "steg": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 4,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "tittel",
+                  "tekst"
+                ],
+                "properties": {
+                  "tittel": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 60
+                  },
+                  "tekst": {
+                    "type": "string",
+                    "minLength": 15,
+                    "maxLength": 400
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "tittel",
+            "sporsmal"
+          ],
+          "properties": {
+            "type": {
+              "const": "sporsmal"
+            },
+            "tittel": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 80
+            },
+            "under": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 400
+            },
+            "flate": {
+              "enum": [
+                "krem",
+                "sand"
+              ]
+            },
+            "sporsmal": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 14,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "sporsmal",
+                  "svar"
+                ],
+                "properties": {
+                  "sporsmal": {
+                    "type": "string",
+                    "minLength": 5,
+                    "maxLength": 90
+                  },
+                  "svar": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 900
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "tittel",
+            "veier"
+          ],
+          "properties": {
+            "type": {
+              "const": "veier"
+            },
+            "tittel": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 80
+            },
+            "under": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 400
+            },
+            "flate": {
+              "enum": [
+                "krem",
+                "sand"
+              ]
+            },
+            "veier": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 4,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "tittel",
+                  "avsnitt"
+                ],
+                "properties": {
+                  "tittel": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 60
+                  },
+                  "avsnitt": {
+                    "$ref": "#/$defs/avsnitt"
+                  },
+                  "liten": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 300
+                  },
+                  "knapp": {
+                    "$ref": "#/$defs/knapp"
+                  },
+                  "illustrasjon": {
+                    "$ref": "#/$defs/illustrasjonsnavn"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "tittel",
+            "punkter"
+          ],
+          "properties": {
+            "type": {
+              "const": "praktisk"
+            },
+            "tittel": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 80
+            },
+            "under": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 400
+            },
+            "flate": {
+              "enum": [
+                "krem",
+                "sand"
+              ]
+            },
+            "punkter": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 6,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "tittel",
+                  "tekst"
+                ],
+                "properties": {
+                  "tittel": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 60
+                  },
+                  "tekst": {
+                    "type": "string",
+                    "minLength": 15,
+                    "maxLength": 400
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "tittel",
+            "kort"
+          ],
+          "properties": {
+            "type": {
+              "const": "kort"
+            },
+            "tittel": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 80
+            },
+            "under": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 400
+            },
+            "flate": {
+              "enum": [
+                "krem",
+                "sand"
+              ]
+            },
+            "kort": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 6,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "tittel"
+                ],
+                "properties": {
+                  "tittel": {
+                    "type": "string",
+                    "minLength": 5,
+                    "maxLength": 80
+                  },
+                  "fagterm": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 60
+                  },
+                  "illustrasjon": {
+                    "$ref": "#/$defs/illustrasjonsnavn"
+                  },
+                  "url": {
+                    "type": "string",
+                    "pattern": "^/[a-z0-9/-]*$"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "tittel",
+            "avsnitt"
+          ],
+          "properties": {
+            "type": {
+              "const": "kort_bred"
+            },
+            "tittel": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 80
+            },
+            "under": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 400
+            },
+            "flate": {
+              "enum": [
+                "krem",
+                "sand"
+              ]
+            },
+            "avsnitt": {
+              "$ref": "#/$defs/avsnitt"
+            },
+            "illustrasjon": {
+              "$ref": "#/$defs/illustrasjonsnavn"
+            },
+            "knapp": {
+              "$ref": "#/$defs/knapp"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "tittel",
+            "avsnitt"
+          ],
+          "properties": {
+            "type": {
+              "const": "pris"
+            },
+            "tittel": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 80
+            },
+            "under": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 400
+            },
+            "flate": {
+              "enum": [
+                "krem",
+                "sand"
+              ]
+            },
+            "avsnitt": {
+              "$ref": "#/$defs/avsnitt"
+            },
+            "knapper": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 2,
+              "items": {
+                "$ref": "#/$defs/knapp"
+              }
+            },
+            "priser": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 12,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "navn",
+                  "belop_nok"
+                ],
+                "properties": {
+                  "navn": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 80
+                  },
+                  "belop_nok": {
+                    "type": [
+                      "number",
+                      "null"
+                    ],
+                    "exclusiveMinimum": 0
+                  },
+                  "merknad": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 200
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "tittel",
+            "priser"
+          ],
+          "properties": {
+            "type": {
+              "const": "prisliste"
+            },
+            "tittel": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 80
+            },
+            "under": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 400
+            },
+            "flate": {
+              "enum": [
+                "krem",
+                "sand"
+              ]
+            },
+            "priser": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 20,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "navn",
+                  "belop_nok"
+                ],
+                "properties": {
+                  "navn": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 120
+                  },
+                  "belop_nok": {
+                    "type": [
+                      "number",
+                      "null"
+                    ],
+                    "exclusiveMinimum": 0
+                  },
+                  "merknad": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 200
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "illustrasjonsnavn": {
+      "enum": [
+        "gastroskopi",
+        "koloskopi",
+        "endetarm",
+        "proktologi",
+        "overvekt",
+        "fordoyelse-hero"
+      ]
     }
   }
 }

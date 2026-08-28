@@ -1,0 +1,144 @@
+{%- from "komponenter/knapper.njk" import knapp, knapperad -%}
+{%- from "komponenter/illustrasjon.njk" import merke -%}
+
+{#- Én gren per blokktype i innholdskontrakten. Blokkene kommer ferdig
+    validert fra bygget, så malene trenger ingen fallback — mangler noe,
+    har bygget allerede stoppet. Alt rendres inline: en {% include %} inne i
+    en makro ser ikke makroens egne variabler. -#}
+
+{%- macro seksjoner(blokker, klinikk, sider, ui) -%}
+  {%- for blokk in blokker %}
+  {%- if blokk.type == 'pris' %}
+  <section class="{{ 'flate-sand' if blokk.flate == 'sand' else '' }}">
+    <div class="seksjon-indre">
+      <div class="prisblokk">
+        <div>
+          <h2>{{ blokk.tittel }}</h2>
+          {%- for avsnitt in blokk.avsnitt %}
+          <p>{{ avsnitt }}</p>
+          {%- endfor %}
+          {%- if blokk.knapper %}{{ knapperad(blokk.knapper, klinikk, sider, 'prisblokk-handlinger') }}{% endif %}
+        </div>
+        {%- set medBelop = [] %}
+        {%- for pris in blokk.priser %}{% if pris.belop_nok %}{% set _ = medBelop.append(pris) %}{% endif %}{% endfor %}
+        {%- if medBelop.length > 0 %}
+        <table class="pristabell">
+          <tbody>
+            {%- for pris in medBelop %}
+            <tr>
+              <td>{{ pris.navn }}{% if pris.merknad %}<span class="pris-merknad"> · {{ pris.merknad }}</span>{% endif %}</td>
+              <td class="pris-belop">{{ pris.belop_nok | kroner }}</td>
+            </tr>
+            {%- endfor %}
+          </tbody>
+        </table>
+        {%- endif %}
+      </div>
+    </div>
+  </section>
+  {%- else %}
+  <section class="{{ 'flate-sand' if blokk.flate == 'sand' else '' }}">
+    <div class="seksjon-indre sek">
+      {%- if blokk.type != 'kort_bred' %}
+      <h2>{{ blokk.tittel }}</h2>
+      {%- endif %}
+      {%- if blokk.under %}
+      <p class="under">{{ blokk.under }}</p>
+      {%- endif %}
+
+      {%- if blokk.type == 'tekst' %}
+        {%- for avsnitt in blokk.avsnitt %}
+        <p>{{ avsnitt }}</p>
+        {%- endfor %}
+        {%- if blokk.merknad %}
+        <p class="merknad">{{ blokk.merknad }}</p>
+        {%- endif %}
+
+      {%- elif blokk.type == 'tidslinje' %}
+        {%- if blokk.eksempelmerknad %}
+        <p class="eksempel">{{ blokk.eksempelmerknad }}</p>
+        {%- endif %}
+        <ol class="tidslinje">
+          {%- for punkt in blokk.punkter %}
+          <li><span class="naar">{{ punkt.naar }}</span><p>{{ punkt.tekst }}</p></li>
+          {%- endfor %}
+        </ol>
+
+      {%- elif blokk.type == 'steg' %}
+        {%- if blokk.strek %}
+        <svg class="stegstrek" viewBox="0 0 1296 46" preserveAspectRatio="none" fill="none" stroke="#0c444b" stroke-width="2.5" aria-hidden="true" focusable="false"><path d="M0 30 C 140 30 160 12 216 12 C 280 12 300 34 432 34 C 560 34 580 14 648 14 C 720 14 740 34 864 34 C 990 34 1010 12 1080 12 C 1180 12 1240 28 1296 28"/><circle cx="216" cy="12" r="7" fill="#b96a4b"/><circle cx="648" cy="14" r="7" fill="#b96a4b"/><circle cx="1080" cy="12" r="7" fill="#b96a4b"/></svg>
+        {%- endif %}
+        <ol class="steg">
+          {%- for steg in blokk.steg %}
+          <li><span class="steg-nr" aria-hidden="true">{{ loop.index }}</span><h3>{{ steg.tittel }}</h3><p>{{ steg.tekst }}</p></li>
+          {%- endfor %}
+        </ol>
+
+      {%- elif blokk.type == 'sporsmal' %}
+        <div class="sporsmal">
+          {%- for par in blokk.sporsmal %}
+          <details><summary>{{ par.sporsmal }}</summary><div class="svar"><p>{{ par.svar }}</p></div></details>
+          {%- endfor %}
+        </div>
+
+      {%- elif blokk.type == 'veier' %}
+        <ul class="veier">
+          {%- for vei in blokk.veier %}
+          <li class="vei">
+            {%- if vei.illustrasjon %}{{ merke(vei.illustrasjon, 'vei-illustrasjon', 72) }}{% endif %}
+            <h3>{{ vei.tittel }}</h3>
+            {%- for avsnitt in vei.avsnitt %}
+            <p>{{ avsnitt }}</p>
+            {%- endfor %}
+            {%- if vei.liten %}
+            <p class="liten">{{ vei.liten }}</p>
+            {%- endif %}
+            {%- if vei.knapp %}{{ knapp(vei.knapp, klinikk, sider) }}{% endif %}
+          </li>
+          {%- endfor %}
+        </ul>
+
+      {%- elif blokk.type == 'praktisk' %}
+        <ul class="praktisk">
+          {%- for punkt in blokk.punkter %}
+          <li><h3>{{ punkt.tittel }}</h3><p>{{ punkt.tekst }}</p></li>
+          {%- endfor %}
+        </ul>
+
+      {%- elif blokk.type == 'kort' %}
+        <ul class="kortliste">
+          {%- for kort in blokk.kort %}
+          <li>
+            {%- if kort.url and (sider | finnesUrl(kort.url)) %}
+            <a class="kort" href="{{ kort.url }}">
+              {%- if kort.illustrasjon %}{{ merke(kort.illustrasjon, 'kort-illustrasjon', 46) }}{% endif %}
+              <span><span class="kort-tittel">{{ kort.tittel }}</span>{% if kort.fagterm %}<span class="kort-fagterm">{{ kort.fagterm }}</span>{% endif %}</span>
+              <span class="kort-les">{{ ui.les_mer }}</span>
+            </a>
+            {%- else %}
+            <div class="kort">
+              {%- if kort.illustrasjon %}{{ merke(kort.illustrasjon, 'kort-illustrasjon', 46) }}{% endif %}
+              <span><span class="kort-tittel">{{ kort.tittel }}</span>{% if kort.fagterm %}<span class="kort-fagterm">{{ kort.fagterm }}</span>{% endif %}</span>
+            </div>
+            {%- endif %}
+          </li>
+          {%- endfor %}
+        </ul>
+
+      {%- elif blokk.type == 'kort_bred' %}
+        <div class="kort-bred">
+          {%- if blokk.illustrasjon %}{{ merke(blokk.illustrasjon, '', 96) }}{% endif %}
+          <div>
+            <h2>{{ blokk.tittel }}</h2>
+            {%- for avsnitt in blokk.avsnitt %}
+            <p>{{ avsnitt }}</p>
+            {%- endfor %}
+          </div>
+          {%- if blokk.knapp %}{{ knapp(blokk.knapp, klinikk, sider) }}{% endif %}
+        </div>
+      {%- endif %}
+    </div>
+  </section>
+  {%- endif %}
+  {%- endfor -%}
+{%- endmacro -%}

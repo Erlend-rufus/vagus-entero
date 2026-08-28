@@ -1,26 +1,69 @@
+{%- from "komponenter/knapper.njk" import knapperad -%}
+{%- set toppknapper = [
+  { tekst: ui.bestill_time, handling: 'bestilling', stil: 'primaer' },
+  { tekst: ui.ring_oss, handling: 'telefon', stil: 'sekundaer' }
+] -%}
+{#- Bunnteksten bærer ehandelsloven § 9-opplysningene og, når klinikken har
+    dem, opplysningene tjenesteloven krever om regulert yrke. Alt som er null
+    utelates — det står aldri en plassholder her. -#}
 <footer class="bunn" aria-label="{{ ui.bunntekst }}">
   <div class="bunn-indre">
-    <div class="bunn-fakta">
-      {%- if klinikk.juridisk_navn %}
-      <p class="bunn-navn">{{ klinikk.juridisk_navn }}{% if klinikk.org_nr %} · {{ klinikk.org_nr }}{% endif %}</p>
+    <div>
+      <span class="bunn-navn">{{ klinikk.visningsnavn or klinikk.juridisk_navn }}</span>
+      {%- if klinikk.domene %}
+      <p class="bunn-domene">{{ klinikk.domene }}</p>
       {%- endif %}
       {%- if klinikk.adresse %}
       <p>{{ klinikk.adresse.gate }}, {{ klinikk.adresse.postnummer }} {{ klinikk.adresse.poststed }}</p>
       {%- endif %}
+      {%- if klinikk.org_nr %}
+      <p>{{ ui.org_nr_etikett }} {{ klinikk.org_nr }}</p>
+      {%- endif %}
+      {%- if klinikk.visningsnavn and klinikk.juridisk_navn %}
+      <p>{{ klinikk.juridisk_navn }}</p>
+      {%- endif %}
+    </div>
+    <div>
+      {%- if klinikk.telefon or klinikk.epost %}
+      <span class="bunn-navn">{{ ui.kontakt }}</span>
       {%- if klinikk.telefon %}
       <p><a href="tel:{{ klinikk.telefon | replace(' ', '') }}">{{ klinikk.telefon }}</a></p>
       {%- endif %}
       {%- if klinikk.epost %}
       <p><a href="mailto:{{ klinikk.epost }}">{{ klinikk.epost }}</a></p>
       {%- endif %}
+      {%- endif %}
+      {%- if collections.bunn.length > 0 %}
+      <ul>
+        {%- for side in collections.bunn %}
+        <li><a href="{{ side.url }}">{{ side.data.menytittel or side.data.tittel }}</a></li>
+        {%- endfor %}
+      </ul>
+      {%- endif %}
     </div>
-    {%- if collections.bunn.length > 0 %}
-    <ul class="bunn-lenker">
-      {%- for side in collections.bunn %}
-      <li><a href="{{ side.url }}">{{ side.data.tittel }}</a></li>
-      {%- endfor %}
-    </ul>
+    {%- if klinikk.lege or klinikk.tilsyn %}
+    <div>
+      <span class="bunn-navn">{{ ui.fagansvar }}</span>
+      <dl>
+        {%- if klinikk.lege %}
+        <dt>{{ ui.medisinsk_fagansvarlig }}</dt>
+        <dd>{{ klinikk.lege.navn }}{% if klinikk.lege.hpr_nummer %} · {{ ui.hpr_etikett }} {{ klinikk.lege.hpr_nummer }}{% endif %}</dd>
+        {%- endif %}
+        {%- if klinikk.tilsyn and klinikk.tilsyn.yrkestittel %}
+        <dt>{{ ui.yrkestittel }}</dt>
+        <dd>{{ klinikk.tilsyn.yrkestittel }}{% if klinikk.tilsyn.land %}, {{ klinikk.tilsyn.land }}{% endif %}</dd>
+        {%- endif %}
+        {%- if klinikk.tilsyn and klinikk.tilsyn.tillatelse %}
+        <dt>{{ ui.tillatelse }}</dt>
+        <dd>{{ klinikk.tilsyn.tillatelse }}</dd>
+        {%- endif %}
+        {%- if klinikk.tilsyn and klinikk.tilsyn.myndighet %}
+        <dt>{{ ui.tilsynsmyndighet }}</dt>
+        <dd>{{ klinikk.tilsyn.myndighet }}</dd>
+        {%- endif %}
+      </dl>
+    </div>
     {%- endif %}
-    <p class="til-toppen"><a href="#innhold">{{ ui.til_toppen }}</a></p>
+    {{ knapperad(toppknapper, klinikk, collections.innhold, 'bunn-handlinger') }}
   </div>
 </footer>

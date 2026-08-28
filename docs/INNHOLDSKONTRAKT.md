@@ -14,7 +14,8 @@ sidetype:          # forside | undersokelse | tilstand | behandling | pris
 url:               # /koloskopi/ — små bokstaver, tall, bindestrek, skråstrek
                    #   først og sist. Unik for hele nettstedet.
 malgruppe:         # selvbetalende | henviser | forsikring
-tittel:            # Blir <title> og sidens H1. 15–60 tegn.
+tittel:            # Blir <title> og sidens H1. 10–60 tegn.
+menytittel:        # valgfri: kort etikett i meny og brødsmulesti (3–30 tegn)
 meta_beskrivelse:  # 70–155 tegn.
 status:            # UTKAST | KLAR_FOR_MEDISINSK_GJENNOMGANG | GODKJENT
 godkjent_av:       # null til fagansvarlig lege har signert. Deretter navnet.
@@ -23,13 +24,16 @@ jsonld_type:       # MedicalProcedure | MedicalClinic | Physician | null
 interne_lenker_ut: # liste over url-er siden lenker til, f.eks. [/koloskopi/]
 apne_punkter:      # liste med uavklarte [BEKREFT]-punkter. MÅ være tom
                    #   før status kan bli GODKJENT.
-i_navigasjon:      # true = i hovedmenyen, false = ev. i bunnteksten (statisk)
+i_navigasjon:      # true = i hovedmenyen
+i_bunntekst:       # true = i bunntekstens lenkeliste
 rekkefolge:        # heltall — plassering i menyen (lavest først)
 sist_oppdatert:    # valgfri: ÅÅÅÅ-MM-DD, datostempling av medisinsk innhold
-ingress:           # valgfri (brukes på forsiden): 30–300 tegn, vises under H1
-undersokelser_tittel: # valgfri (forsiden): overskrift for det automatiske
-                   #   utvalget av undersøkelsessider. Kortene genereres av
-                   #   bygget fra undersokelse-sidenes tittel/meta_beskrivelse
+ingress:           # valgfri: 30–300 tegn, vises under H1
+overordnet:        # valgfri: url til siden over i brødsmulestien
+illustrasjon:      # valgfri: strektegning i sidehodet, se listen under
+hode_knapper:      # valgfri: 1–2 knapper i sidehodet, se «Knapper»
+fakta:             # valgfri: 2–4 nøkkelfakta som stripe under sidehodet
+seksjoner:         # valgfri: sidens innholdsblokker, se «Seksjonsblokker»
 bilder:            # valgfri liste, se under
 priser:            # kun sidetype pris, se under
 ---
@@ -82,17 +86,47 @@ priser:
     merknad: ""                 # valgfri, f.eks. hva som inngår
 ```
 
-## Forsidens reisen-blokk
+## Seksjonsblokker
 
-Forsiden bruker en egen fortellingsstruktur («reisen») definert i frontmatter
-under nøkkelen `reisen` — se `skjema/innhold.schema.json` for alle felter.
-Kort: `intro` (tittel/ingress/hint), valgfri `prolog` (anatomisk plansje med
-annotasjoner), `stasjoner` (3–8 stasjoner med nummer, sone, tittel, fagterm,
-tekst, kort_tekst og 1–3 punkter med ikon fra en fast liste), `rutekart`,
-`billetter` (tre steg A–C), `pris_seksjon`, `etiketter` og valgfri `bunn`.
-Uten JavaScript (eller med redusert bevegelse) vises kun det statiske
-innholdet — komplett og likeverdig. Lenker og knapper aktiveres automatisk
-når målsidene (og telefonnummeret i `klinikk.json`) finnes.
+Sidens brødtekst bygges av typede blokker i `seksjoner`. Hver blokk har en
+`type`, en `tittel`, valgfri `under` (ingress for seksjonen) og valgfri
+`flate: sand` som gir seksjonen sandfarget bakgrunn. Rytmen i designet er
+krem → sand → krem.
+
+| type | krever | brukes til |
+|---|---|---|
+| `tekst` | `avsnitt` (1–8) | vanlig brødtekst, valgfri `merknad` til slutt |
+| `tidslinje` | `punkter` med `naar` og `tekst` | forberedelser dag for dag; `eksempelmerknad` gir den terrakotta-rammede advarselen |
+| `steg` | `steg` (2–4) med `tittel` og `tekst` | «Slik foregår det»; `strek: true` tegner bølgelinjen over |
+| `sporsmal` | `sporsmal` (2–14) med `sporsmal` og `svar` | spørsmål og svar, utvides uten JavaScript |
+| `veier` | `veier` (2–4) med `tittel` og `avsnitt` | likestilte valg som kort, med valgfri `illustrasjon`, `liten` og `knapp` |
+| `praktisk` | `punkter` (2–6) med `tittel` og `tekst` | korte praktiske opplysninger i kolonner |
+| `kort` | `kort` (2–6) med `tittel` | rutenett av lenkekort med `fagterm`, `illustrasjon` og `url` |
+| `kort_bred` | `avsnitt` | én tjeneste på tvers, med `illustrasjon` og `knapp` |
+| `pris` | `avsnitt` | den dype prisblokken, med `knapper` og `priser` |
+| `prisliste` | `priser` | full prisliste med `navn`, `merknad` og `belop_nok` |
+
+Strektegningene som kan brukes i `illustrasjon`: `gastroskopi`, `koloskopi`,
+`endetarm`, `proktologi`, `overvekt` og `fordoyelse-hero`.
+
+## Knapper
+
+En knapp skrives som `{ tekst, handling }` og rendres **bare når fakta
+finnes** — mangler de, forsvinner knappen i stillhet:
+
+- `handling: bestilling` krever `bestilling.url` i `klinikk.json`
+- `handling: telefon` krever `telefon` i `klinikk.json`
+- `handling: intern` krever `url`, og siden må finnes i bygget
+
+`stil` kan være `primaer` (standard), `sekundaer` eller `invers` (på mørk
+flate).
+
+## Priser som ikke er fastsatt
+
+`belop_nok: null` betyr «ikke fastsatt ennå». Linjen utelates da fra
+nettstedet — det står aldri et gjettet eller oppdiktet beløp. En prisside kan
+ikke bli `GODKJENT` så lenge én linje mangler beløp: prislisten er lovpålagt
+(prisopplysningsforskriften § 10).
 
 ## Klinikkfakta
 
