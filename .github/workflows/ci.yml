@@ -61,6 +61,14 @@ jobs:
       - name: Ytelsesbudsjett (Lighthouse CI)
         run: npx lhci autorun --config=verktoy/lighthouserc.cjs
 
+      - name: Lighthouse-rapporter ved brudd (alle kjøringer, til diagnose)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-rapporter
+          path: .lighthouseci/
+          retention-days: 14
+
   historikk:
     if: github.event_name != 'schedule'
     runs-on: ubuntu-latest

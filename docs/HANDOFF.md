@@ -138,6 +138,8 @@ står som UTKAST og finnes bare i forhåndsvisning.
 
 ## Endringer
 
+- **02.09.2026** — Lighthouse i CI aggregerer per audit-median (to av tre
+  kjøringer må bryte budsjettet); rapportene lastes opp som artefakt ved brudd.
 - **02.09.2026** — Grensesnittavtalen tatt inn: `[TEKST KOMMER]` i kontrakten
   med produksjonsvakt; tittelsuffiks; ordmerke uten logo; org.nr; mva-felt;
   to bestillingstilstander; isolert `/bestill/`; `noindex` per side;

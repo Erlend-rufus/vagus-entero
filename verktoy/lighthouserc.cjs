@@ -12,8 +12,9 @@ module.exports = {
       url: manifest.sider.map((side) => `http://localhost:${port}${side.url}`),
       startServerCommand: `node verktoy/server.js ${process.env.LHCI_DIST || 'dist'} ${port}`,
       startServerReadyPattern: 'Serverer',
-      // Tre kjøringer med median: delte CI-runnere gir enkeltmålinger med
-      // stor støy (simulert throttling ganger observert CPU-tid med 4×) —
+      // Tre kjøringer: delte CI-runnere gir enkeltmålinger med stor støy
+      // (simulert throttling ganger observert CPU-tid med 4×, så ett stopp på
+      // 40 ms i én kjøring blir 150 ms TBT på en side uten JavaScript) —
       // budsjettallene under er uendret, det er målingen som stabiliseres.
       numberOfRuns: 3,
       settings: {
@@ -21,7 +22,10 @@ module.exports = {
       }
     },
     assert: {
-      aggregationMethod: 'median-run',
+      // Median per audit, ikke «median-run»: sistnevnte velger én kjøring ut
+      // fra ytelsesscoren og tar alle tallene derfra, så en enkelt støyende
+      // kjøring kunne felle bygget. Nå må to av tre kjøringer bryte budsjettet.
+      aggregationMethod: 'median',
       assertions: {
         'categories:performance': ['error', { minScore: 0.95 }],
         'categories:accessibility': ['error', { minScore: 1 }],
