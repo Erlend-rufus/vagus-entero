@@ -8,13 +8,16 @@ hele settet — til brevark, skilt, henvisningsskjema og det som ellers måtte
 komme.
 
 ```
-logo/svg/   merke, ordmerke horisontalt og stablet, hvite og svarte varianter
-logo/png/   samme merke som PNG i 512 og 1024 px, favicon i 16/32/192 px
+logo/svg/   merke (petrol, hvit, svart), favicon-merke (petrol, hvit),
+            ordmerke horisontalt (full og kort, petrol og hvit) og stablet
+            (petrol og hvit)
+logo/png/   merke 512 og 1024 px (petrol), 1024 px (hvit), sirkulær
+            beskjæring 512 px, favicon 16/32/192 px
 ```
 
 Merket er en enkelt strek som følger vagusnerven ned i buken. Det tegnes i
-dyp petrol (#0C444B), hvitt på mørk flate, og aldri i andre farger.
-Ordmerket settes i EB Garamond vekt 500.
+dyp petrol (#0C444B), hvitt på mørk flate, og svart bare der trykket er
+énfarget — aldri i andre farger. Ordmerket settes i EB Garamond vekt 500.
 
 **To forbehold fra designleveransen:**
 

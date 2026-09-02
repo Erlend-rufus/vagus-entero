@@ -1,9 +1,10 @@
 # Unntak fra ordlistene.
 #
-# Én fil per ordliste, med samme filnavn: legger du «Pasientsky» i
+# Én fil per ordliste, med samme filnavn: står portalleverandørens navn i
 # leverandorer.txt og klinikken senere bevisst bestemmer at portalen skal
 # navngis for pasienten, føres den godkjente frasen opp i
-# unntak/leverandorer.txt. Unntaket gjelder kun når hele frasen står slik
+# unntak/leverandorer.txt. (Unntak gjelder forbudslistene, ikke den
+# tekniske listen sporingssignaturer.txt.) Unntaket gjelder kun når hele frasen står slik
 # den er skrevet her — enkeltordet er fortsatt sperret ellers i repoet.
 #
 # Et unntak er en beslutning. Skriv i commit-meldingen hvem som har tatt

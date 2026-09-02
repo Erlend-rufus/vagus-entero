@@ -3,6 +3,7 @@ sidetype: "statisk"
 url: "/om-klinikken/"
 malgruppe: "selvbetalende"
 tittel: "Om klinikken"
+sidetittel: "Om klinikken på Straume"
 menytittel: "Om klinikken"
 meta_beskrivelse: "Vagus Entero Klinikken er en privat klinikk for mage, tarm og endetarm på Straume i Øygarden. Vi åpner 1. januar 2027."
 ingress: "Vagus Entero Klinikken er en privat klinikk for mage, tarm og endetarm på Straume i Øygarden. Vi åpner 1. januar 2027."
@@ -49,9 +50,9 @@ seksjoner:
     under: "Klinikken er under etablering. Fagansvarlig lege er på plass; øvrige leger og medarbeidere presenteres her når de er ansatt."
     veier:
       - tittel: "[PLASSHOLDER: navn]"
+        undertittel: "[PLASSHOLDER: spesialitet] · autorisasjonsnummer [000000]"
         avsnitt:
           - "[PLASSHOLDER: kort faglig bakgrunn — utdanning, spesialisering, arbeidssted. Ingen påstander om erfaring, resultat eller kvalitet uten dokumentasjon.]"
-        liten: "[PLASSHOLDER: spesialitet] · autorisasjonsnummer [000000]"
       - tittel: "Øvrige leger og medarbeidere"
         avsnitt:
           - "Klinikken har ennå ikke ansatt øvrig personell. Navn, spesialitet og autorisasjon publiseres her når ansettelsene er gjort."

@@ -111,7 +111,7 @@ export default function (eleventyConfig) {
         if (mangler.length > 0) {
           throw new Error(
             `Produksjonsbygg med tomme lanseringskritiske klinikkfelter: ${mangler.join(', ')}. ` +
-              'Ehandelsloven § 9 krever disse i bunnteksten — fyll src/_data/klinikk.json først.'
+              'Ehandelsloven § 8 krever disse i bunnteksten — fyll src/_data/klinikk.json først.'
           );
         }
         // Et nettsted uten forside er ikke et nettsted: produksjon krever at

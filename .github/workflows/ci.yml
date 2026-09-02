@@ -51,12 +51,14 @@ jobs:
       - name: Lenkesjekk (interne lenker og ankre, forhåndsvisningsvariant)
         uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
         with:
+          lycheeVersion: v0.15.1
           args: --offline --include-fragments --no-progress --root-dir ${{ github.workspace }}/dist dist
           fail: true
 
       - name: Lenkesjekk (interne lenker og ankre, produksjonsvariant)
         uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
         with:
+          lycheeVersion: v0.15.1
           args: --offline --include-fragments --no-progress --root-dir ${{ github.workspace }}/dist-produksjon dist-produksjon
           fail: true
 
@@ -112,5 +114,6 @@ jobs:
       - name: Lenkesjekk (også eksterne mål)
         uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
         with:
-          args: --no-progress --cache --max-cache-age 1d --root-dir ${{ github.workspace }}/dist dist
+          lycheeVersion: v0.15.1
+          args: --no-progress --root-dir ${{ github.workspace }}/dist dist
           fail: true

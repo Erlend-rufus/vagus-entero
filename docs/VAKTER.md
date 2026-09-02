@@ -48,6 +48,9 @@ Slik gjør du det i GitHub:
 Treffer en oppføring en legitim formulering, IKKE fjern oppføringen. Opprett
 i stedet filen `vakter/ordlister/unntak/<samme-filnavn>.txt` og legg inn hele
 den legitime frasen der — da nulles bare det treffet, og regelen står.
+Unntak gjelder forbudslistene (preparatnavn, ventetidsfraser, superlativer,
+leverandører, forsikringsselskaper, vurderingssignaler), ikke den tekniske
+listen `sporingssignaturer.txt`.
 
 ### Nytt ord treffer gammel historikk
 
@@ -55,7 +58,9 @@ Skanning av commit-meldinger bruker en baseline: legger du inn et nytt ord og
 CI feiler på en gammel, uskyldig commit-melding, gjennomgår dere treffet
 manuelt og setter dagens commit-SHA i
 `vakter/ordlister/historikk-baseline.txt`. Da skannes bare meldinger etter
-det punktet. Nye synder fanges alltid.
+det punktet. Havner et forbudt ord i en *ny* commit-melding, feiler CI med
+en gang, og det kan bare fjernes ved å skrive om historikken — det er med
+vilje.
 
 ## Vaktene som kjører
 
@@ -74,7 +79,7 @@ det punktet. Nye synder fanges alltid.
 | `jsonld` | forbudte eller ukjente typer i strukturerte data; null-verdier som skulle vært utelatt |
 | `lenker` | interne lenker uten mål i bygget |
 | `godkjent-status` | side uten GODKJENT i produksjonsbygg; alt som ikke er en innholdsside (komponentkatalogen, løse maler); produksjon uten forside |
-| `klinikk-lansering` | tomme lovpålagte klinikkfelter i ekte produksjonsbygg (ehandelsloven § 9); `CI_SYNTETISK` i et Netlify-bygg |
+| `klinikk-lansering` | tomme lovpålagte klinikkfelter i ekte produksjonsbygg (ehandelsloven § 8); `CI_SYNTETISK` i et Netlify-bygg |
 | `tekst-kommer` | plassholderen `[TEKST KOMMER]` i et produksjonsbygg |
 | `noindex` | manglende noindex utenfor produksjon (og manglende Basic-Auth-linje når passordvariablene var satt i bygget); gjenglemt noindex/Disallow/Basic-Auth i produksjon |
 | `headere` | avvik mellom bygde `_headers` og `sikkerhet/policy.json` (CSP, faste headere, Cache-Control) |

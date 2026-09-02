@@ -18,7 +18,7 @@ layout: layouts/base.njk
       {%- if ingress %}
       <p class="ingress">{{ ingress | tekst | safe }}</p>
       {%- endif %}
-      {%- if hode_knapper %}{{ knapperad(hode_knapper, klinikk, collections.innhold, 'hode-handlinger', false) }}{{ bestillingsvarsel(hode_knapper, klinikk, ui, 'hode-merknad') }}{% endif %}
+      {%- if hode_knapper %}{{ knapperad(hode_knapper, klinikk, collections.innhold, 'hode-handlinger', false, ui) }}{{ bestillingsvarsel(hode_knapper, klinikk, ui, 'hode-merknad') }}{% endif %}
       {%- if hode_merknad %}
       <p class="hode-merknad">{{ hode_merknad | tekst | safe }}</p>
       {%- endif %}

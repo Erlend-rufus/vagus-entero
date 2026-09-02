@@ -28,10 +28,12 @@ Skjermleser (VoiceOver på Mac eller NVDA på Windows):
 - [ ] Landemerkene leses: topp, hovednavigasjon, brødsmulesti, hovedinnhold, bunntekst.
 - [ ] Overskriftshierarkiet er H1 → H2 → H3 uten hopp på hver side.
 - [ ] Nåværende side og seksjon i menyen annonseres (`aria-current`).
-- [ ] Strektegningene er stille (tom alt-tekst) og pristabellen leses med
-      kolonnehoder.
-- [ ] Knappen «Bestill time» sier at den åpner et nytt vindu (setningen under
-      knappen), og pilen leses ikke opp.
+- [ ] Strektegningene er stille (tom alt-tekst), og prislisten leses med
+      kolonnehoder (den kompakte tabellen i prisblokken har radoverskrifter).
+- [ ] Knappen «Bestill time» sier at den åpner et nytt vindu — med den
+      skjulte teksten `ui.apner_nytt_vindu` i selve knappen, og med
+      `bestilling.merknad` under sidehodets knapperad — og pilen leses ikke
+      opp.
 
 Forstørrelse og små skjermer:
 - [ ] 200 % zoom i nettleseren: ingen tekst kappes, ingen overlapp.
@@ -41,7 +43,8 @@ Forstørrelse og små skjermer:
 
 Innhold og farge:
 - [ ] Kontrast målt for nye fargepar (tekst ≥ 4,5:1, grafikk ≥ 3:1) —
-      terrakotta brukes bare til stegnummer ≥ 24 px og strekdetaljer.
+      terrakotta brukes bare til stegnummer og eksempelmerket (≥ 24 px) og
+      strekdetaljer, aldri brødtekst.
 - [ ] Lenketekst gir mening alene («priser og betaling», ikke «her»).
 - [ ] Ingen informasjon formidles bare med farge.
 

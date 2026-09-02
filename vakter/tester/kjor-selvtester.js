@@ -801,6 +801,16 @@ krev(ordliste.lesBaseline(path.join(os.tmpdir(), 'finnes-ikke-' + process.pid)) 
 }
 krev(norskIMaler.skannJsOgCss('const t = "Les mer og bestill";', 'test.js').length === 1, 'norsk-i-maler: fanger norsk streng i JS');
 
+
+krev(
+  validerKlinikk({ juridisk_navn: 'Testklinikken AS', visningsnavn: 'Testklinikken', kortnavn: 'Test', domene: 'test.invalid', org_nr: '123456789', mva_status: null, adresse: null, telefon: null, epost: null, lege: null, tilsyn: null, bestilling: { url: 'https://portal.invalid/' }, apningstider: null, ventetid: null }, 'test.json').some((m) => m.includes('bestilling.merknad')),
+  'datafiler: bestilling.url uten merknad feiler'
+);
+krev(
+  validerInnhold([{ fil: 'a.md', data: medSeksjoner([{ type: 'veier', tittel: 'To veier', veier: [{ tittel: 'Første vei', undertittel: '(fagterm) · 10 minutter', avsnitt: ['Kort tekst.'] }, { tittel: 'Andre vei', avsnitt: ['Kort tekst.'], liten: 'Liten linje etterpå.' }] }]) }]).length === 0,
+  'innholdskontrakt: vei med undertittel og vei med liten passerer'
+);
+
 fs.rmSync(tmp, { recursive: true, force: true });
 
 if (feilede > 0) {

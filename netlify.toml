@@ -18,6 +18,8 @@
 
 [build.environment]
   NODE_VERSION = "24"
+  # Samme som i CI: avhengigheter installeres uten installasjonsskript.
+  NPM_FLAGS = "--ignore-scripts"
   # Forhåndsvisningspassordet skrives med vilje til _headers (Basic-Auth).
   # Netlifys hemmelighetsskann ville ellers stoppe bygget når verdien
   # dukker opp i publiseringskatalogen.

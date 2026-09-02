@@ -16,12 +16,14 @@
   {%- else -%}{{ k.stil or 'primaer' }}{%- endif -%}
 {%- endmacro -%}
 
-{%- macro knapp(k, klinikk, sider, paaPetrol) -%}
+{#- Bestillingsknappen åpner portalen i nytt vindu; det sies med tekst for
+    skjermlesere (ui.apner_nytt_vindu), ikke bare med pilen. -#}
+{%- macro knapp(k, klinikk, sider, paaPetrol, ui) -%}
   {%- set stil = stilFor(k, klinikk) | trim -%}
   {%- if k.stil == 'invers' or (paaPetrol and stil == 'primaer') %}{% set stil = 'invers' %}{% endif -%}
   {%- set klasse = 'knapp' if stil == 'primaer' else ('knapp knapp-invers' if stil == 'invers' else 'knapp-sekundaer') -%}
   {%- if k.handling == 'bestilling' and klinikk.bestilling and klinikk.bestilling.url -%}
-    <a class="{{ klasse }}" href="{{ klinikk.bestilling.url }}" target="_blank" rel="noopener noreferrer">{{ k.tekst }}<svg class="knapp-pil" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2.5 9.5 9.5 2.5M4 2.5h5.5V8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a class="{{ klasse }}" href="{{ klinikk.bestilling.url }}" target="_blank" rel="noopener noreferrer">{{ k.tekst }}<span class="skjult"> {{ ui.apner_nytt_vindu }}</span><svg class="knapp-pil" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2.5 9.5 9.5 2.5M4 2.5h5.5V8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
   {%- elif k.handling == 'telefon' and klinikk.telefon -%}
     <a class="{{ klasse }}" href="tel:{{ klinikk.telefon | replace(' ', '') }}">{{ k.tekst }}</a>
   {%- elif k.handling == 'intern' and (sider | finnesUrl(k.url)) -%}
@@ -29,9 +31,9 @@
   {%- endif -%}
 {%- endmacro -%}
 
-{%- macro knapperad(knapper, klinikk, sider, klasse, paaPetrol) -%}
+{%- macro knapperad(knapper, klinikk, sider, klasse, paaPetrol, ui) -%}
   {%- set synlige = knapper | synlige(klinikk, sider) -%}
-  {%- if synlige.length > 0 %}<div class="{{ klasse }}">{% for k in synlige %}{{ knapp(k, klinikk, sider, paaPetrol) }}{% endfor %}</div>{% endif -%}
+  {%- if synlige.length > 0 %}<div class="{{ klasse }}">{% for k in synlige %}{{ knapp(k, klinikk, sider, paaPetrol, ui) }}{% endfor %}</div>{% endif -%}
 {%- endmacro -%}
 
 {#- Linjen under knapperaden: så lenge portalen ikke er live, setningen om

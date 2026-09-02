@@ -39,6 +39,11 @@ function tilNorsk(fil, feilliste) {
 
 export function validerKlinikk(data, fil = 'src/_data/klinikk.json') {
   const feil = validerKlinikkSkjema(data) ? [] : tilNorsk(fil, validerKlinikkSkjema.errors);
+  if (data && data.bestilling && data.bestilling.url && !data.bestilling.merknad) {
+    feil.push(
+      `${fil}: bestilling.url er satt, men bestilling.merknad mangler — setningen om hvor brukeren sendes og at innlogging skjer med BankID skal alltid stå ved knappen`
+    );
+  }
   for (const felt of RESERVERTE_KLINIKKFELT) {
     if (data && data[felt] !== null && data[felt] !== undefined) {
       feil.push(

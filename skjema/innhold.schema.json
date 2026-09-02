@@ -806,6 +806,19 @@
                   },
                   "illustrasjon": {
                     "$ref": "#/$defs/illustrasjonsnavn"
+                  },
+                  "undertittel": {
+                    "anyOf": [
+                      {
+                        "const": "[TEKST KOMMER]"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 200
+                      }
+                    ],
+                    "description": "Liten linje rett under overskriften (fagterm, varighet, spesialitet). «liten» står etter avsnittene."
                   }
                 }
               }

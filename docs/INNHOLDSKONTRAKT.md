@@ -171,6 +171,10 @@ radene uten priskolonne og uten tabellmerknad; finnes det beløp, utelates
 radene uten. `omfang` vises bare når `kolonner` finnes. En GODKJENT side kan
 ikke ha rader uten beløp.
 
+Prisrader i `pris`-blokken (den kompakte tabellen) har `navn`, `belop_nok`
+og valgfri `merknad` (vises i parentes etter navnet); prisrader i
+`prisliste` har `navn`, `belop_nok` og valgfri `omfang` (egen kolonne).
+
 ## Seksjonsblokker
 
 Sidens brødtekst bygges av typede blokker i `seksjoner`. Hver blokk har en
@@ -184,7 +188,7 @@ krem → sand → krem.
 | `tidslinje` | `punkter` med `naar` og `tekst` | forberedelser dag for dag; `eksempelmerknad` gir den terrakotta-rammede advarselen; valgfritt avsluttende avsnitt `etter` |
 | `steg` | `steg` (2–4) med `tittel` og `tekst` | «Slik foregår det»; `strek: true` tegner bølgelinjen over |
 | `sporsmal` | `sporsmal` (2–14) med `sporsmal` og `svar` | spørsmål og svar, utvides uten JavaScript |
-| `veier` | `veier` (2–4) med `tittel` og `avsnitt` | likestilte valg som kort, med valgfri `illustrasjon`, `liten` og `knapp` |
+| `veier` | `veier` (2–4) med `tittel` og `avsnitt` | likestilte valg som kort, med valgfri `illustrasjon`, `undertittel` (liten linje rett under overskriften: fagterm, varighet, spesialitet), `liten` (liten linje etter avsnittene) og `knapp` |
 | `praktisk` | `punkter` (2–6) med `tittel` og `tekst` | korte praktiske opplysninger i kolonner, valgfri `merknad` under |
 | `kort` | `kort` (2–6) med `tittel` | rutenett av lenkekort med `fagterm`, `illustrasjon` og `url` |
 | `kort_bred` | `avsnitt` | én tjeneste på tvers, med `illustrasjon` og `knapp`. Har blokken `under`, står overskriften over kortet; ellers inne i kortet (forsidens mønster) |
@@ -197,11 +201,15 @@ Strektegningene som kan brukes i `illustrasjon`: `gastroskopi`, `koloskopi`,
 ## Knapper
 
 En knapp skrives som `{ tekst, handling }` og rendres **bare når fakta
-finnes** — mangler de, forsvinner knappen i stillhet:
+finnes**:
 
-- `handling: bestilling` krever `bestilling.url` i `klinikk.json`
-- `handling: telefon` krever `telefon` i `klinikk.json`
-- `handling: intern` krever `url`, og siden må finnes i bygget
+- `handling: bestilling` krever `bestilling.url` i `klinikk.json` — mangler
+  den, forsvinner knappen i stillhet (og `bestilling.merknad` må være
+  skrevet når url settes)
+- `handling: telefon` krever `telefon` i `klinikk.json` — mangler det,
+  forsvinner knappen i stillhet
+- `handling: intern` krever `url` til en side som finnes; ellers stopper
+  bygget (og en GODKJENT side kan bare peke på GODKJENT-sider)
 
 `stil` kan være `primaer` (standard), `sekundaer` eller `invers` (hvit på
 mørk flate). I prisblokken blir primærknappen automatisk invers. «Bestill

@@ -3,7 +3,7 @@
   { tekst: ui.bestill_time, handling: 'bestilling', stil: 'primaer' },
   { tekst: ui.ring_oss, handling: 'telefon', stil: 'sekundaer' }
 ] -%}
-{#- Bunnteksten bærer ehandelsloven § 9-opplysningene og, når klinikken har
+{#- Bunnteksten bærer ehandelsloven § 8-opplysningene og, når klinikken har
     dem, opplysningene tjenesteloven krever om regulert yrke. Alt som er null
     utelates — det står aldri en plassholder her. -#}
 <footer class="bunn" aria-label="{{ ui.bunntekst }}">
@@ -68,6 +68,6 @@
       </dl>
     </div>
     {%- endif %}
-    {{ knapperad(toppknapper, klinikk, collections.innhold, 'bunn-handlinger', false) }}
+    {{ knapperad(toppknapper, klinikk, collections.innhold, 'bunn-handlinger', false, ui) }}
   </div>
 </footer>

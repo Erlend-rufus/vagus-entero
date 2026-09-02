@@ -56,7 +56,7 @@ for leveranseformatet og `docs/VAKTER.md` for hvordan CI-vaktene utvides.
 nvm use            # Node-versjon fra .nvmrc
 npm ci             # installer låste avhengigheter
 npm run bygg       # validering → Eleventy → etterbyggvakter
-npm run vakter     # alle CI-vakter mot kildekode og bygde utdata
+npm run vakter     # kildevaktene (utdatavaktene kjører i npm run bygg)
 npm test           # vaktenes selvtester
 ```
 

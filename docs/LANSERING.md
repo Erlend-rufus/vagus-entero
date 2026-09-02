@@ -19,17 +19,22 @@ forhåndsvisninger — men da er Basic-Auth ikke lenger valgfri.
 ## Forutsetninger som må være grønne FØR flippen
 
 - [ ] Alle sider som skal ut har `status: GODKJENT` med signatur og dato
-- [ ] `src/_data/klinikk.json` har org.nr, adresse, telefon og e-post
-      (bygget nekter å produsere produksjonsbygg uten — ehandelsloven § 9)
+- [ ] `src/_data/klinikk.json` har juridisk navn, org.nr, adresse, telefon og
+      e-post (bygget nekter å produsere produksjonsbygg uten — ehandelsloven § 8)
+- [ ] `src/_data/ui.json` har ingen `[TEKST KOMMER]` igjen (`bestilling_apner`,
+      `apner_nytt_vindu`) — vakten `tekst-kommer` stopper produksjonsbygget ellers
+- [ ] `bestilling.merknad` er skrevet når `bestilling.url` settes (setningen
+      om hvor brukeren sendes og BankID)
 - [ ] Prissiden er GODKJENT med utfylt prisliste (prisopplysningsforskriften § 10)
 - [ ] Universell utforming-nivået bekreftet med Erlend (WCAG 2.2 AA er målet;
       lovkravet for private er per aug. 2026 WCAG 2.0 AA)
 - [ ] Netlify-DPA-beslutningen signert (se `docs/NETLIFY-BESLUTNING.md`)
 - [ ] CI helgrønn på main
 - [ ] **Branch protection på `main`** med `CI / bygg-og-vakter` som påkrevd
-      sjekk. Netlifys eget bygg kjører bare kontrakt og etterbyggvakter
-      (`npm run bygg`); lenkesjekk, axe og Lighthouse gater deploy bare
-      gjennom GitHub, og bare hvis ingenting kan merges rødt
+      sjekk. Netlifys eget bygg kjører kontrakten og alle vaktene
+      (`npm run bygg`), men ikke selvtestene, ankersjekken (lychee), axe
+      eller Lighthouse — de gater deploy bare gjennom GitHub, og bare hvis
+      ingenting kan merges rødt
 - [ ] «Force HTTPS» slått på i Netlify (Domain management → HTTPS)
 - [ ] Den manuelle tilgjengelighetslisten gjennomgått (`docs/TILGJENGELIGHET.md`)
 

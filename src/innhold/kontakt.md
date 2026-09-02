@@ -3,6 +3,7 @@ sidetype: "statisk"
 url: "/kontakt/"
 malgruppe: "selvbetalende"
 tittel: "Kontakt og bestill time"
+sidetittel: "Kontakt og bestill time på Straume"
 menytittel: "Kontakt"
 meta_beskrivelse: "Klinikken er privat, og du kan bestille time selv. Fastlegen din kan også henvise deg til oss."
 ingress: "Klinikken er privat, og du kan bestille time selv. Fastlegen din kan også henvise deg til oss."
@@ -22,12 +23,6 @@ i_navigasjon: true
 i_bunntekst: false
 rekkefolge: 4
 illustrasjon: "fordoyelse-hero"
-hode_knapper:
-  - tekst: "Bestill time"
-    handling: "bestilling"
-  - tekst: "Ring oss"
-    handling: "telefon"
-    stil: "sekundaer"
 seksjoner:
   - type: "veier"
     tittel: "To måter å bestille"

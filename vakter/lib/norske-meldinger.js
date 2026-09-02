@@ -45,7 +45,7 @@ const BLOKKMELDINGER = {
   tidslinje: 'krever tittel og punkter (2–8 punkter med naar og tekst), og kan ha eksempelmerknad og etter',
   steg: 'krever tittel og steg (2–4 steg med tittel og tekst)',
   sporsmal: 'krever tittel og sporsmal (2–14 par av sporsmal og svar)',
-  veier: 'krever tittel og veier (2–4 veier med tittel og avsnitt; liten, knapp og illustrasjon er valgfrie)',
+  veier: 'krever tittel og veier (2–4 veier med tittel og avsnitt; undertittel, liten, knapp og illustrasjon er valgfrie)',
   praktisk: 'krever tittel og punkter (2–6 punkter med tittel og tekst), og kan ha merknad',
   kort: 'krever tittel og kort (2–6 kort med tittel)',
   kort_bred: 'krever tittel og avsnitt',

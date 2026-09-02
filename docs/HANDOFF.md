@@ -12,8 +12,8 @@ Eleventy-prosjektet, og alt som ble bygget inn i det er intakt og kjører:
 | Hva | Hvor | Kjøres av |
 |---|---|---|
 | Innholdskontrakten | `skjema/innhold.schema.json`, forklart i `docs/INNHOLDSKONTRAKT.md` | hvert bygg (`eleventy.before`) — bygget stopper på brudd |
-| Forbudslistene | `vakter/ordlister/*.txt` (preparatnavn, ventetidsfraser, superlativer, leverandører, forsikringsselskaper, omtalesignaler, sporingssignaturer) | `vakter/ordliste-skann.js` mot kildefiler, bygd HTML og commit-meldinger |
-| Alle vaktene (18) | `vakter/*.js`, orkestrert av `vakter/kjor-alle.js` | GitHub Actions (`.github/workflows/ci.yml`) **og** Netlifys eget bygg (`npm run bygg`) |
+| Forbudslistene | `vakter/ordlister/*.txt` (preparatnavn, ventetidsfraser, superlativer, leverandører, forsikringsselskaper, vurderingssignaler, sporingssignaturer) | `vakter/ordliste-skann.js` mot kildefiler, bygd HTML og commit-meldinger |
+| Alle vaktene (17) | `vakter/*.js`, orkestrert av `vakter/kjor-alle.js` | GitHub Actions (`.github/workflows/ci.yml`) **og** Netlifys eget bygg (`npm run bygg`) |
 | Selvtestene (156) | `vakter/tester/kjor-selvtester.js` | `npm test`, i CI |
 
 ClickUp-oppgaven «Next.js besluttet» (28.08) er ikke gjennomført. Ingen av
@@ -40,7 +40,9 @@ url: /hemoroider/
 malgruppe: selvbetalende        # selvbetalende|henviser|forsikring
 tittel: "[TEKST KOMMER]"        # H1, 10–60 tegn
 sidetittel: "[TEKST KOMMER]"    # <title> uten suffiks; bygget legger til « | Vagus Entero»
-menytittel: Hemoroider          # kort etikett i meny og brødsmulesti
+menytittel: Hemoroider          # kort etikett i menyen (brødsmulestien bruker tittel uten parentes)
+noindex: false                  # true holder siden ute av søk og sitemap, også i produksjon
+sist_oppdatert: null            # valgfri ÅÅÅÅ-MM-DD, lagres, vises ikke ennå
 meta_beskrivelse: "[TEKST KOMMER]"   # 70–155 tegn
 ingress: "[TEKST KOMMER]"       # 30–300 tegn
 status: UTKAST                  # UTKAST|KLAR_FOR_MEDISINSK_GJENNOMGANG|GODKJENT
@@ -57,6 +59,7 @@ illustrasjon: endetarm          # valgfri: gastroskopi|koloskopi|endetarm|prokto
 hode_knapper:                   # rendres bare når fakta finnes i klinikk.json
   - { tekst: Bestill time, handling: bestilling }
   - { tekst: Ring oss, handling: telefon }
+hode_merknad: null              # valgfri merknadslinje under knappene
 fakta:                          # valgfri stripe, 2–4 punkter
   - { term: "[TEKST KOMMER]", verdi: "[TEKST KOMMER]" }
 seksjoner:                      # hver blokk = én H2. Typer: tekst, tidslinje, steg, sporsmal, veier, praktisk, kort, kort_bred, pris, prisliste
@@ -192,7 +195,8 @@ Tekst er ikke kodesesjonens; dette er observasjoner, ikke endringer:
   org.nr, autorisasjonsnummer) i `personvern.md`, `om-klinikken.md`,
   `kontakt.md` og fagfolk-sidene. Når visningen fra `klinikk.json` er
   bygget, bør setningene peke dit i stedet.
-- `meta_beskrivelse` er ordrett lik `ingress` på alle sider fra designet.
+- `meta_beskrivelse` er utledet av `ingress` på sidene fra designet (ordrett
+  på de fleste, avkortet med «…» på overvekt-og-fedme).
 - `sidetittel` er ikke satt på noen side; formatet er «Koloskopi på
   Straume | Vagus Entero».
 - Designets telefonknapp i «Ring oss»-kortet på `/kontakt/` viser
@@ -201,6 +205,16 @@ Tekst er ikke kodesesjonens; dette er observasjoner, ikke endringer:
   fagfolk-sidene ligger i bunnteksten.
 - `for-henvisende-leger.md`: designets merknad om utskriftsversjonen er
   utelatt fordi utskriftsversjonen ikke finnes.
+- Bevisste avvik fra designet som følger reglene av 02.09: «Kontakt oss»
+  som sekundærknapp på Om klinikken er «Ring oss» (global knapperegel);
+  forsidens korte mobil-undertekst finnes ikke som felt; forsikringssidens
+  tabelltekst står som `under` (den omtaler plassholdere); setningene som
+  navngir portalleverandøren er strøket til beslutningen om navngiving er
+  tatt (står i sidenes `apne_punkter`).
+- To grensesnittstrenger venter på godkjenning i `src/_data/ui.json` og
+  står som `[TEKST KOMMER]`: `bestilling_apner` (linjen om at digital
+  bestilling åpner) og `apner_nytt_vindu` (skjermleserteksten i «Bestill
+  time»). Produksjonsbygget stopper til de er levert.
 
 ## Endringer
 

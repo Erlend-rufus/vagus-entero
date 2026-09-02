@@ -45,7 +45,7 @@
           {%- for avsnitt in blokk.avsnitt %}
           <p>{{ avsnitt | tekst | safe }}</p>
           {%- endfor %}
-          {%- if blokk.knapper %}{{ knapperad(blokk.knapper, klinikk, sider, 'prisblokk-handlinger', true) }}{% endif %}
+          {%- if blokk.knapper %}{{ knapperad(blokk.knapper, klinikk, sider, 'prisblokk-handlinger', true, ui) }}{% endif %}
         </div>
         {%- if blokk.sidekolonne %}
         <div class="prisblokk-side">
@@ -116,13 +116,16 @@
           <li class="vei">
             {%- if vei.illustrasjon %}{{ merke(vei.illustrasjon, 'vei-illustrasjon', 72) }}{% endif %}
             <h3>{{ vei.tittel }}</h3>
-            {%- if vei.liten %}
-            <p class="liten">{{ vei.liten | tekst | safe }}</p>
+            {%- if vei.undertittel %}
+            <p class="liten undertittel">{{ vei.undertittel | tekst | safe }}</p>
             {%- endif %}
             {%- for avsnitt in vei.avsnitt %}
             <p>{{ avsnitt | tekst | safe }}</p>
             {%- endfor %}
-            {%- if vei.knapp %}{{ knapp(vei.knapp, klinikk, sider, false) }}{% endif %}
+            {%- if vei.liten %}
+            <p class="liten">{{ vei.liten | tekst | safe }}</p>
+            {%- endif %}
+            {%- if vei.knapp %}{{ knapp(vei.knapp, klinikk, sider, false, ui) }}{% endif %}
           </li>
           {%- endfor %}
         </ul>
@@ -168,7 +171,7 @@
             <p>{{ avsnitt | tekst | safe }}</p>
             {%- endfor %}
           </div>
-          {%- if blokk.knapp %}{{ knapp(blokk.knapp, klinikk, sider, false) }}{% endif %}
+          {%- if blokk.knapp %}{{ knapp(blokk.knapp, klinikk, sider, false, ui) }}{% endif %}
         </div>
 
       {%- elif blokk.type == 'prisliste' %}
