@@ -16,6 +16,14 @@
   command = "npm run bygg"
   publish = "dist"
 
+# Ukjente adresser viser klinikkens egen side (innholdssiden /ikke-funnet/,
+# noindex). Finnes den ikke i bygget (ikke GODKJENT ennå), viser Netlify sin
+# standardside — derfor står siden i lanseringssjekklisten.
+[[redirects]]
+  from = "/*"
+  to = "/ikke-funnet/index.html"
+  status = 404
+
 [build.environment]
   NODE_VERSION = "24"
   # Samme som i CI: avhengigheter installeres uten installasjonsskript.

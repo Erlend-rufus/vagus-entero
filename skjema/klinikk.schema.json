@@ -186,7 +186,7 @@
       "required": [
         "url"
       ],
-      "description": "Timebestilling hos ekstern pasientportal. Er feltet null, utelates Bestill time-knappen helt, og verten staar ikke i CSP-en. Settes url, MAA verten foeres opp i vakter/ordlister/eksterne-hvitliste.txt og i sikkerhet/policy.json — det er en bevisst beslutning, ikke en konfigurasjonsdetalj.",
+      "description": "Timebestilling hos ekstern pasientportal. Er feltet null, utelates Bestill time-knappen helt. Settes url, MAA verten foeres opp i vakter/ordlister/eksterne-hvitliste.txt og merknad skrives — det er en bevisst beslutning, ikke en konfigurasjonsdetalj (se docs/LANSERING.md). sikkerhet/policy.json roeres bare hvis portalen skal bygges inn, ikke for en lenke.",
       "properties": {
         "url": {
           "type": [

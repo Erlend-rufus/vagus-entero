@@ -7,7 +7,8 @@ layout: layouts/base.njk
     denne malen; integrasjonspartneren monterer portalen i #bestilling-portal.
     Fram til portalen er live viser siden bare klinikkens telefon og varselet
     om når digital bestilling åpner. Skal portalen lastes herfra, må verten
-    føres opp bevisst i sikkerhet/policy.json (connect-src/frame-src) og i
+    føres opp bevisst i sikkerhet/policy.json (script-src, connect-src og
+    frame-src etter behov) og i
     vakter/ordlister/eksterne-hvitliste.txt — det er en personvernbeslutning,
     ikke en konfigurasjonsdetalj. -#}
 <div class="seksjon-indre">

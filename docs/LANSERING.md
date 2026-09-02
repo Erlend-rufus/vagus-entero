@@ -26,6 +26,8 @@ forhåndsvisninger — men da er Basic-Auth ikke lenger valgfri.
 - [ ] `bestilling.merknad` er skrevet når `bestilling.url` settes (setningen
       om hvor brukeren sendes og BankID)
 - [ ] Prissiden er GODKJENT med utfylt prisliste (prisopplysningsforskriften § 10)
+- [ ] Siden `/ikke-funnet/` (404) er GODKJENT — ellers viser Netlify sin
+      engelske standardside for ukjente adresser
 - [ ] Universell utforming-nivået bekreftet med Erlend (WCAG 2.2 AA er målet;
       lovkravet for private er per aug. 2026 WCAG 2.0 AA)
 - [ ] Netlify-DPA-beslutningen signert (se `docs/NETLIFY-BESLUTNING.md`)
@@ -69,6 +71,23 @@ forhåndsvisninger — men da er Basic-Auth ikke lenger valgfri.
    - `curl -s https://<domene>/sitemap.xml` → kun GODKJENT-sider
 5. Verifiser at en preview-URL fortsatt svarer med noindex (og krever
    Basic-Auth hvis passordvariablene er i bruk).
+
+## Når bookingportalen skrus på (uavhengig av lanseringsdagen)
+
+`bestilling.url` i `src/_data/klinikk.json` gjør bygget **rødt** til tre ting
+er gjort samtidig — det er meningen, hver av dem er en beslutning:
+
+1. Portalens vertsnavn føres opp i `vakter/ordlister/eksterne-hvitliste.txt`
+   (vakten `eksterne-verter` stopper ellers hver side med «Bestill time»).
+2. Skal leverandøren navngis i `bestilling.merknad`, føres den godkjente
+   setningen opp i `vakter/ordlister/unntak/leverandorer.txt`.
+3. `bestilling.merknad` skrives (setningen om hvor brukeren sendes og
+   BankID) — bygget krever den sammen med url.
+
+For en ren lenke i nytt vindu trenger `sikkerhet/policy.json` ingen endring.
+Skal portalen **bygges inn** på `/bestill/` (skript eller ramme), må
+`script-src`, `connect-src` og `frame-src` åpnes der — en egen
+personvernbeslutning, jf. `docs/NETLIFY-BESLUTNING.md`.
 
 ## Etter flippen
 

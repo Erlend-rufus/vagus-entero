@@ -811,6 +811,12 @@ krev(
   'innholdskontrakt: vei med undertittel og vei med liten passerer'
 );
 
+
+krev(
+  validerInnhold([{ fil: 'a.md', data: { ...gyldigSide, ...godkjent, ingress: 'Ring oss på telefon [00 00 00 00] i åpningstiden vår.' } }]).some((m) => m.includes('plassholder')),
+  'innholdskontrakt: sifferplassholder [00 00 00 00] stopper GODKJENT'
+);
+
 fs.rmSync(tmp, { recursive: true, force: true });
 
 if (feilede > 0) {

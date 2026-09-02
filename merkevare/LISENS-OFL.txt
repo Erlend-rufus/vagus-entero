@@ -1,15 +1,14 @@
-Nettstedet bruker to selvhostede fonter, begge under SIL Open Font License 1.1:
+Ordmerket i logopakken er satt i EB Garamond, vekt 500, lisensiert under
+SIL Open Font License 1.1:
 
-  EB Garamond (overskrifter og ordmerke)
+  EB Garamond
   Copyright 2017 The EB Garamond Project Authors
   https://github.com/octaviopardo/EBGaramond12
 
-  Work Sans (brødtekst)
-  Copyright 2019 The Work Sans Project Authors
-  https://github.com/weiweihuanghuang/Work-Sans
-
-Filene i denne katalogen er subsett til norsk tegnsett, laget med
-verktoy/subsett-font.py. Lisensteksten gjelder uendret for subsettene.
+SVG-filene i logo/svg/ refererer fonten ved navn (den er ikke innbakt);
+PNG-filene i logo/png/ er rendret med den. Lisensen følger med ordmerket
+og gjelder uendret. Selve fontfilene ligger ikke her — nettstedets subsett
+ligger i src/fonter/ med egen lisenskopi.
 
 -----------------------------------------------------------
 SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007

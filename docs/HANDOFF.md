@@ -14,7 +14,7 @@ Eleventy-prosjektet, og alt som ble bygget inn i det er intakt og kjører:
 | Innholdskontrakten | `skjema/innhold.schema.json`, forklart i `docs/INNHOLDSKONTRAKT.md` | hvert bygg (`eleventy.before`) — bygget stopper på brudd |
 | Forbudslistene | `vakter/ordlister/*.txt` (preparatnavn, ventetidsfraser, superlativer, leverandører, forsikringsselskaper, vurderingssignaler, sporingssignaturer) | `vakter/ordliste-skann.js` mot kildefiler, bygd HTML og commit-meldinger |
 | Alle vaktene (17) | `vakter/*.js`, orkestrert av `vakter/kjor-alle.js` | GitHub Actions (`.github/workflows/ci.yml`) **og** Netlifys eget bygg (`npm run bygg`) |
-| Selvtestene (156) | `vakter/tester/kjor-selvtester.js` | `npm test`, i CI |
+| Selvtestene (159) | `vakter/tester/kjor-selvtester.js` | `npm test`, i CI |
 
 ClickUp-oppgaven «Next.js besluttet» (28.08) er ikke gjennomført. Ingen av
 rammene i den krever Next: statisk generering, JS-fri navigasjon, null
@@ -104,6 +104,7 @@ Alle URL-er har avsluttende skråstrek (Netlify omdirigerer `/koloskopi` dit).
 | 17 | Kontakt og timebestilling | `/kontakt/` | `kontakt.md` | design + tekst |
 | 18 | Personvernerklæring | `/personvern/` | `personvern.md` | design + tekst |
 | — | (bookingen) | `/bestill/` | `bestill.md` | isolert rute, egen mal `layouts/bestill.njk` |
+| — | (404) | `/ikke-funnet/` | `ikke-funnet.md` | skjelett, `noindex: true`; Netlify viser den for ukjente adresser når den er GODKJENT |
 
 Spriket: designet har `/undersokelser/` og `/proktologi/`, som ClickUp ikke
 har; ClickUp har sju sider designet ikke har (05–10 og 14) — de ligger nå som
@@ -128,7 +129,7 @@ står som UTKAST og finnes bare i forhåndsvisning.
 | Forsiden må være GODKJENT før noe publiseres | `eleventy.config.js` (`eleventy.before`), vakten `godkjent-status` |
 | CI-forsyningskjede låst | `.github/workflows/ci.yml`: actions pinnet til commit-SHA, `permissions: contents: read`, `npm ci --ignore-scripts` |
 | Egennavn i forbudslistene fanges også bøyd | `vakter/lib/felles.js` (`*`-endelse), se `docs/VAKTER.md` |
-| Bookingen isolert, innholdssidene statiske | `layouts/bestill.njk`, monteringspunkt `#bestilling-portal`. Å laste portalen krever bevisst oppføring i `sikkerhet/policy.json` og `vakter/ordlister/eksterne-hvitliste.txt` |
+| Bookingen isolert, innholdssidene statiske | `layouts/bestill.njk`, monteringspunkt `#bestilling-portal`. En lenke til portalen krever oppføring i `vakter/ordlister/eksterne-hvitliste.txt` og `bestilling.merknad`; å bygge portalen inn krever i tillegg at CSP-en åpnes bevisst (`script-src`, `connect-src`, `frame-src` i `sikkerhet/policy.json`) — se `docs/LANSERING.md` |
 | Ingen hemmeligheter i koden | alt i miljøvariabler (`PRODUKSJON`, `SITE_URL`); `docs/LANSERING.md` |
 | WCAG: nettstedet testes mot 2.2 AA (superset av 2.1 AA) | `verktoy/a11y-test.mjs` (axe, alle sider, 0 brudd), Lighthouse-budsjett i `verktoy/lighthouserc.cjs` |
 
@@ -211,6 +212,8 @@ Tekst er ikke kodesesjonens; dette er observasjoner, ikke endringer:
   tabelltekst står som `under` (den omtaler plassholdere); setningene som
   navngir portalleverandøren er strøket til beslutningen om navngiving er
   tatt (står i sidenes `apne_punkter`).
+- `ikke-funnet.md` (404-siden) trenger tittel, ingress, én tekstblokk og
+  knappetekst tilbake til forsiden — kort og rolig, uten skyld.
 - To grensesnittstrenger venter på godkjenning i `src/_data/ui.json` og
   står som `[TEKST KOMMER]`: `bestilling_apner` (linjen om at digital
   bestilling åpner) og `apner_nytt_vindu` (skjermleserteksten i «Bestill
@@ -230,7 +233,7 @@ Tekst er ikke kodesesjonens; dette er observasjoner, ikke endringer:
   `--ignore-scripts`, Cache-Control. Kontrakt: `klinikk.json`/`ui.json`
   håndheves, plassholdere stopper GODKJENT, prisregelen ser alle seksjoner,
   `rekkefolge` entydig, `bilder`/`ventetid`/`apningstider` reservert,
-  `*`-endelse i ordlister, historikk-baseline i selvtestene; 156 selvtester etter alle rundene.
+  `*`-endelse i ordlister, historikk-baseline i selvtestene; 159 selvtester etter alle rundene.
   Innhold gjenopprettet ordrett fra designet (avsnitt, merknader, lenker,
   linjeskift, knappetekster på fagfolk-sidene, «Øygarden»). CSS-paritet mot
   artboardene (mobilrytme, prisblokk, pristabell, steg, faktastripe, hero).
@@ -254,7 +257,13 @@ Tekst er ikke kodesesjonens; dette er observasjoner, ikke endringer:
   Kontakt uten knapper i sidehodet; «Bestill time» sier med skjult tekst at
   den åpner nytt vindu; `bestilling.merknad` kreves med `bestilling.url`;
   ehandelsloven § 8 konsekvent; Netlify installerer uten
-  installasjonsskript.
+  installasjonsskript. Etter kritikken: CSP har `script-src`, `form-action`
+  og `base-uri` `'none'` (nettstedet har ingen skript, skjema eller
+  `<base>`; åpnes bevisst når portalen bygges inn), UTKAST-banneret er
+  statisk (ingen `role="status"`), egen 404-side som innholdsside
+  (`/ikke-funnet/`, skjelett), lanseringssekvensen beskriver hva
+  `bestilling.url` krever, og lisensfilen i merkevarepakken er skrevet for
+  ordmerket.
 - **02.09.2026** — Lighthouse i CI aggregerer per audit-median (to av tre
   kjøringer må bryte budsjettet); rapportene lastes opp som artefakt ved brudd.
 - **02.09.2026** — Grensesnittavtalen tatt inn: `[TEKST KOMMER]` i kontrakten

@@ -1,15 +1,15 @@
 {
-  "kommentar": "Eneste kilde for sikkerhetsheaderne. Leses av både _headers-generatoren (eleventy.config.js) og CI-vakten (vakter/headere.js) — de kan ikke drifte fra hverandre. Endringer her er en sikkerhetsbeslutning.",
+  "kommentar": "Eneste kilde for sikkerhetsheaderne. Leses av både _headers-generatoren (eleventy.config.js) og CI-vakten (vakter/headere.js) — de kan ikke drifte fra hverandre. Endringer her er en sikkerhetsbeslutning. Nettstedet har ingen JavaScript, skjema eller <base>: script-src, form-action og base-uri er 'none' og åpnes bevisst (til 'self') den dagen bestillingsportalen bygges inn.",
   "csp": [
     "default-src 'none'",
-    "script-src 'self'",
+    "script-src 'none'",
     "style-src 'self'",
     "img-src 'self'",
     "font-src 'self'",
     "connect-src 'self'",
     "manifest-src 'self'",
-    "base-uri 'self'",
-    "form-action 'self'",
+    "base-uri 'none'",
+    "form-action 'none'",
     "frame-ancestors 'none'",
     "object-src 'none'",
     "upgrade-insecure-requests"

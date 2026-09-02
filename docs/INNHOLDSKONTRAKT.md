@@ -26,7 +26,9 @@ jsonld_type:       # MedicalProcedure | MedicalCondition | MedicalSignOrSymptom
                    #   | MedicalClinic | Physician | null
 noindex:           # valgfri: true holder siden ute av søk og sitemap, også i
                    #   produksjon (sider skrevet for en håndfull mottakere)
-interne_lenker_ut: # liste over url-er siden lenker til, f.eks. [/koloskopi/]
+interne_lenker_ut: # redaksjonell liste over url-er siden lenker til; hver må
+                   #   finnes. Avstemmes ikke mot de faktiske lenkene — HTML-en
+                   #   vaktes separat (vakten «lenker»)
 apne_punkter:      # liste med uavklarte [BEKREFT]-punkter. MÅ være tom
                    #   før status kan bli GODKJENT.
 i_navigasjon:      # true = i hovedmenyen
@@ -57,8 +59,10 @@ Der teksten ennå ikke er levert, skrives nøyaktig `[TEKST KOMMER]` — i
 hvilket som helst tekstfelt, uansett lengdekrav. Den er laget for å være
 umulig å forveksle med godkjent innhold: bygget godtar den i forhåndsvisning,
 en side med den kan aldri bli `GODKJENT`, og et produksjonsbygg som
-inneholder den stopper (vakten `tekst-kommer`). Skriv aldri egne
-plassholdere som ligner på ekte tekst.
+inneholder den stopper (vakten `tekst-kommer`). Designleveransens egne
+plassholdere (`[PLASSHOLDER: …]`, `[00 00 00 00]`, `[PREPARAT]`) tåles i
+UTKAST, men behandles likt: alt i hakeparentes stopper godkjenning. Skriv
+aldri egne plassholdere som ligner på ekte tekst.
 
 ## Reglene bygget håndhever
 
