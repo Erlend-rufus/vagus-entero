@@ -244,7 +244,17 @@ Tekst er ikke kodesesjonens; dette er observasjoner, ikke endringer:
   tabell, `SITE_URL` og `PREVIEW_*` valideres, `noindex: true` virker i
   produksjon, CSS-filnavnet er innholdshashet (immutable), HTML utenfor
   produksjon er `private`, og CI-ens syntetiske produksjonsbygg bygger nå
-  tre godkjente fylltekst-sider så hele produksjonsstien testes i hver PR. Selvtestene sjekker nå meldingen, ikke bare at noe feilet; headere-vakten krever nøyaktig policy (ingen påhengte direktiver eller dupliserte linjer); klinikk-lansering-testen er uavhengig av den ekte klinikk.json.
+  tre godkjente fylltekst-sider så hele produksjonsstien testes i hver PR.
+  Selvtestene sjekker nå meldingen, ikke bare at noe feilet; headere-vakten
+  krever nøyaktig policy (ingen påhengte direktiver eller dupliserte
+  linjer); klinikk-lansering-testen er uavhengig av den ekte klinikk.json.
+  Tredje runde: veikort har `undertittel` (under overskriften) og `liten`
+  (etter avsnittene) slik designet bruker begge; manglende designtekst
+  tilbake ordrett (forsikring, Undersøkelser, sidetitler «på Straume»);
+  Kontakt uten knapper i sidehodet; «Bestill time» sier med skjult tekst at
+  den åpner nytt vindu; `bestilling.merknad` kreves med `bestilling.url`;
+  ehandelsloven § 8 konsekvent; Netlify installerer uten
+  installasjonsskript.
 - **02.09.2026** — Lighthouse i CI aggregerer per audit-median (to av tre
   kjøringer må bryte budsjettet); rapportene lastes opp som artefakt ved brudd.
 - **02.09.2026** — Grensesnittavtalen tatt inn: `[TEKST KOMMER]` i kontrakten
