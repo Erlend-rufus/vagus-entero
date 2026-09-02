@@ -10,7 +10,8 @@ status: "UTKAST"
 godkjent_av: null
 godkjent_dato: null
 jsonld_type: null
-interne_lenker_ut: []
+interne_lenker_ut:
+  - "/personvern/"
 apne_punkter:
   - "Seksjonen «Medisinsk fagansvarlig» har plassholdere som klinikken må fylle ut"
   - "Seksjonen «Ansvar og tilsyn» har plassholdere som klinikken må fylle ut"
@@ -69,14 +70,16 @@ seksjoner:
       - tittel: "Taushetsplikt"
         tekst: "Alt helsepersonell har taushetsplikt etter helsepersonelloven § 21."
       - tittel: "Personvern"
-        tekst: "Hvordan vi behandler personopplysningene dine står på siden Personvern."
+        tekst: "Hvordan vi behandler personopplysningene dine står på siden [Personvern](/personvern/)."
   - type: "pris"
     tittel: "Kontakt klinikken"
     avsnitt:
       - "Har du spørsmål om klinikken, undersøkelsene eller hvordan du bestiller, ringer du oss eller sender melding gjennom pasientportalen."
       - "Send aldri helseopplysninger på e-post."
-      - "Praktisk"
-      - "[Adresse], Straume i Øyganden Telefon [00 00 00 00] Åpningstider [PLASSHOLDER]"
+    sidekolonne:
+      etikett: "Praktisk"
+      avsnitt:
+        - "[Adresse], Straume i Øygarden\nTelefon [00 00 00 00]\nÅpningstider [PLASSHOLDER]"
     knapper:
       - tekst: "Bestill time"
         handling: "bestilling"

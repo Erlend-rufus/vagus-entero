@@ -18,6 +18,12 @@ export function kjorDist(distKatalog) {
     let m;
     while ((m = monster.exec(html)) !== null) {
       const raa = m[1].split('#')[0].split('?')[0];
+      // «..» i en intern sti er aldri legitimt i et statisk bygg — det kan
+      // bare peke ut av dist, og normaliseres ellers stille bort.
+      if (raa.split('/').includes('..') || raa.split('/').includes('.')) {
+        feil.push(`${fil}: intern lenke «${raa}» inneholder «.»/«..» — stier skal være absolutte fra rot`);
+        continue;
+      }
       if (raa === '' || raa === '/') {
         if (!fs.existsSync(path.join(distKatalog, 'index.html')) && raa === '/') {
           feil.push(`${fil}: lenker til «/», men forsiden finnes ikke i dette bygget`);

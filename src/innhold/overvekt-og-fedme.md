@@ -10,7 +10,8 @@ status: "UTKAST"
 godkjent_av: null
 godkjent_dato: null
 jsonld_type: "MedicalProcedure"
-interne_lenker_ut: []
+interne_lenker_ut:
+  - "/priser/"
 apne_punkter:
   - "Setningen om hvor bestillingen sendes navngir pasientportalen — navnet står ikke i repoet. Bestemmes av klinikken og settes i klinikk.json (bestilling.merknad) sammen med unntaket i ordlisten"
   - "Seksjonen «Hva utredningen er» har plassholdere som klinikken må fylle ut"
@@ -57,7 +58,7 @@ seksjoner:
       - sporsmal: "Får fastlegen min beskjed?"
         svar: "Vi sender epikrise til fastlegen din hvis du samtykker til det. [PLASSHOLDER: rutine og svartid.]"
       - sporsmal: "Hva koster utredningen?"
-        svar: "Prisene står i prislisten. Klinikken har ingen offentlig driftsavtale, så du betaler selv eller bruker behandlingsforsikring."
+        svar: "Prisene står i [prislisten](/priser/). Klinikken har ingen offentlig driftsavtale, så du betaler selv eller bruker behandlingsforsikring."
       - sporsmal: "Kan behandlingen kombineres med undersøkelse av mage og tarm?"
         svar: "Legen vurderer om plagene dine tilsier undersøkelse av mage eller tarm i tillegg. Det avtales i så fall som egen time."
   - type: "pris"

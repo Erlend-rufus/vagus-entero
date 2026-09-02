@@ -7,7 +7,7 @@
     er «Ring oss» primær og «Bestill time» finnes ikke; når klinikk.json
     har bestilling.url, blir «Bestill time» primær og «Ring oss» sekundær.
     Stilen for disse to avledes derfor av klinikkens tilstand, ikke av
-    innholdsfilen. -#}
+    innholdsfilen. På petrol-flate (prisblokken) blir primærknappen invers. -#}
 
 {%- macro stilFor(k, klinikk) -%}
   {%- set bookingLive = klinikk.bestilling and klinikk.bestilling.url -%}
@@ -16,12 +16,12 @@
   {%- else -%}{{ k.stil or 'primaer' }}{%- endif -%}
 {%- endmacro -%}
 
-{%- macro knapp(k, klinikk, sider) -%}
+{%- macro knapp(k, klinikk, sider, paaPetrol) -%}
   {%- set stil = stilFor(k, klinikk) | trim -%}
-  {%- if k.stil == 'invers' and k.handling != 'telefon' %}{% set stil = 'invers' %}{% endif -%}
+  {%- if k.stil == 'invers' or (paaPetrol and stil == 'primaer') %}{% set stil = 'invers' %}{% endif -%}
   {%- set klasse = 'knapp' if stil == 'primaer' else ('knapp knapp-invers' if stil == 'invers' else 'knapp-sekundaer') -%}
   {%- if k.handling == 'bestilling' and klinikk.bestilling and klinikk.bestilling.url -%}
-    <a class="{{ klasse }}" href="{{ klinikk.bestilling.url }}" target="_blank" rel="noopener">{{ k.tekst }}<span aria-hidden="true">↗</span></a>
+    <a class="{{ klasse }}" href="{{ klinikk.bestilling.url }}" target="_blank" rel="noopener noreferrer">{{ k.tekst }}<svg class="knapp-pil" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2.5 9.5 9.5 2.5M4 2.5h5.5V8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
   {%- elif k.handling == 'telefon' and klinikk.telefon -%}
     <a class="{{ klasse }}" href="tel:{{ klinikk.telefon | replace(' ', '') }}">{{ k.tekst }}</a>
   {%- elif k.handling == 'intern' and (sider | finnesUrl(k.url)) -%}
@@ -29,17 +29,23 @@
   {%- endif -%}
 {%- endmacro -%}
 
-{%- macro knapperad(knapper, klinikk, sider, klasse) -%}
+{%- macro knapperad(knapper, klinikk, sider, klasse, paaPetrol) -%}
   {%- set synlige = knapper | synlige(klinikk, sider) -%}
-  {%- if synlige.length > 0 %}<div class="{{ klasse }}">{% for k in synlige %}{{ knapp(k, klinikk, sider) }}{% endfor %}</div>{% endif -%}
+  {%- if synlige.length > 0 %}<div class="{{ klasse }}">{% for k in synlige %}{{ knapp(k, klinikk, sider, paaPetrol) }}{% endfor %}</div>{% endif -%}
 {%- endmacro -%}
 
-{#- Linjen om at digital timebestilling åpner — vises kun så lenge portalen
-    ikke er live, og bare der knapperaden faktisk har en bestillingsknapp. -#}
+{#- Linjen under knapperaden: så lenge portalen ikke er live, setningen om
+    at digital timebestilling åpner; når den er live, klinikkens egen
+    setning om hvor brukeren sendes. Bare der raden faktisk har en
+    bestillingsknapp — ellers står det ingenting. -#}
 {%- macro bestillingsvarsel(knapper, klinikk, ui, klasse) -%}
   {%- set harBestilling = false -%}
   {%- for k in knapper %}{% if k.handling == 'bestilling' %}{% set harBestilling = true %}{% endif %}{% endfor -%}
-  {%- if harBestilling and not (klinikk.bestilling and klinikk.bestilling.url) -%}
+  {%- if harBestilling -%}
+    {%- if klinikk.bestilling and klinikk.bestilling.url -%}
+      {%- if klinikk.bestilling.merknad %}<p class="{{ klasse }}">{{ klinikk.bestilling.merknad }}</p>{% endif -%}
+    {%- else -%}
     <p class="{{ klasse }}">{{ ui.bestilling_apner }}</p>
+    {%- endif -%}
   {%- endif -%}
 {%- endmacro -%}

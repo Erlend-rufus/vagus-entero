@@ -1,10 +1,13 @@
 # Navn på leverandører (journal- og utstyrsleverandører) skal ikke
 # forekomme i repoet — omtal dem som kategori i stedet.
-Olympus
-Infodoc
-Storz
+# «*» bak et navn betyr fri endelse: bøyninger og sammensetninger («-et»,
+# «-s», «-utstyr») fanges også. Uten «*» kreves ordgrense på begge sider.
+Olympus*
+Infodoc*
+Storz*
 Pentax Medical
+Pentax*
 # Pasientportal-/journalleverandør: navnet skal ikke stå i pasientteksten.
 # Skal portalen likevel navngis når timebestilling åpnes, er det en bevisst
 # beslutning som føres i unntak/leverandorer.txt.
-Pasientsky
+Pasientsky*

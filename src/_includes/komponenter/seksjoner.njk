@@ -4,34 +4,58 @@
 {#- Én gren per blokktype i innholdskontrakten. Blokkene kommer ferdig
     validert fra bygget, så malene trenger ingen fallback — mangler noe,
     har bygget allerede stoppet. Alt rendres inline: en {% include %} inne i
-    en makro ser ikke makroens egne variabler. -#}
+    en makro ser ikke makroens egne variabler.
+
+    Prosa går gjennom filteret «tekst»: det escaper alt, gjør [tekst](/url/)
+    til intern lenke og linjeskift til <br>. Ingen annen HTML slipper inn. -#}
+
+{#- Pristabellen brukes to steder: som egen seksjon (prisliste, med caption
+    og kolonnehoder) og kompakt inne i prisblokken. Rader uten beløp vises
+    aldri med beløp — finnes ingen beløp, faller beløpskolonnen bort og
+    tabellen viser bare tjenestene. -#}
+{%- macro pristabell(priser, kolonner, tabellmerknad, klasse) -%}
+  {%- set medBelop = priser | medBelop -%}
+  {%- set visBelop = medBelop.length > 0 -%}
+  {%- set rader = medBelop if visBelop else priser -%}
+  <table class="pristabell{{ (' ' + klasse) if klasse else '' }}">
+    {%- if tabellmerknad and visBelop %}
+    <caption>{{ tabellmerknad | tekst | safe }}</caption>
+    {%- endif %}
+    {%- if kolonner %}
+    <thead><tr><th scope="col">{{ kolonner.tjeneste }}</th><th scope="col">{{ kolonner.omfang }}</th>{% if visBelop %}<th scope="col" class="pris-belop">{{ kolonner.pris }}</th>{% endif %}</tr></thead>
+    {%- endif %}
+    <tbody>
+      {%- for rad in rader %}
+      <tr><th scope="row">{{ rad.navn }}{% if rad.merknad %} <span class="pris-merknad">({{ rad.merknad }})</span>{% endif %}</th>{% if kolonner %}<td class="pris-omfang">{{ rad.omfang if rad.omfang else '' }}</td>{% endif %}{% if visBelop %}<td class="pris-belop">{{ rad.belop_nok | kroner }}</td>{% endif %}</tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+{%- endmacro -%}
 
 {%- macro seksjoner(blokker, klinikk, sider, ui) -%}
   {%- for blokk in blokker %}
   {%- if blokk.type == 'pris' %}
+  {%- set medBelop = (blokk.priser | medBelop) if blokk.priser else [] %}
+  {%- set harSide = blokk.sidekolonne or medBelop.length > 0 %}
   <section class="{{ 'flate-sand' if blokk.flate == 'sand' else '' }}">
     <div class="seksjon-indre">
-      <div class="prisblokk">
-        <div>
+      <div class="prisblokk{{ '' if harSide else ' prisblokk-enkel' }}">
+        <div class="prisblokk-tekst">
           <h2>{{ blokk.tittel }}</h2>
           {%- for avsnitt in blokk.avsnitt %}
-          <p>{{ avsnitt }}</p>
+          <p>{{ avsnitt | tekst | safe }}</p>
           {%- endfor %}
-          {%- if blokk.knapper %}{{ knapperad(blokk.knapper, klinikk, sider, 'prisblokk-handlinger') }}{% endif %}
+          {%- if blokk.knapper %}{{ knapperad(blokk.knapper, klinikk, sider, 'prisblokk-handlinger', true) }}{% endif %}
         </div>
-        {%- set medBelop = [] %}
-        {%- for pris in blokk.priser %}{% if pris.belop_nok %}{% set _ = medBelop.append(pris) %}{% endif %}{% endfor %}
-        {%- if medBelop.length > 0 %}
-        <table class="pristabell">
-          <tbody>
-            {%- for pris in medBelop %}
-            <tr>
-              <td>{{ pris.navn }}{% if pris.merknad %}<span class="pris-merknad"> · {{ pris.merknad }}</span>{% endif %}</td>
-              <td class="pris-belop">{{ pris.belop_nok | kroner }}</td>
-            </tr>
-            {%- endfor %}
-          </tbody>
-        </table>
+        {%- if blokk.sidekolonne %}
+        <div class="prisblokk-side">
+          <p class="prisblokk-etikett">{{ blokk.sidekolonne.etikett }}</p>
+          {%- for avsnitt in blokk.sidekolonne.avsnitt %}
+          <p>{{ avsnitt | tekst | safe }}</p>
+          {%- endfor %}
+        </div>
+        {%- elif medBelop.length > 0 %}
+        {{ pristabell(blokk.priser, null, null, 'pristabell-kompakt') }}
         {%- endif %}
       </div>
     </div>
@@ -39,19 +63,21 @@
   {%- else %}
   <section class="{{ 'flate-sand' if blokk.flate == 'sand' else '' }}">
     <div class="seksjon-indre sek">
-      {%- if blokk.type != 'kort_bred' %}
+      {#- kort_bred uten «under» er forsidens mønster: overskriften står inne i
+          kortet. Med «under» står overskrift og undertekst over kortet. -#}
+      {%- if blokk.type != 'kort_bred' or blokk.under %}
       <h2>{{ blokk.tittel }}</h2>
       {%- endif %}
       {%- if blokk.under %}
-      <p class="under">{{ blokk.under }}</p>
+      <p class="under">{{ blokk.under | tekst | safe }}</p>
       {%- endif %}
 
       {%- if blokk.type == 'tekst' %}
         {%- for avsnitt in blokk.avsnitt %}
-        <p>{{ avsnitt }}</p>
+        <p>{{ avsnitt | tekst | safe }}</p>
         {%- endfor %}
         {%- if blokk.merknad %}
-        <p class="merknad">{{ blokk.merknad }}</p>
+        <p class="merknad">{{ blokk.merknad | tekst | safe }}</p>
         {%- endif %}
 
       {%- elif blokk.type == 'tidslinje' %}
@@ -60,9 +86,12 @@
         {%- endif %}
         <ol class="tidslinje">
           {%- for punkt in blokk.punkter %}
-          <li><span class="naar">{{ punkt.naar }}</span><p>{{ punkt.tekst }}</p></li>
+          <li><span class="naar">{{ punkt.naar }}</span><p>{{ punkt.tekst | tekst | safe }}</p></li>
           {%- endfor %}
         </ol>
+        {%- if blokk.etter %}
+        <p class="tidslinje-etter">{{ blokk.etter | tekst | safe }}</p>
+        {%- endif %}
 
       {%- elif blokk.type == 'steg' %}
         {%- if blokk.strek %}
@@ -70,14 +99,14 @@
         {%- endif %}
         <ol class="steg">
           {%- for steg in blokk.steg %}
-          <li><span class="steg-nr" aria-hidden="true">{{ loop.index }}</span><h3>{{ steg.tittel }}</h3><p>{{ steg.tekst }}</p></li>
+          <li><span class="steg-nr" aria-hidden="true">{{ loop.index }}</span><h3>{{ steg.tittel }}</h3><p>{{ steg.tekst | tekst | safe }}</p></li>
           {%- endfor %}
         </ol>
 
       {%- elif blokk.type == 'sporsmal' %}
         <div class="sporsmal">
           {%- for par in blokk.sporsmal %}
-          <details><summary>{{ par.sporsmal }}</summary><div class="svar"><p>{{ par.svar }}</p></div></details>
+          <details><summary>{{ par.sporsmal }}</summary><div class="svar"><p>{{ par.svar | tekst | safe }}</p></div></details>
           {%- endfor %}
         </div>
 
@@ -87,13 +116,13 @@
           <li class="vei">
             {%- if vei.illustrasjon %}{{ merke(vei.illustrasjon, 'vei-illustrasjon', 72) }}{% endif %}
             <h3>{{ vei.tittel }}</h3>
-            {%- for avsnitt in vei.avsnitt %}
-            <p>{{ avsnitt }}</p>
-            {%- endfor %}
             {%- if vei.liten %}
-            <p class="liten">{{ vei.liten }}</p>
+            <p class="liten">{{ vei.liten | tekst | safe }}</p>
             {%- endif %}
-            {%- if vei.knapp %}{{ knapp(vei.knapp, klinikk, sider) }}{% endif %}
+            {%- for avsnitt in vei.avsnitt %}
+            <p>{{ avsnitt | tekst | safe }}</p>
+            {%- endfor %}
+            {%- if vei.knapp %}{{ knapp(vei.knapp, klinikk, sider, false) }}{% endif %}
           </li>
           {%- endfor %}
         </ul>
@@ -101,9 +130,12 @@
       {%- elif blokk.type == 'praktisk' %}
         <ul class="praktisk">
           {%- for punkt in blokk.punkter %}
-          <li><h3>{{ punkt.tittel }}</h3><p>{{ punkt.tekst }}</p></li>
+          <li><h3>{{ punkt.tittel }}</h3><p>{{ punkt.tekst | tekst | safe }}</p></li>
           {%- endfor %}
         </ul>
+        {%- if blokk.merknad %}
+        <p class="merknad">{{ blokk.merknad | tekst | safe }}</p>
+        {%- endif %}
 
       {%- elif blokk.type == 'kort' %}
         <ul class="kortliste">
@@ -129,13 +161,21 @@
         <div class="kort-bred">
           {%- if blokk.illustrasjon %}{{ merke(blokk.illustrasjon, '', 96) }}{% endif %}
           <div>
+            {%- if not blokk.under %}
             <h2>{{ blokk.tittel }}</h2>
+            {%- endif %}
             {%- for avsnitt in blokk.avsnitt %}
-            <p>{{ avsnitt }}</p>
+            <p>{{ avsnitt | tekst | safe }}</p>
             {%- endfor %}
           </div>
-          {%- if blokk.knapp %}{{ knapp(blokk.knapp, klinikk, sider) }}{% endif %}
+          {%- if blokk.knapp %}{{ knapp(blokk.knapp, klinikk, sider, false) }}{% endif %}
         </div>
+
+      {%- elif blokk.type == 'prisliste' %}
+        {{ pristabell(blokk.priser, blokk.kolonner if blokk.kolonner else null, blokk.tabellmerknad if blokk.tabellmerknad else null, '') }}
+        {%- if blokk.merknad %}
+        <p class="merknad">{{ blokk.merknad | tekst | safe }}</p>
+        {%- endif %}
       {%- endif %}
     </div>
   </section>

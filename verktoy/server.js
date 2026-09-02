@@ -55,6 +55,6 @@ http
       res.end(innhold);
     }
   })
-  .listen(port, () => {
+  .listen(port, '127.0.0.1', () => {
     console.log(`Serverer ${katalog} på http://localhost:${port}`);
   });

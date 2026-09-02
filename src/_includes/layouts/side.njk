@@ -8,15 +8,15 @@ layout: layouts/base.njk
 <div class="seksjon-indre">
   {% include "komponenter/brodsmulesti.njk" %}
 
-  <div class="sidehode">
+  <div class="sidehode{{ ' sidehode-forside' if sidetype == 'forside' else '' }}{{ '' if illustrasjon else ' sidehode-enkel' }}">
     <div>
       <h1>{{ tittel }}</h1>
       {%- if ingress %}
-      <p class="ingress">{{ ingress }}</p>
+      <p class="ingress">{{ ingress | tekst | safe }}</p>
       {%- endif %}
-      {%- if hode_knapper %}{{ knapperad(hode_knapper, klinikk, collections.innhold, 'hode-handlinger') }}{{ bestillingsvarsel(hode_knapper, klinikk, ui, 'hode-merknad') }}{% endif %}
-      {%- if hode_knapper and klinikk.bestilling and klinikk.bestilling.merknad %}
-      <p class="hode-merknad">{{ klinikk.bestilling.merknad }}</p>
+      {%- if hode_knapper %}{{ knapperad(hode_knapper, klinikk, collections.innhold, 'hode-handlinger', false) }}{{ bestillingsvarsel(hode_knapper, klinikk, ui, 'hode-merknad') }}{% endif %}
+      {%- if hode_merknad %}
+      <p class="hode-merknad">{{ hode_merknad | tekst | safe }}</p>
       {%- endif %}
     </div>
     {%- if illustrasjon %}
@@ -39,26 +39,6 @@ layout: layouts/base.njk
 {{ content | safe }}
   </div>
 </div>
-{%- endif %}
-
-{%- if sidetype == 'pris' %}
-{%- set medBelop = [] %}
-{%- for linje in priser %}{% if linje.belop_nok %}{% set _ = medBelop.append(linje) %}{% endif %}{% endfor %}
-{%- if medBelop.length > 0 %}
-<div class="seksjon-indre sek">
-  <table class="pristabell">
-    <caption class="skjult">{{ tittel }}</caption>
-    <tbody>
-      {%- for linje in medBelop %}
-      <tr>
-        <th scope="row">{{ linje.navn }}{% if linje.merknad %} <span class="pris-merknad">({{ linje.merknad }})</span>{% endif %}</th>
-        <td class="pris-belop">{{ linje.belop_nok | kroner }}</td>
-      </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
-</div>
-{%- endif %}
 {%- endif %}
 
 {%- if seksjoner %}

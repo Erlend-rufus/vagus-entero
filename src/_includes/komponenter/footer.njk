@@ -27,14 +27,14 @@
       {%- endif %}
     </div>
     <div>
-      {%- if klinikk.telefon or klinikk.epost %}
+      {%- if klinikk.telefon or klinikk.epost or collections.bunn.length > 0 %}
       <span class="bunn-navn">{{ ui.kontakt }}</span>
+      {%- endif %}
       {%- if klinikk.telefon %}
       <p><a href="tel:{{ klinikk.telefon | replace(' ', '') }}">{{ klinikk.telefon }}</a></p>
       {%- endif %}
       {%- if klinikk.epost %}
       <p><a href="mailto:{{ klinikk.epost }}">{{ klinikk.epost }}</a></p>
-      {%- endif %}
       {%- endif %}
       {%- if collections.bunn.length > 0 %}
       <ul>
@@ -67,6 +67,6 @@
       </dl>
     </div>
     {%- endif %}
-    {{ knapperad(toppknapper, klinikk, collections.innhold, 'bunn-handlinger') }}
+    {{ knapperad(toppknapper, klinikk, collections.innhold, 'bunn-handlinger', false) }}
   </div>
 </footer>

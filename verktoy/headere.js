@@ -23,6 +23,14 @@ export function lagHeadersInnhold(miljo, policy = lesPolicy()) {
     linjer.push(`  Basic-Auth: ${miljo.basicAuthBruker}:${miljo.basicAuthPassord}`);
   }
 
+  // Mellomlagring: HTML revalideres alltid (innhold kan trekkes tilbake),
+  // fonter, stiler og bilder er stabile filer og kan ligge en uke i
+  // nettleseren. Ingen «immutable» — filnavnene er ikke innholdshashet.
+  linjer.push(`  Cache-Control: ${policy.cache.html}`);
+  for (const [sti, verdi] of Object.entries(policy.cache.stier)) {
+    linjer.push(sti, `  Cache-Control: ${verdi}`);
+  }
+
   return linjer.join('\n') + '\n';
 }
 

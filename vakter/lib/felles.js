@@ -9,6 +9,7 @@ import path from 'node:path';
 // - binærkataloger (fonter, bilder) og genererte kataloger
 const ALLTID_UNNTATT = [
   '.git',
+  '.claude/worktrees',
   'node_modules',
   'dist',
   'dist-produksjon',
@@ -83,18 +84,22 @@ export function lesManifest(distKatalog) {
 }
 
 // Leser en ordliste: én oppføring per linje, # er kommentar, tom linje hoppes
-// over. Prefikset ~ betyr bevisst delstrengtreff (ellers ordgrense).
+// over. Tre matchemåter:
+//   ord      ordgrense på begge sider (standard)
+//   ord*     ordgrense foran, fri endelse bak — for egennavn som bøyes og
+//            settes sammen («Navnet», «Navnets», «Navnet-utstyr»)
+//   ~ord     bevisst delstrengtreff hvor som helst
 export function lesOrdliste(sti) {
   if (!fs.existsSync(sti)) return [];
   return lesTekst(sti)
     .split('\n')
     .map((linje) => linje.trim())
     .filter((linje) => linje.length > 0 && !linje.startsWith('#'))
-    .map((linje) =>
-      linje.startsWith('~')
-        ? { tekst: linje.slice(1).trim(), delstreng: true }
-        : { tekst: linje, delstreng: false }
-    );
+    .map((linje) => {
+      if (linje.startsWith('~')) return { tekst: linje.slice(1).trim(), delstreng: true, endelse: false };
+      if (linje.endsWith('*')) return { tekst: linje.slice(0, -1).trim(), delstreng: false, endelse: true };
+      return { tekst: linje, delstreng: false, endelse: false };
+    });
 }
 
 function unnslipp(tekst) {
@@ -108,6 +113,9 @@ export function lagMonster(oppforing) {
   const kjerne = unnslipp(oppforing.tekst).replace(/\s+/g, '\\s+');
   if (oppforing.delstreng) {
     return new RegExp(kjerne, 'giu');
+  }
+  if (oppforing.endelse) {
+    return new RegExp(`(?<![\\p{L}\\p{N}])${kjerne}`, 'giu');
   }
   return new RegExp(`(?<![\\p{L}\\p{N}])${kjerne}(?![\\p{L}\\p{N}])`, 'giu');
 }

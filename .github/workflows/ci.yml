@@ -2,6 +2,11 @@
 # Se docs/VAKTER.md for hvordan forbudslistene utvides.
 name: CI
 
+# GITHUB_TOKEN får bare lese: ingen jobb her skriver til repoet, og en
+# kompromittert avhengighet skal ikke kunne gjøre det heller.
+permissions:
+  contents: read
+
 on:
   push:
     branches: ['**']
@@ -16,15 +21,15 @@ jobs:
     if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version-file: .nvmrc
           cache: npm
 
-      - name: Installer avhengigheter (låst)
-        run: npm ci
+      - name: Installer avhengigheter (låst, uten installasjonsskript)
+        run: npm ci --ignore-scripts
 
       - name: Vaktenes selvtester
         run: npm test
@@ -44,13 +49,13 @@ jobs:
           node vakter/kjor-alle.js --dist dist-produksjon
 
       - name: Lenkesjekk (interne lenker og ankre, forhåndsvisningsvariant)
-        uses: lycheeverse/lychee-action@v2
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
         with:
           args: --offline --include-fragments --no-progress --root-dir ${{ github.workspace }}/dist dist
           fail: true
 
       - name: Lenkesjekk (interne lenker og ankre, produksjonsvariant)
-        uses: lycheeverse/lychee-action@v2
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
         with:
           args: --offline --include-fragments --no-progress --root-dir ${{ github.workspace }}/dist-produksjon dist-produksjon
           fail: true
@@ -63,7 +68,7 @@ jobs:
 
       - name: Lighthouse-rapporter ved brudd (alle kjøringer, til diagnose)
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: lighthouse-rapporter
           path: .lighthouseci/
@@ -73,17 +78,17 @@ jobs:
     if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           # Full historikk — commit-meldingsskannet feiler hvis klonen er grunn.
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version-file: .nvmrc
           cache: npm
 
-      - run: npm ci
+      - run: npm ci --ignore-scripts
 
       - name: Skann av commit-meldinger
         run: node vakter/kjor-alle.js --historikk
@@ -92,20 +97,20 @@ jobs:
     if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version-file: .nvmrc
           cache: npm
 
-      - run: npm ci
+      - run: npm ci --ignore-scripts
 
       - name: Bygg
         run: npx eleventy
 
       - name: Lenkesjekk (også eksterne mål)
-        uses: lycheeverse/lychee-action@v2
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
         with:
           args: --no-progress --cache --max-cache-age 1d --root-dir ${{ github.workspace }}/dist dist
           fail: true

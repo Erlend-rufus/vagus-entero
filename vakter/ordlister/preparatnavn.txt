@@ -5,19 +5,20 @@
 #
 # Slik utvider du listen: legg til ett navn per linje og lagre. Skriv ALDRI
 # selve navnet i commit-meldingen — skriv «utvid preparatnavn-listen».
-Wegovy
-Ozempic
-Rybelsus
-Mounjaro
-Zepbound
-Saxenda
-Victoza
-Trulicity
-Botox
-Dysport
-Bocouture
-Xeomin
-Azzalure
-Xenical
-Mysimba
-Contrave
+# «*» bak navnet betyr fri endelse: «-en», «-s» og sammensetninger fanges også.
+Wegovy*
+Ozempic*
+Rybelsus*
+Mounjaro*
+Zepbound*
+Saxenda*
+Victoza*
+Trulicity*
+Botox*
+Dysport*
+Bocouture*
+Xeomin*
+Azzalure*
+Xenical*
+Mysimba*
+Contrave*

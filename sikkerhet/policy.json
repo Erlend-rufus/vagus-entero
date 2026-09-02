@@ -22,5 +22,13 @@
     "Permissions-Policy": "accelerometer=(), autoplay=(), camera=(), display-capture=(), encrypted-media=(), fullscreen=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), usb=(), web-share=(), xr-spatial-tracking=(), browsing-topics=()",
     "Cross-Origin-Opener-Policy": "same-origin",
     "Cross-Origin-Resource-Policy": "same-origin"
+  },
+  "cache": {
+    "html": "public, max-age=0, must-revalidate",
+    "stier": {
+      "/fonter/*": "public, max-age=604800",
+      "/stiler/*": "public, max-age=86400",
+      "/bilder/*": "public, max-age=86400"
+    }
   }
 }

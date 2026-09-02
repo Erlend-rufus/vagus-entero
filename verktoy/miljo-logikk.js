@@ -3,16 +3,30 @@
 //
 // Regler (jf. docs/LANSERING.md):
 // - PRODUKSJON er den ene bevisste bryteren. Settes kun i Netlify-dashbordet,
-//   scopet til production-konteksten, på lanseringsdagen.
+//   scopet til production-konteksten, på lanseringsdagen. Den godtar bare
+//   verdien «1»: «0», «false» eller «nei» stopper bygget i stedet for å bli
+//   tolket som produksjon.
 // - CONTEXT settes av Netlify (production | deploy-preview | branch-deploy).
 //   Er CONTEXT satt og ulik "production", tvinges noindex uansett PRODUKSJON —
 //   previews kan aldri indekseres, uansett feilkonfigurasjon.
+// - CI_SYNTETISK lar CI teste produksjonsstien uten klinikkfakta. Den er
+//   ugyldig i et Netlify-bygg (NETLIFY=true): der finnes ingen «syntetisk»
+//   produksjon.
 // - Basic-Auth er VALGFRI (besluttet av Erlend 24.08.2026): settes
 //   PREVIEW_BRUKER/PREVIEW_PASSORD i Netlify, beskyttes alle ikke-produksjons-
 //   bygg automatisk; uten dem bygges de åpne, men alltid noindexet.
 
+function lesBryter(navn, verdi) {
+  if (verdi === undefined || verdi === '') return false;
+  const v = String(verdi).trim().toLowerCase();
+  if (v === '1' || v === 'true') return true;
+  throw new Error(
+    `${navn}=${verdi} er ikke en gyldig verdi. Sett ${navn}=1 for å slå på, eller fjern variabelen — «${verdi}» tolkes ikke stille som noe som helst.`
+  );
+}
+
 export function lesMiljo(env = process.env) {
-  const produksjonSatt = Boolean(env.PRODUKSJON);
+  const produksjonSatt = lesBryter('PRODUKSJON', env.PRODUKSJON);
   const context = env.CONTEXT || null;
   const kontekstErProduksjon = context === null || context === 'production';
 
@@ -20,7 +34,13 @@ export function lesMiljo(env = process.env) {
   const noindex = !produksjon;
 
   const siteUrl = env.SITE_URL || null;
-  const ciSyntetisk = Boolean(env.CI_SYNTETISK);
+
+  const ciSyntetisk = lesBryter('CI_SYNTETISK', env.CI_SYNTETISK);
+  if (ciSyntetisk && env.NETLIFY) {
+    throw new Error(
+      'CI_SYNTETISK er satt i et Netlify-bygg. Den bryteren finnes bare for CI-testing av produksjonsstien og skrur av lanseringsvaktene — fjern den fra Netlify-miljøet.'
+    );
+  }
 
   const basicAuthBruker = env.PREVIEW_BRUKER || null;
   const basicAuthPassord = env.PREVIEW_PASSORD || null;

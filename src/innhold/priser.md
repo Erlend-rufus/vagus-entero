@@ -30,28 +30,33 @@ seksjoner:
   - type: "prisliste"
     tittel: "Prisliste"
     under: "Prisene under er plassholdere. Fullstendig prisliste med totalpriser publiseres på denne siden før klinikken åpner, med tydelig beskjed om hva som er inkludert."
+    tabellmerknad: "Alle beløp er totalpriser inkludert merverdiavgift."
+    kolonner:
+      tjeneste: "Undersøkelse eller behandling"
+      omfang: "Inkludert"
+      pris: "Pris"
     priser:
       - navn: "Kikkertundersøkelse av spiserør og magesekk (gastroskopi)"
+        omfang: "[PLASSHOLDER: hva som er inkludert]"
         belop_nok: null
-        merknad: "[PLASSHOLDER: hva som er inkludert]"
       - navn: "Kikkertundersøkelse av tykktarmen (koloskopi)"
+        omfang: "[PLASSHOLDER]"
         belop_nok: null
-        merknad: "[PLASSHOLDER]"
       - navn: "Gastroskopi og koloskopi samme dag"
+        omfang: "[PLASSHOLDER]"
         belop_nok: null
-        merknad: "[PLASSHOLDER]"
       - navn: "Undersøkelse av endetarmen (anoskopi og rektoskopi)"
+        omfang: "[PLASSHOLDER]"
         belop_nok: null
-        merknad: "[PLASSHOLDER]"
       - navn: "Små inngrep ved endetarmsplager (proktologi)"
+        omfang: "[PLASSHOLDER]"
         belop_nok: null
-        merknad: "[PLASSHOLDER]"
       - navn: "Medisinsk utredning av overvekt og fedme, første konsultasjon"
+        omfang: "[PLASSHOLDER]"
         belop_nok: null
-        merknad: "[PLASSHOLDER]"
       - navn: "Vevsprøve og analyse"
+        omfang: "[PLASSHOLDER]"
         belop_nok: null
-        merknad: "[PLASSHOLDER]"
   - type: "praktisk"
     tittel: "Betaling, forsikring og avbestilling"
     flate: "sand"
@@ -72,8 +77,10 @@ seksjoner:
     tittel: "Er du usikker på hva du trenger?"
     avsnitt:
       - "Ring oss, eller la fastlegen din henvise deg. Vi går gjennom plagene dine og hvilken undersøkelse som er aktuell, før du bestiller."
-      - "Lovpålagt prisopplysning"
-      - "Prislisten over følger prisopplysningsforskriften § 10: totalpriser inkludert merverdiavgift, og hva som er inkludert i hver pris. Priser oppgis ikke i løpende tekst andre steder på nettstedet."
+    sidekolonne:
+      etikett: "Lovpålagt prisopplysning"
+      avsnitt:
+        - "Prislisten over følger prisopplysningsforskriften § 10: totalpriser inkludert merverdiavgift, og hva som er inkludert i hver pris. Priser oppgis ikke i løpende tekst andre steder på nettstedet."
     knapper:
       - tekst: "Bestill time"
         handling: "bestilling"
@@ -81,26 +88,4 @@ seksjoner:
       - tekst: "Ring oss"
         handling: "telefon"
         stil: "sekundaer"
-priser:
-  - navn: "Kikkertundersøkelse av spiserør og magesekk (gastroskopi)"
-    belop_nok: null
-    merknad: "[PLASSHOLDER: hva som er inkludert]"
-  - navn: "Kikkertundersøkelse av tykktarmen (koloskopi)"
-    belop_nok: null
-    merknad: "[PLASSHOLDER]"
-  - navn: "Gastroskopi og koloskopi samme dag"
-    belop_nok: null
-    merknad: "[PLASSHOLDER]"
-  - navn: "Undersøkelse av endetarmen (anoskopi og rektoskopi)"
-    belop_nok: null
-    merknad: "[PLASSHOLDER]"
-  - navn: "Små inngrep ved endetarmsplager (proktologi)"
-    belop_nok: null
-    merknad: "[PLASSHOLDER]"
-  - navn: "Medisinsk utredning av overvekt og fedme, første konsultasjon"
-    belop_nok: null
-    merknad: "[PLASSHOLDER]"
-  - navn: "Vevsprøve og analyse"
-    belop_nok: null
-    merknad: "[PLASSHOLDER]"
 ---

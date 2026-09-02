@@ -11,6 +11,13 @@ const LANSERINGSKRITISKE = ['juridisk_navn', 'org_nr', 'adresse', 'telefon', 'ep
 
 export function kjorDist(distKatalog) {
   const manifest = lesManifest(distKatalog);
+  // CI_SYNTETISK finnes bare for CI. Har bygget en Netlify-kontekst, er det
+  // et ekte deploy — da er «syntetisk» en feilkonfigurasjon, ikke et unntak.
+  if (manifest.ciSyntetisk && manifest.context !== null) {
+    return [
+      `byggmanifestet er merket ciSyntetisk i en Netlify-kontekst («${manifest.context}») — CI_SYNTETISK skal aldri settes i et deploy`
+    ];
+  }
   if (!manifest.produksjon || manifest.ciSyntetisk) return [];
 
   const klinikk = JSON.parse(fs.readFileSync('src/_data/klinikk.json', 'utf8'));

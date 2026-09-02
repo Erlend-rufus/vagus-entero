@@ -136,7 +136,8 @@
     },
     "sist_oppdatert": {
       "type": "string",
-      "format": "date"
+      "format": "date",
+      "description": "Redaksjonell datostempling. Lagres i frontmatter; vises ikke på siden ennå."
     },
     "ingress": {
       "anyOf": [
@@ -181,42 +182,8 @@
             "type": "boolean"
           }
         }
-      }
-    },
-    "priser": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "navn",
-          "belop_nok"
-        ],
-        "properties": {
-          "navn": {
-            "anyOf": [
-              {
-                "const": "[TEKST KOMMER]"
-              },
-              {
-                "type": "string",
-                "minLength": 2,
-                "maxLength": 120
-              }
-            ]
-          },
-          "belop_nok": {
-            "type": [
-              "number",
-              "null"
-            ],
-            "exclusiveMinimum": 0
-          },
-          "merknad": {
-            "type": "string"
-          }
-        }
-      }
+      },
+      "description": "Reservert: kontraktfelt uten visning ennå. Bygget feiler hvis listen ikke er tom — se docs/INNHOLDSKONTRAKT.md."
     },
     "illustrasjon": {
       "$ref": "#/$defs/illustrasjonsnavn"
@@ -298,6 +265,19 @@
     "noindex": {
       "type": "boolean",
       "description": "true holder siden ute av sitemap og setter noindex også i produksjon — for sider som er skrevet for en håndfull mottakere, ikke for søk."
+    },
+    "hode_merknad": {
+      "anyOf": [
+        {
+          "const": "[TEKST KOMMER]"
+        },
+        {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 300
+        }
+      ],
+      "description": "Valgfri merknadslinje under knappene i sidehodet (f.eks. «Sist oppdatert …» på personvernsiden)."
     }
   },
   "$defs": {
@@ -555,6 +535,19 @@
                   }
                 }
               }
+            },
+            "etter": {
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 20,
+                  "maxLength": 600
+                }
+              ],
+              "description": "Avsluttende avsnitt etter tidslinjen."
             }
           }
         },
@@ -899,6 +892,19 @@
                   }
                 }
               }
+            },
+            "merknad": {
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 400
+                }
+              ],
+              "description": "Dempet merknad under punktene."
             }
           }
         },
@@ -1123,10 +1129,11 @@
                   },
                   "belop_nok": {
                     "type": [
-                      "number",
+                      "integer",
                       "null"
                     ],
-                    "exclusiveMinimum": 0
+                    "exclusiveMinimum": 0,
+                    "description": "Totalpris i hele kroner inkl. mva, eller null når prisen ikke er fastsatt (raden vises da uten beløp)."
                   },
                   "merknad": {
                     "anyOf": [
@@ -1140,6 +1147,32 @@
                       }
                     ]
                   }
+                }
+              }
+            },
+            "sidekolonne": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "etikett",
+                "avsnitt"
+              ],
+              "description": "Høyre kolonne i prisblokken: en kort uthevet etikett («Merk», «Praktisk») og avsnitt. Finnes den, vises ingen tabell i blokken.",
+              "properties": {
+                "etikett": {
+                  "anyOf": [
+                    {
+                      "const": "[TEKST KOMMER]"
+                    },
+                    {
+                      "type": "string",
+                      "minLength": 3,
+                      "maxLength": 60
+                    }
+                  ]
+                },
+                "avsnitt": {
+                  "$ref": "#/$defs/avsnitt"
                 }
               }
             }
@@ -1211,14 +1244,7 @@
                       }
                     ]
                   },
-                  "belop_nok": {
-                    "type": [
-                      "number",
-                      "null"
-                    ],
-                    "exclusiveMinimum": 0
-                  },
-                  "merknad": {
+                  "omfang": {
                     "anyOf": [
                       {
                         "const": "[TEKST KOMMER]"
@@ -1229,9 +1255,91 @@
                         "maxLength": 200
                       }
                     ]
+                  },
+                  "belop_nok": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ],
+                    "exclusiveMinimum": 0,
+                    "description": "Totalpris i hele kroner inkl. mva, eller null når prisen ikke er fastsatt (raden vises da uten beløp)."
                   }
                 }
               }
+            },
+            "kolonner": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "tjeneste",
+                "omfang",
+                "pris"
+              ],
+              "description": "Kolonnehodene i tabellen: tjeneste, omfang (hva som er inkludert) og pris.",
+              "properties": {
+                "tjeneste": {
+                  "anyOf": [
+                    {
+                      "const": "[TEKST KOMMER]"
+                    },
+                    {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 60
+                    }
+                  ]
+                },
+                "omfang": {
+                  "anyOf": [
+                    {
+                      "const": "[TEKST KOMMER]"
+                    },
+                    {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 60
+                    }
+                  ]
+                },
+                "pris": {
+                  "anyOf": [
+                    {
+                      "const": "[TEKST KOMMER]"
+                    },
+                    {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 40
+                    }
+                  ]
+                }
+              }
+            },
+            "tabellmerknad": {
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 200
+                }
+              ],
+              "description": "Synlig tabelltekst (caption) som vises når tabellen har beløp, f.eks. at beløpene er totalpriser inkl. mva."
+            },
+            "merknad": {
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 400
+                }
+              ],
+              "description": "Dempet merknad under tabellen."
             }
           }
         }

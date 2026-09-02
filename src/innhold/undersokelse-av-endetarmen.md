@@ -49,6 +49,7 @@ seksjoner:
         tekst: "[PLASSHOLDER: om klinikken ber om tømming med klystér før timen, og når det i så fall skal gjøres.]"
       - naar: "Selve timen"
         tekst: "Møt 15 minutter før avtalt tid. Ta med legitimasjon og oversikt over faste medisiner."
+    etter: "Vi vet at mange gruer seg til denne undersøkelsen. Du er alene med legen og en sykepleier i rommet, du får dekke over deg, og du bestemmer tempoet. Si fra når som helst hvis du vil ta en pause."
   - type: "steg"
     tittel: "Slik foregår undersøkelsen"
     flate: "sand"

@@ -25,5 +25,13 @@ export function kjorDist(distKatalog) {
       feil.push(`_headers: «${navnet}» mangler eller avviker fra sikkerhet/policy.json`);
     }
   }
+  if (!headers.includes(`Cache-Control: ${policy.cache.html}`)) {
+    feil.push('_headers: Cache-Control for HTML mangler eller avviker fra sikkerhet/policy.json');
+  }
+  for (const [sti, verdi] of Object.entries(policy.cache.stier)) {
+    if (!headers.includes(`${sti}\n  Cache-Control: ${verdi}`)) {
+      feil.push(`_headers: Cache-Control for «${sti}» mangler eller avviker fra sikkerhet/policy.json`);
+    }
+  }
   return feil;
 }
