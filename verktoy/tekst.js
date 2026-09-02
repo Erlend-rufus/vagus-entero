@@ -3,7 +3,7 @@
 // [tekst](/sti/) og linjeskift (\n → <br>). Ingen annen HTML slipper inn i
 // utdataene fra tekstfeltene — pasienttekst er innhold, ikke kode.
 
-export const LENKE = /\[([^\]\n]+)\]\((\/[a-z0-9/-]*)\)/g;
+export const LENKE = /\[([^\]\n]+)\]\((\/(?!\/)[a-z0-9/-]*)\)/g;
 
 function escapeHtml(tekst) {
   return tekst

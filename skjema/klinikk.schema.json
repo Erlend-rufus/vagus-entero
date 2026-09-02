@@ -26,21 +26,24 @@
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "minLength": 2
     },
     "visningsnavn": {
       "type": [
         "string",
         "null"
       ],
-      "description": "Navnet klinikken markedsfoeres under, brukt i topp og bunn. Det juridiske navnet staar i tillegg i bunnteksten (ehandelsloven § 9)."
+      "description": "Navnet klinikken markedsfoeres under, brukt i topp og bunn. Det juridiske navnet staar i tillegg i bunnteksten (ehandelsloven § 9).",
+      "minLength": 2
     },
     "kortnavn": {
       "type": [
         "string",
         "null"
       ],
-      "description": "Kortformen som brukes som tittelsuffiks: «Koloskopi på Straume | Vagus Entero»."
+      "description": "Kortformen som brukes som tittelsuffiks: «Koloskopi på Straume | Vagus Entero».",
+      "minLength": 2
     },
     "domene": {
       "type": [
@@ -62,7 +65,8 @@
         "string",
         "null"
       ],
-      "description": "Setningen om merverdiavgift i bunnteksten (ehandelsloven § 8). Teksten leveres av innholdsprosessen; null utelater linjen."
+      "description": "Setningen om merverdiavgift i bunnteksten (ehandelsloven § 8). Teksten leveres av innholdsprosessen; null utelater linjen.",
+      "minLength": 2
     },
     "adresse": {
       "type": [
@@ -77,14 +81,16 @@
       ],
       "properties": {
         "gate": {
-          "type": "string"
+          "type": "string",
+          "minLength": 2
         },
         "postnummer": {
           "type": "string",
           "pattern": "^[0-9]{4}$"
         },
         "poststed": {
-          "type": "string"
+          "type": "string",
+          "minLength": 2
         }
       }
     },
@@ -92,7 +98,9 @@
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "minLength": 2,
+      "pattern": "^\\+?[0-9][0-9 ]{6,}$"
     },
     "epost": {
       "type": [
@@ -113,10 +121,12 @@
       ],
       "properties": {
         "navn": {
-          "type": "string"
+          "type": "string",
+          "minLength": 2
         },
         "hpr_nummer": {
-          "type": "string"
+          "type": "string",
+          "minLength": 2
         },
         "spesialitet": {
           "type": "string"
@@ -141,25 +151,29 @@
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "minLength": 2
         },
         "land": {
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "minLength": 2
         },
         "tillatelse": {
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "minLength": 2
         },
         "myndighet": {
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "minLength": 2
         }
       }
     },

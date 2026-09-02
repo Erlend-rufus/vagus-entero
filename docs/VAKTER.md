@@ -69,7 +69,7 @@ det punktet. Nye synder fanges alltid.
 | `lagring` | forsøk på lagring i brukerutstyr (nettstedet skal ikke lagre noe som helst) |
 | `norsk-i-maler` | litterær tekst i maler — alt synlig språk skal komme fra `ui.json` eller innholdsfiler |
 | `ui-kryssjekk` | maloppslag uten nøkkel i `ui.json`, og døde nøkler |
-| `eksterne-verter` | enhver referanse til andre domener i bygde utdata — i attributter, `srcset`, `<meta content>`, CSS, JavaScript, innebygde `<style>`/`<script>`-blokker og SVG-filer, også protokollrelative `//`-adresser (hvitelisten er tom) |
+| `eksterne-verter` | enhver referanse til andre domener i bygde utdata — i attributter, `srcset`, `<meta content>`, CSS (også `image-set()` og CSS-escapes), JavaScript (også `\u`-escaping), innebygde `<style>`/`<script>`-blokker og SVG-filer, også protokollrelative `//`- og `\\`-adresser (hvitelisten er tom) |
 | `innebygd-kode` | `<script>` utenfor JSON-LD, `<style>`, `style=`, `on*`-attributter, `javascript:`, rammer, skjemaelementer, meta refresh og `ping` i bygd HTML — nettstedet har ingen innebygd kode |
 | `jsonld` | forbudte eller ukjente typer i strukturerte data; null-verdier som skulle vært utelatt |
 | `lenker` | interne lenker uten mål i bygget |
@@ -85,6 +85,15 @@ har minst én test som planter et brudd og krever at vakten fanger det, med
 sjekk på hvilken melding som kom — en vakt som slutter å virke, feiler
 dermed CI selv. Historikkskannet testes mot et midlertidig git-repo med
 egen baseline, uavhengig av baselinen i hovedrepoet.
+
+### Slik leses bygd HTML
+
+Vaktene `eksterne-verter`, `innebygd-kode`, `lenker` og `jsonld` leser HTML
+og SVG med en ekte HTML-parser (`parse5`, samme algoritme som nettleserne),
+ikke regulære uttrykk. Entiteter dekodes, attributter uten anførselstegn
+leses, og ved dupliserte attributter gjelder det første — akkurat som i
+nettleseren. Det er derfor ikke mulig å «skrive seg rundt» vaktene med
+uvanlig markup.
 
 ## Bevisste unntak fra skanning
 

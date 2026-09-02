@@ -14,7 +14,7 @@ Eleventy-prosjektet, og alt som ble bygget inn i det er intakt og kjører:
 | Innholdskontrakten | `skjema/innhold.schema.json`, forklart i `docs/INNHOLDSKONTRAKT.md` | hvert bygg (`eleventy.before`) — bygget stopper på brudd |
 | Forbudslistene | `vakter/ordlister/*.txt` (preparatnavn, ventetidsfraser, superlativer, leverandører, forsikringsselskaper, omtalesignaler, sporingssignaturer) | `vakter/ordliste-skann.js` mot kildefiler, bygd HTML og commit-meldinger |
 | Alle vaktene (18) | `vakter/*.js`, orkestrert av `vakter/kjor-alle.js` | GitHub Actions (`.github/workflows/ci.yml`) **og** Netlifys eget bygg (`npm run bygg`) |
-| Selvtestene (92) | `vakter/tester/kjor-selvtester.js` | `npm test`, i CI |
+| Selvtestene (111) | `vakter/tester/kjor-selvtester.js` | `npm test`, i CI |
 
 ClickUp-oppgaven «Next.js besluttet» (28.08) er ikke gjennomført. Ingen av
 rammene i den krever Next: statisk generering, JS-fri navigasjon, null
@@ -120,7 +120,7 @@ står som UTKAST og finnes bare i forhåndsvisning.
 | «Ring oss» primær til bookingen er live; «Bestill time» primær etterpå, med varsellinje | `komponenter/knapper.njk` — tilstanden avledes av `klinikk.bestilling.url`; linjen er `ui.bestilling_apner` (tekst kommer) |
 | Priser aldri i løpende tekst | vakten `priser-i-tekst`; prislisten har én kilde (`prisliste`-seksjonen), pristabellen rendres med caption og kolonnehoder |
 | Lenker i tekst bare internt; brødtekst uten rå HTML; frontmatter uten kode | `verktoy/tekst.js` (filteret `tekst`), `eleventy.config.js` (markdown `html: false`, `---js` avvist), vakten `innebygd-kode` |
-| Ingen innebygd kode, ingen ekstern last i noen form | vaktene `innebygd-kode` og `eksterne-verter` (attributter, `<meta content>`, `//`-adresser, innebygde blokker, SVG) |
+| Ingen innebygd kode, ingen ekstern last i noen form | vaktene `innebygd-kode`, `eksterne-verter`, `lenker` og `jsonld` leser HTML med ekte parser (`parse5`): attributter, `<meta content>`, `//`- og `\\`-adresser, entiteter, dupliserte attributter, innebygde blokker, SVG |
 | Datafilene er kontrakt | `vakter/lib/datavalidering.js` — `klinikk.json` og `ui.json` valideres mot skjema i hvert bygg og i CI |
 | Forsiden må være GODKJENT før noe publiseres | `eleventy.config.js` (`eleventy.before`), vakten `godkjent-status` |
 | CI-forsyningskjede låst | `.github/workflows/ci.yml`: actions pinnet til commit-SHA, `permissions: contents: read`, `npm ci --ignore-scripts` |
@@ -216,11 +216,16 @@ Tekst er ikke kodesesjonens; dette er observasjoner, ikke endringer:
   `--ignore-scripts`, Cache-Control. Kontrakt: `klinikk.json`/`ui.json`
   håndheves, plassholdere stopper GODKJENT, prisregelen ser alle seksjoner,
   `rekkefolge` entydig, `bilder`/`ventetid`/`apningstider` reservert,
-  `*`-endelse i ordlister, historikk-baseline i selvtestene, 92 selvtester.
+  `*`-endelse i ordlister, historikk-baseline i selvtestene, 111 selvtester.
   Innhold gjenopprettet ordrett fra designet (avsnitt, merknader, lenker,
   linjeskift, knappetekster på fagfolk-sidene, «Øygarden»). CSS-paritet mot
   artboardene (mobilrytme, prisblokk, pristabell, steg, faktastripe, hero).
   Fontsubsettet har nå midtprikk; pilen i «Bestill time» er inline SVG.
+  Etter adversarial etterprøving: HTML-vaktene lest med ekte parser
+  (`parse5`), alle JavaScript-motorer for frontmatter slått av, innholdssider
+  bare som `src/innhold/*.md`, passthrough bare for kjente filtyper,
+  markdown-lenker bare interne, produksjonsvakten sjekker disken mot
+  manifestet.
 - **02.09.2026** — Lighthouse i CI aggregerer per audit-median (to av tre
   kjøringer må bryte budsjettet); rapportene lastes opp som artefakt ved brudd.
 - **02.09.2026** — Grensesnittavtalen tatt inn: `[TEKST KOMMER]` i kontrakten

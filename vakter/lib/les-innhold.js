@@ -17,7 +17,9 @@ export function avvisKodeFrontmatter() {
 const PARSEOPSJONER = {
   engines: {
     js: avvisKodeFrontmatter,
-    javascript: avvisKodeFrontmatter
+    javascript: avvisKodeFrontmatter,
+    jsLegacy: avvisKodeFrontmatter,
+    node: avvisKodeFrontmatter
   }
 };
 

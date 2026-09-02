@@ -84,7 +84,11 @@ plassholdere som ligner på ekte tekst.
 10. `rekkefolge` må være entydig blant sidene i menyen, og blant sidene i
     bunnteksten.
 11. Frontmatter er YAML, aldri kode: filen må starte med en ren `---`-linje.
-    Brødteksten er markdown uten rå HTML — `<`-tegn vises som tekst.
+    Brødteksten er markdown uten rå HTML — `<`-tegn vises som tekst — og
+    markdown-lenker i brødteksten kan bare peke på egne sider (`/sti/`);
+    eksterne adresser, `mailto:` og `tel:` vises som tekst.
+12. Innholdsfiler finnes bare som `src/innhold/<navn>.md`. En fil med
+    `sidetype` et annet sted stopper bygget.
 
 ## Tekstpakken fra innholdsprosessen
 

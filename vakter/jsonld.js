@@ -1,4 +1,5 @@
 import { finnDistFiler, lesTekst } from './lib/felles.js';
+import { hentJsonldBlokker } from './lib/html.js';
 
 export const navn = 'jsonld';
 
@@ -44,16 +45,12 @@ function sjekkVerdier(node, sti, kilde, feil) {
 
 export function kjorDist(distKatalog) {
   const feil = [];
-  const monster = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi;
 
   for (const fil of finnDistFiler(distKatalog, ['.html'])) {
-    const html = lesTekst(fil);
-    monster.lastIndex = 0;
-    let m;
-    while ((m = monster.exec(html)) !== null) {
+    for (const blokk of hentJsonldBlokker(lesTekst(fil))) {
       let objekt;
       try {
-        objekt = JSON.parse(m[1]);
+        objekt = JSON.parse(blokk);
       } catch {
         feil.push(`${fil}: JSON-LD er ikke gyldig JSON`);
         continue;

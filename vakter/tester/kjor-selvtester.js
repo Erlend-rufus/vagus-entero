@@ -528,7 +528,7 @@ krev(
   );
   fs.writeFileSync(path.join(d, 'x.svg'), '<svg xmlns="http://www.w3.org/2000/svg"><image href="https://bilde.example/a.png"/><script>1</script></svg>');
   const ik = innebygdKode.kjorDist(d);
-  for (const [tekst, navn] of [['<script>', 'script'], ['<style>', 'style'], ['style=', 'style-attributt'], ['on*', 'on-attributt'], ['skjemaelement', 'form/iframe']]) {
+  for (const [tekst, navn] of [['<script>', 'script'], ['<style>', 'style'], ['style=', 'style-attributt'], ['hendelsesattributt', 'on-attributt'], ['skjemaelement', 'form/iframe']]) {
     krev(ik.some((m) => m.includes(tekst)), `innebygd-kode: fanger ${navn}`);
   }
   const ev = eksterneVerter.kjorDist(d);
@@ -596,6 +596,46 @@ krev(
   ordliste.kjorHistorikk({ repoRot: repo, kategorier: SYNTETISK_KATEGORI }).some((m) => m.includes('TESTFORBUDTORD')),
   'historikk: uten baseline i testrepoet skannes hele historikken'
 );
+
+
+// --- HTML-vaktene mot omgåelser: uten anførselstegn, entiteter, dupliserte attributter, backslash ---
+{
+  const midl = fs.mkdtempSync(path.join(os.tmpdir(), 'omgaaelse-'));
+  const d = path.join(midl, 'dist');
+  fs.mkdirSync(d, { recursive: true });
+  fs.writeFileSync(`${d}.manifest.json`, JSON.stringify({ produksjon: false, context: null, ciSyntetisk: false, basicAuthAktiv: false, siteUrl: null, sider: [] }));
+  fs.writeFileSync(
+    path.join(d, 'index.html'),
+    '<html><head><meta http-equiv=refresh content="0;url=https://omdirigert.example/">' +
+      '<script type="text/javascript" type="application/ld+json">fetch("https://dupl.example/")</script>' +
+      '<style>@import url(https:\\2f\\2f escapet.example/a.css); .x{background:image-set("https://sett.example/a.png" 1x)}</style></head>' +
+      '<body onload=x()><img src=//uten.example/a.png><a href="/\\backslash.example/x">b</a>' +
+      '<a href=&#106;avascript:alert(1)>c</a><img srcset="https://sett2.example/a.png 1x"><video poster="https://plakat.example/p.jpg"></video>' +
+      '<a href="mailto:post@example.invalid">m</a><a href="tel:12345678">t</a></body></html>'
+  );
+  fs.writeFileSync(path.join(d, 'x.svg'), '<svg xmlns="http://www.w3.org/2000/svg" onload="x()"><a href="javascript:alert(1)"><text>x</text></a></svg>');
+  const ik = innebygdKode.kjorDist(d);
+  krev(ik.some((m) => m.includes('meta refresh')), 'innebygd-kode: meta refresh uten anførselstegn');
+  krev(ik.some((m) => m.includes('<script> utenfor JSON-LD')), 'innebygd-kode: duplisert type-attributt teller som første (nettleserens regel)');
+  krev(ik.some((m) => m.includes('onload')), 'innebygd-kode: on-attributt uten anførselstegn');
+  krev(ik.some((m) => m.includes('kode-/data-URL')), 'innebygd-kode: javascript: skrevet med entitet');
+  krev(ik.some((m) => m.includes('x.svg') && m.includes('onload')), 'innebygd-kode: on-attributt i SVG-fil');
+  krev(ik.some((m) => m.includes('x.svg') && m.includes('kode-/data-URL')), 'innebygd-kode: javascript:-lenke i SVG-fil');
+  const ev = eksterneVerter.kjorDist(d);
+  for (const vert of ['omdirigert.example', 'dupl.example', 'escapet.example', 'sett.example', 'uten.example', 'backslash.example', 'sett2.example', 'plakat.example']) {
+    krev(ev.some((m) => m.includes(vert)), `eksterne-verter: fanger «${vert}»`);
+  }
+  krev(!ev.some((m) => m.includes('example.invalid') || m.includes('12345678')), 'eksterne-verter: mailto:/tel: er ikke eksterne verter');
+  krev(jsonld.kjorDist(d).length === 0, 'jsonld: skript med duplisert type leses ikke som JSON-LD');
+
+  fs.mkdirSync(path.join(d, 'katalog'), { recursive: true });
+  fs.writeFileSync(path.join(d, 'index.html'), '<a href=/katalog/>k</a><a href="/katalog">k2</a><img srcset="/finnes-ikke.png 1x">');
+  const lf = lenker.kjorDist(d);
+  krev(lf.some((m) => m.includes('/katalog/')), 'lenker: katalog uten index.html er ikke et mål');
+  krev(lf.some((m) => m.includes('/finnes-ikke.png')), 'lenker: srcset sjekkes');
+  fs.rmSync(midl, { recursive: true, force: true });
+}
+krev(formaterTekst('[x](//vert.example/)').includes('<a ') === false, 'tekst: protokollrelativt mål blir ikke lenke');
 
 fs.rmSync(tmp, { recursive: true, force: true });
 

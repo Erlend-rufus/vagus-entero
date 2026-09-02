@@ -1,4 +1,5 @@
-import { lesManifest } from './lib/felles.js';
+import path from 'node:path';
+import { finnDistFiler, lesManifest } from './lib/felles.js';
 
 export const navn = 'godkjent-status';
 
@@ -28,6 +29,16 @@ export function kjorDist(distKatalog) {
   }
   if (!manifest.ciSyntetisk && !manifest.sider.some((side) => side.url === '/')) {
     feil.push('produksjonsbygget mangler forsiden («/») — et nettsted uten forside skal ikke ut');
+  }
+  // Fasiten er disken: en HTML-fil som ikke kom fra en innholdsside i
+  // manifestet (passthrough-kopi, løs fil) har ingenting i produksjon å gjøre.
+  const kjente = new Set(manifest.sider.map((side) => side.url));
+  for (const fil of finnDistFiler(distKatalog, ['.html', '.htm', '.xhtml'])) {
+    const relativ = '/' + path.relative(distKatalog, fil).split(path.sep).join('/');
+    const url = relativ.endsWith('/index.html') ? relativ.slice(0, -'index.html'.length) : relativ;
+    if (!kjente.has(url)) {
+      feil.push(`${fil}: HTML-fil i produksjonsbygget som ikke er en innholdsside i manifestet — gaten har sviktet`);
+    }
   }
   return feil;
 }

@@ -20,7 +20,8 @@
     "@11ty/eleventy": "3.1.6",
     "ajv": "8.20.0",
     "ajv-formats": "3.0.1",
-    "gray-matter": "4.0.3"
+    "gray-matter": "4.0.3",
+    "parse5": "8.0.0"
   },
   "devDependencies": {
     "@lhci/cli": "0.15.1",

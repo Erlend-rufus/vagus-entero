@@ -34,18 +34,28 @@ export default function (eleventyConfig) {
   eleventyConfig.setFrontMatterParsingOptions({
     engines: {
       js: avvisKodeFrontmatter,
-      javascript: avvisKodeFrontmatter
+      javascript: avvisKodeFrontmatter,
+      jsLegacy: avvisKodeFrontmatter,
+      node: avvisKodeFrontmatter
     }
   });
 
   // Brødteksten under frontmatter er markdown uten rå HTML: <script>, on*-
   // attributter og skjema kan ikke skrives inn som tekst. Alt det innholdet
   // trenger (overskrifter, lister, interne lenker) finnes i markdown.
-  eleventyConfig.amendLibrary('md', (md) => md.set({ html: false, linkify: false }));
+  eleventyConfig.amendLibrary('md', (md) => {
+    md.set({ html: false, linkify: false });
+    // Lenker i brødteksten går bare til egne sider: ingen eksterne adresser,
+    // ingen mailto:/tel:, ingen protokollrelative «//»-mål. Alt annet
+    // rendres som tekst.
+    md.validateLink = (url) => /^\/(?!\/)[a-z0-9/-]*(?:#[a-z0-9-]+)?$/.test(url);
+  });
 
-  eleventyConfig.addPassthroughCopy('src/stiler');
-  eleventyConfig.addPassthroughCopy('src/fonter');
-  eleventyConfig.addPassthroughCopy('src/bilder');
+  // Bare kjente filtyper kopieres rett gjennom — en HTML- eller JS-fil som
+  // havner i src/bilder/ skal ikke bli en side i produksjon.
+  eleventyConfig.addPassthroughCopy('src/stiler/**/*.css');
+  eleventyConfig.addPassthroughCopy('src/fonter/**/*.{woff2,txt}');
+  eleventyConfig.addPassthroughCopy('src/bilder/**/*.{svg,png,jpg,webp,avif,ico}');
 
   // ---- Validering FØR bygget: hele innholdssettet, samlet -----------------
   eleventyConfig.on('eleventy.before', () => {
@@ -105,6 +115,15 @@ export default function (eleventyConfig) {
   const sidestatus = new Map();
   eleventyConfig.addPreprocessor('produksjonsgate', 'md,njk', (data, _innhold) => {
     if (data.sidetype) {
+      // Innholdssider finnes bare som src/innhold/*.md — det er de filene
+      // kontrakten validerer. En fil med sidetype et annet sted, eller en
+      // .njk med sidetype, ville gått forbi valideringen usignert.
+      const sti = data.page.inputPath.replace(/^\.\//, '');
+      if (!/^src\/innhold\/[^/]+\.md$/.test(sti)) {
+        throw new Error(
+          `${sti}: har sidetype, men ligger utenfor src/innhold/ eller er ikke en .md-fil. Innholdssider valideres bare der — flytt filen.`
+        );
+      }
       sidestatus.set(data.page.inputPath, {
         url: data.url,
         status: data.status,

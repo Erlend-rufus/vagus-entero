@@ -18,8 +18,7 @@
 
 function lesBryter(navn, verdi) {
   if (verdi === undefined || verdi === '') return false;
-  const v = String(verdi).trim().toLowerCase();
-  if (v === '1' || v === 'true') return true;
+  if (String(verdi) === '1') return true;
   throw new Error(
     `${navn}=${verdi} er ikke en gyldig verdi. Sett ${navn}=1 for å slå på, eller fjern variabelen — «${verdi}» tolkes ikke stille som noe som helst.`
   );
