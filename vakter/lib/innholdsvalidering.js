@@ -46,6 +46,9 @@ export function validerInnhold(sider) {
     }
 
     if (data.status === 'GODKJENT') {
+      if (JSON.stringify(data).includes('[TEKST KOMMER]')) {
+        meld(fil, 'status er GODKJENT, men siden inneholder «[TEKST KOMMER]» — plassholdere kan ikke godkjennes');
+      }
       if (!data.godkjent_av) {
         meld(fil, 'status er GODKJENT, men godkjent_av mangler — ingen signatur, ingen publisering');
       }

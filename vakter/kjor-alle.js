@@ -22,6 +22,8 @@ import * as godkjentStatus from './godkjent-status.js';
 import * as klinikkLansering from './klinikk-lansering.js';
 import * as noindex from './noindex.js';
 import * as headere from './headere.js';
+import * as tekstKommer from './tekst-kommer.js';
+import * as priserITekst from './priser-i-tekst.js';
 
 const args = process.argv.slice(2);
 const distKataloger = [];
@@ -50,7 +52,8 @@ const kjoringer = [
   { navn: 'sporing (kildefiler)', fn: () => sporing.kjorKilde() },
   { navn: 'lagring (kildefiler)', fn: () => lagring.kjorKilde() },
   { navn: 'norsk-i-maler', fn: () => norskIMaler.kjorKilde() },
-  { navn: 'ui-kryssjekk', fn: () => uiKryssjekk.kjorKilde() }
+  { navn: 'ui-kryssjekk', fn: () => uiKryssjekk.kjorKilde() },
+  { navn: 'priser-i-tekst', fn: () => priserITekst.kjorKilde() }
 ];
 
 if (historikk) {
@@ -68,7 +71,8 @@ for (const dist of distKataloger) {
     { navn: `godkjent-status (${dist})`, fn: () => godkjentStatus.kjorDist(dist) },
     { navn: `klinikk-lansering (${dist})`, fn: () => klinikkLansering.kjorDist(dist) },
     { navn: `noindex (${dist})`, fn: () => noindex.kjorDist(dist) },
-    { navn: `headere (${dist})`, fn: () => headere.kjorDist(dist) }
+    { navn: `headere (${dist})`, fn: () => headere.kjorDist(dist) },
+    { navn: `tekst-kommer (${dist})`, fn: () => tekstKommer.kjorDist(dist) }
   );
 }
 

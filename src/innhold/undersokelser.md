@@ -57,7 +57,7 @@ seksjoner:
         knapp:
           tekst: "Les om undersøkelsen"
           handling: "intern"
-          url: "/endetarmsundersokelse/"
+          url: "/undersokelse-av-endetarmen/"
           stil: "sekundaer"
       - tittel: "Små inngrep ved endetarmsplager"
         avsnitt:

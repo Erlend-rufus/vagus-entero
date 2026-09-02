@@ -17,7 +17,9 @@
     "tilsyn",
     "bestilling",
     "apningstider",
-    "ventetid"
+    "ventetid",
+    "kortnavn",
+    "mva_status"
   ],
   "properties": {
     "juridisk_navn": {
@@ -33,6 +35,13 @@
       ],
       "description": "Navnet klinikken markedsfoeres under, brukt i topp og bunn. Det juridiske navnet staar i tillegg i bunnteksten (ehandelsloven § 9)."
     },
+    "kortnavn": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Kortformen som brukes som tittelsuffiks: «Koloskopi på Straume | Vagus Entero»."
+    },
     "domene": {
       "type": [
         "string",
@@ -47,6 +56,13 @@
         "null"
       ],
       "pattern": "^[0-9]{9}$"
+    },
+    "mva_status": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Setningen om merverdiavgift i bunnteksten (ehandelsloven § 8). Teksten leveres av innholdsprosessen; null utelater linjen."
     },
     "adresse": {
       "type": [

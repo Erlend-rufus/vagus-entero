@@ -1,10 +1,25 @@
 {#- Knapper er datadrevne: filteret «synlige» siler bort alt som mangler
     fakta — bestillingsportal, telefonnummer eller en intern side som ikke
     finnes. Mangler alt, forsvinner hele raden; nettstedet lover aldri noe
-    det ikke kan holde. -#}
+    det ikke kan holde.
+
+    To tilstander (beslutning 02.09.2026): til bestillingsportalen er live
+    er «Ring oss» primær og «Bestill time» finnes ikke; når klinikk.json
+    har bestilling.url, blir «Bestill time» primær og «Ring oss» sekundær.
+    Stilen for disse to avledes derfor av klinikkens tilstand, ikke av
+    innholdsfilen. -#}
+
+{%- macro stilFor(k, klinikk) -%}
+  {%- set bookingLive = klinikk.bestilling and klinikk.bestilling.url -%}
+  {%- if k.handling == 'bestilling' -%}primaer
+  {%- elif k.handling == 'telefon' -%}{{ 'sekundaer' if bookingLive else 'primaer' }}
+  {%- else -%}{{ k.stil or 'primaer' }}{%- endif -%}
+{%- endmacro -%}
 
 {%- macro knapp(k, klinikk, sider) -%}
-  {%- set klasse = 'knapp' if (k.stil or 'primaer') == 'primaer' else ('knapp knapp-invers' if k.stil == 'invers' else 'knapp-sekundaer') -%}
+  {%- set stil = stilFor(k, klinikk) | trim -%}
+  {%- if k.stil == 'invers' and k.handling != 'telefon' %}{% set stil = 'invers' %}{% endif -%}
+  {%- set klasse = 'knapp' if stil == 'primaer' else ('knapp knapp-invers' if stil == 'invers' else 'knapp-sekundaer') -%}
   {%- if k.handling == 'bestilling' and klinikk.bestilling and klinikk.bestilling.url -%}
     <a class="{{ klasse }}" href="{{ klinikk.bestilling.url }}" target="_blank" rel="noopener">{{ k.tekst }}<span aria-hidden="true">↗</span></a>
   {%- elif k.handling == 'telefon' and klinikk.telefon -%}
@@ -17,4 +32,14 @@
 {%- macro knapperad(knapper, klinikk, sider, klasse) -%}
   {%- set synlige = knapper | synlige(klinikk, sider) -%}
   {%- if synlige.length > 0 %}<div class="{{ klasse }}">{% for k in synlige %}{{ knapp(k, klinikk, sider) }}{% endfor %}</div>{% endif -%}
+{%- endmacro -%}
+
+{#- Linjen om at digital timebestilling åpner — vises kun så lenge portalen
+    ikke er live, og bare der knapperaden faktisk har en bestillingsknapp. -#}
+{%- macro bestillingsvarsel(knapper, klinikk, ui, klasse) -%}
+  {%- set harBestilling = false -%}
+  {%- for k in knapper %}{% if k.handling == 'bestilling' %}{% set harBestilling = true %}{% endif %}{% endfor -%}
+  {%- if harBestilling and not (klinikk.bestilling and klinikk.bestilling.url) -%}
+    <p class="{{ klasse }}">{{ ui.bestilling_apner }}</p>
+  {%- endif -%}
 {%- endmacro -%}

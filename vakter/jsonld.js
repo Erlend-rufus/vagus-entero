@@ -4,8 +4,14 @@ export const navn = 'jsonld';
 
 // Strukturerte data blir crawlet og cachet — feil her lever lenge. Kun de tre
 // tillatte typene kan forekomme, omtale-/vurderingstyper er strukturelt
-// forbudt, og null/tomme verdier skal vært utelatt av generatoren.
-const TILLATTE_TOPPTYPER = new Set(['MedicalProcedure', 'MedicalClinic', 'Physician']);
+// forbudt, og null/tomme verdier skal være utelatt av generatoren.
+const TILLATTE_TOPPTYPER = new Set([
+  'MedicalProcedure',
+  'MedicalCondition',
+  'MedicalSignOrSymptom',
+  'MedicalClinic',
+  'Physician'
+]);
 const TILLATTE_NOSTEDE = new Set(['PostalAddress']);
 const FORBUDTE_TYPER = new Set(['Review', 'AggregateRating', 'Rating']);
 

@@ -3,7 +3,7 @@ layout: layouts/base.njk
 ---
 {%- from "komponenter/seksjoner.njk" import seksjoner as visSeksjoner -%}
 {%- from "komponenter/illustrasjon.njk" import illustrasjon as visIllustrasjon -%}
-{%- from "komponenter/knapper.njk" import knapperad -%}
+{%- from "komponenter/knapper.njk" import knapperad, bestillingsvarsel -%}
 
 <div class="seksjon-indre">
   {% include "komponenter/brodsmulesti.njk" %}
@@ -14,7 +14,7 @@ layout: layouts/base.njk
       {%- if ingress %}
       <p class="ingress">{{ ingress }}</p>
       {%- endif %}
-      {%- if hode_knapper %}{{ knapperad(hode_knapper, klinikk, collections.innhold, 'hode-handlinger') }}{% endif %}
+      {%- if hode_knapper %}{{ knapperad(hode_knapper, klinikk, collections.innhold, 'hode-handlinger') }}{{ bestillingsvarsel(hode_knapper, klinikk, ui, 'hode-merknad') }}{% endif %}
       {%- if hode_knapper and klinikk.bestilling and klinikk.bestilling.merknad %}
       <p class="hode-merknad">{{ klinikk.bestilling.merknad }}</p>
       {%- endif %}

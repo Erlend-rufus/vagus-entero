@@ -31,7 +31,8 @@
         "pris",
         "henviser",
         "forsikring",
-        "statisk"
+        "statisk",
+        "bestilling"
       ]
     },
     "url": {
@@ -46,14 +47,41 @@
       ]
     },
     "tittel": {
-      "type": "string",
-      "minLength": 10,
-      "maxLength": 60
+      "anyOf": [
+        {
+          "const": "[TEKST KOMMER]"
+        },
+        {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 60
+        }
+      ]
+    },
+    "sidetittel": {
+      "anyOf": [
+        {
+          "const": "[TEKST KOMMER]"
+        },
+        {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 70
+        }
+      ],
+      "description": "Valgfri <title> uten suffiks, f.eks. «Koloskopi på Straume». Suffikset « | Vagus Entero» legges til av bygget. Utelatt = tittel."
     },
     "meta_beskrivelse": {
-      "type": "string",
-      "minLength": 70,
-      "maxLength": 155
+      "anyOf": [
+        {
+          "const": "[TEKST KOMMER]"
+        },
+        {
+          "type": "string",
+          "minLength": 70,
+          "maxLength": 155
+        }
+      ]
     },
     "status": {
       "enum": [
@@ -81,6 +109,8 @@
         "MedicalProcedure",
         "MedicalClinic",
         "Physician",
+        "MedicalCondition",
+        "MedicalSignOrSymptom",
         null
       ]
     },
@@ -109,9 +139,16 @@
       "format": "date"
     },
     "ingress": {
-      "type": "string",
-      "minLength": 30,
-      "maxLength": 300
+      "anyOf": [
+        {
+          "const": "[TEKST KOMMER]"
+        },
+        {
+          "type": "string",
+          "minLength": 30,
+          "maxLength": 300
+        }
+      ]
     },
     "bilder": {
       "type": "array",
@@ -124,8 +161,15 @@
         ],
         "properties": {
           "fil": {
-            "type": "string",
-            "minLength": 1
+            "anyOf": [
+              {
+                "const": "[TEKST KOMMER]"
+              },
+              {
+                "type": "string",
+                "minLength": 1
+              }
+            ]
           },
           "alt": {
             "type": "string"
@@ -150,9 +194,16 @@
         ],
         "properties": {
           "navn": {
-            "type": "string",
-            "minLength": 2,
-            "maxLength": 120
+            "anyOf": [
+              {
+                "const": "[TEKST KOMMER]"
+              },
+              {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 120
+              }
+            ]
           },
           "belop_nok": {
             "type": [
@@ -191,14 +242,28 @@
         ],
         "properties": {
           "term": {
-            "type": "string",
-            "minLength": 3,
-            "maxLength": 40
+            "anyOf": [
+              {
+                "const": "[TEKST KOMMER]"
+              },
+              {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 40
+              }
+            ]
           },
           "verdi": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 40
+            "anyOf": [
+              {
+                "const": "[TEKST KOMMER]"
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 40
+              }
+            ]
           }
         }
       }
@@ -216,12 +281,23 @@
       "pattern": "^/[a-z0-9/-]*$"
     },
     "menytittel": {
-      "type": "string",
-      "minLength": 3,
-      "maxLength": 30
+      "anyOf": [
+        {
+          "const": "[TEKST KOMMER]"
+        },
+        {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 30
+        }
+      ]
     },
     "i_bunntekst": {
       "type": "boolean"
+    },
+    "noindex": {
+      "type": "boolean",
+      "description": "true holder siden ute av sitemap og setter noindex også i produksjon — for sider som er skrevet for en håndfull mottakere, ikke for søk."
     }
   },
   "$defs": {
@@ -230,9 +306,16 @@
       "minItems": 1,
       "maxItems": 8,
       "items": {
-        "type": "string",
-        "minLength": 3,
-        "maxLength": 900
+        "anyOf": [
+          {
+            "const": "[TEKST KOMMER]"
+          },
+          {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 900
+          }
+        ]
       }
     },
     "knapp": {
@@ -244,9 +327,16 @@
       ],
       "properties": {
         "tekst": {
-          "type": "string",
-          "minLength": 2,
-          "maxLength": 40
+          "anyOf": [
+            {
+              "const": "[TEKST KOMMER]"
+            },
+            {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          ]
         },
         "handling": {
           "enum": [
@@ -270,14 +360,28 @@
     },
     "blokk_felles": {
       "tittel": {
-        "type": "string",
-        "minLength": 3,
-        "maxLength": 80
+        "anyOf": [
+          {
+            "const": "[TEKST KOMMER]"
+          },
+          {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 80
+          }
+        ]
       },
       "under": {
-        "type": "string",
-        "minLength": 10,
-        "maxLength": 400
+        "anyOf": [
+          {
+            "const": "[TEKST KOMMER]"
+          },
+          {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 400
+          }
+        ]
       },
       "flate": {
         "enum": [
@@ -313,14 +417,28 @@
               "const": "tekst"
             },
             "tittel": {
-              "type": "string",
-              "minLength": 3,
-              "maxLength": 80
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 80
+                }
+              ]
             },
             "under": {
-              "type": "string",
-              "minLength": 10,
-              "maxLength": 400
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 400
+                }
+              ]
             },
             "flate": {
               "enum": [
@@ -332,9 +450,16 @@
               "$ref": "#/$defs/avsnitt"
             },
             "merknad": {
-              "type": "string",
-              "minLength": 3,
-              "maxLength": 400
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 400
+                }
+              ]
             }
           }
         },
@@ -351,14 +476,28 @@
               "const": "tidslinje"
             },
             "tittel": {
-              "type": "string",
-              "minLength": 3,
-              "maxLength": 80
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 80
+                }
+              ]
             },
             "under": {
-              "type": "string",
-              "minLength": 10,
-              "maxLength": 400
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 400
+                }
+              ]
             },
             "flate": {
               "enum": [
@@ -367,9 +506,16 @@
               ]
             },
             "eksempelmerknad": {
-              "type": "string",
-              "minLength": 20,
-              "maxLength": 400
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 20,
+                  "maxLength": 400
+                }
+              ]
             },
             "punkter": {
               "type": "array",
@@ -384,14 +530,28 @@
                 ],
                 "properties": {
                   "naar": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 40
+                    "anyOf": [
+                      {
+                        "const": "[TEKST KOMMER]"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 40
+                      }
+                    ]
                   },
                   "tekst": {
-                    "type": "string",
-                    "minLength": 20,
-                    "maxLength": 600
+                    "anyOf": [
+                      {
+                        "const": "[TEKST KOMMER]"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 20,
+                        "maxLength": 600
+                      }
+                    ]
                   }
                 }
               }
@@ -411,14 +571,28 @@
               "const": "steg"
             },
             "tittel": {
-              "type": "string",
-              "minLength": 3,
-              "maxLength": 80
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 80
+                }
+              ]
             },
             "under": {
-              "type": "string",
-              "minLength": 10,
-              "maxLength": 400
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 400
+                }
+              ]
             },
             "flate": {
               "enum": [
@@ -442,14 +616,28 @@
                 ],
                 "properties": {
                   "tittel": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 60
+                    "anyOf": [
+                      {
+                        "const": "[TEKST KOMMER]"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 60
+                      }
+                    ]
                   },
                   "tekst": {
-                    "type": "string",
-                    "minLength": 15,
-                    "maxLength": 400
+                    "anyOf": [
+                      {
+                        "const": "[TEKST KOMMER]"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 15,
+                        "maxLength": 400
+                      }
+                    ]
                   }
                 }
               }
@@ -469,14 +657,28 @@
               "const": "sporsmal"
             },
             "tittel": {
-              "type": "string",
-              "minLength": 3,
-              "maxLength": 80
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 80
+                }
+              ]
             },
             "under": {
-              "type": "string",
-              "minLength": 10,
-              "maxLength": 400
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 400
+                }
+              ]
             },
             "flate": {
               "enum": [
@@ -497,14 +699,28 @@
                 ],
                 "properties": {
                   "sporsmal": {
-                    "type": "string",
-                    "minLength": 5,
-                    "maxLength": 90
+                    "anyOf": [
+                      {
+                        "const": "[TEKST KOMMER]"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 5,
+                        "maxLength": 90
+                      }
+                    ]
                   },
                   "svar": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 900
+                    "anyOf": [
+                      {
+                        "const": "[TEKST KOMMER]"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 900
+                      }
+                    ]
                   }
                 }
               }
@@ -524,14 +740,28 @@
               "const": "veier"
             },
             "tittel": {
-              "type": "string",
-              "minLength": 3,
-              "maxLength": 80
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 80
+                }
+              ]
             },
             "under": {
-              "type": "string",
-              "minLength": 10,
-              "maxLength": 400
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 400
+                }
+              ]
             },
             "flate": {
               "enum": [
@@ -552,17 +782,31 @@
                 ],
                 "properties": {
                   "tittel": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 60
+                    "anyOf": [
+                      {
+                        "const": "[TEKST KOMMER]"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 60
+                      }
+                    ]
                   },
                   "avsnitt": {
                     "$ref": "#/$defs/avsnitt"
                   },
                   "liten": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 300
+                    "anyOf": [
+                      {
+                        "const": "[TEKST KOMMER]"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 300
+                      }
+                    ]
                   },
                   "knapp": {
                     "$ref": "#/$defs/knapp"
@@ -588,14 +832,28 @@
               "const": "praktisk"
             },
             "tittel": {
-              "type": "string",
-              "minLength": 3,
-              "maxLength": 80
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 80
+                }
+              ]
             },
             "under": {
-              "type": "string",
-              "minLength": 10,
-              "maxLength": 400
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 400
+                }
+              ]
             },
             "flate": {
               "enum": [
@@ -616,14 +874,28 @@
                 ],
                 "properties": {
                   "tittel": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 60
+                    "anyOf": [
+                      {
+                        "const": "[TEKST KOMMER]"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 60
+                      }
+                    ]
                   },
                   "tekst": {
-                    "type": "string",
-                    "minLength": 15,
-                    "maxLength": 400
+                    "anyOf": [
+                      {
+                        "const": "[TEKST KOMMER]"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 15,
+                        "maxLength": 400
+                      }
+                    ]
                   }
                 }
               }
@@ -643,14 +915,28 @@
               "const": "kort"
             },
             "tittel": {
-              "type": "string",
-              "minLength": 3,
-              "maxLength": 80
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 80
+                }
+              ]
             },
             "under": {
-              "type": "string",
-              "minLength": 10,
-              "maxLength": 400
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 400
+                }
+              ]
             },
             "flate": {
               "enum": [
@@ -670,14 +956,28 @@
                 ],
                 "properties": {
                   "tittel": {
-                    "type": "string",
-                    "minLength": 5,
-                    "maxLength": 80
+                    "anyOf": [
+                      {
+                        "const": "[TEKST KOMMER]"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 5,
+                        "maxLength": 80
+                      }
+                    ]
                   },
                   "fagterm": {
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 60
+                    "anyOf": [
+                      {
+                        "const": "[TEKST KOMMER]"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 60
+                      }
+                    ]
                   },
                   "illustrasjon": {
                     "$ref": "#/$defs/illustrasjonsnavn"
@@ -704,14 +1004,28 @@
               "const": "kort_bred"
             },
             "tittel": {
-              "type": "string",
-              "minLength": 3,
-              "maxLength": 80
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 80
+                }
+              ]
             },
             "under": {
-              "type": "string",
-              "minLength": 10,
-              "maxLength": 400
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 400
+                }
+              ]
             },
             "flate": {
               "enum": [
@@ -743,14 +1057,28 @@
               "const": "pris"
             },
             "tittel": {
-              "type": "string",
-              "minLength": 3,
-              "maxLength": 80
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 80
+                }
+              ]
             },
             "under": {
-              "type": "string",
-              "minLength": 10,
-              "maxLength": 400
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 400
+                }
+              ]
             },
             "flate": {
               "enum": [
@@ -782,9 +1110,16 @@
                 ],
                 "properties": {
                   "navn": {
-                    "type": "string",
-                    "minLength": 2,
-                    "maxLength": 80
+                    "anyOf": [
+                      {
+                        "const": "[TEKST KOMMER]"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 80
+                      }
+                    ]
                   },
                   "belop_nok": {
                     "type": [
@@ -794,9 +1129,16 @@
                     "exclusiveMinimum": 0
                   },
                   "merknad": {
-                    "type": "string",
-                    "minLength": 2,
-                    "maxLength": 200
+                    "anyOf": [
+                      {
+                        "const": "[TEKST KOMMER]"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 200
+                      }
+                    ]
                   }
                 }
               }
@@ -816,14 +1158,28 @@
               "const": "prisliste"
             },
             "tittel": {
-              "type": "string",
-              "minLength": 3,
-              "maxLength": 80
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 80
+                }
+              ]
             },
             "under": {
-              "type": "string",
-              "minLength": 10,
-              "maxLength": 400
+              "anyOf": [
+                {
+                  "const": "[TEKST KOMMER]"
+                },
+                {
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 400
+                }
+              ]
             },
             "flate": {
               "enum": [
@@ -844,9 +1200,16 @@
                 ],
                 "properties": {
                   "navn": {
-                    "type": "string",
-                    "minLength": 2,
-                    "maxLength": 120
+                    "anyOf": [
+                      {
+                        "const": "[TEKST KOMMER]"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 120
+                      }
+                    ]
                   },
                   "belop_nok": {
                     "type": [
@@ -856,9 +1219,16 @@
                     "exclusiveMinimum": 0
                   },
                   "merknad": {
-                    "type": "string",
-                    "minLength": 2,
-                    "maxLength": 200
+                    "anyOf": [
+                      {
+                        "const": "[TEKST KOMMER]"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 200
+                      }
+                    ]
                   }
                 }
               }

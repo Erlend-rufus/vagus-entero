@@ -17,10 +17,13 @@
       <p>{{ klinikk.adresse.gate }}, {{ klinikk.adresse.postnummer }} {{ klinikk.adresse.poststed }}</p>
       {%- endif %}
       {%- if klinikk.org_nr %}
-      <p>{{ ui.org_nr_etikett }} {{ klinikk.org_nr }}</p>
+      <p>{{ ui.org_nr_etikett }} {{ klinikk.org_nr | orgnr }}</p>
       {%- endif %}
       {%- if klinikk.visningsnavn and klinikk.juridisk_navn %}
       <p>{{ klinikk.juridisk_navn }}</p>
+      {%- endif %}
+      {%- if klinikk.mva_status %}
+      <p>{{ klinikk.mva_status }}</p>
       {%- endif %}
     </div>
     <div>

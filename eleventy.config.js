@@ -6,9 +6,12 @@ import { lagHeadersInnhold, lagRobotsInnhold } from './verktoy/headere.js';
 import { lesInnhold } from './vakter/lib/les-innhold.js';
 import { validerInnhold } from './vakter/lib/innholdsvalidering.js';
 
-// Alle sidetyper deler samme layout: forskjellene ligger i innholdets
-// seksjonsblokker, ikke i malen.
+// Alle innholdssidetyper deler samme layout: forskjellene ligger i
+// innholdets seksjonsblokker, ikke i malen. Bestillingsruten er den ene
+// isolerte ruten: integrasjonspartneren kan bygge inn portalen der uten at
+// innholdssidene røres (grensesnittavtale 02.09.2026).
 const SIDELAYOUT = 'layouts/side.njk';
+const BESTILLINGSLAYOUT = 'layouts/bestill.njk';
 
 const LANSERINGSKRITISKE_KLINIKKFELT = ['juridisk_navn', 'org_nr', 'adresse', 'telefon', 'epost'];
 
@@ -67,7 +70,8 @@ export default function (eleventyConfig) {
         url: data.url,
         status: data.status,
         sidetype: data.sidetype,
-        tittel: data.tittel
+        tittel: data.tittel,
+        noindex: data.noindex === true
       });
       if (miljo.produksjon && data.status !== 'GODKJENT') return false;
     }
@@ -78,7 +82,10 @@ export default function (eleventyConfig) {
   // ---- Kontraktfelter → Eleventy-mekanikk ---------------------------------
   eleventyConfig.addGlobalData('eleventyComputed', {
     permalink: (data) => (data.sidetype ? data.url : data.permalink),
-    layout: (data) => (data.sidetype ? SIDELAYOUT : data.layout)
+    layout: (data) => {
+      if (!data.sidetype) return data.layout;
+      return data.sidetype === 'bestilling' ? BESTILLINGSLAYOUT : SIDELAYOUT;
+    }
   });
 
   eleventyConfig.addCollection('innhold', (api) =>
@@ -125,6 +132,10 @@ export default function (eleventyConfig) {
     'finnSide',
     (sider, url) => (url ? (sider || []).find((side) => side.url === url) || null : null)
   );
+  // Organisasjonsnummer skrives med mellomrom slik Brønnøysund gjør: 938 387 127.
+  eleventyConfig.addFilter('orgnr', (nr) =>
+    typeof nr === 'string' ? nr.replace(/^(\d{3})(\d{3})(\d{3})$/, '$1 $2 $3') : nr
+  );
   eleventyConfig.addFilter('kroner', (belop) =>
     new Intl.NumberFormat('nb-NO', {
       style: 'currency',
@@ -149,13 +160,14 @@ export default function (eleventyConfig) {
           inputPath: r.inputPath,
           status: meta ? meta.status : null,
           sidetype: meta ? meta.sidetype : null,
-          tittel: meta ? meta.tittel : null
+          tittel: meta ? meta.tittel : null,
+          noindex: meta ? meta.noindex : false
         };
       });
 
     if (miljo.produksjon && miljo.siteUrl) {
       const base = miljo.siteUrl.replace(/\/$/, '');
-      const innholdssider = sider.filter((s) => s.sidetype);
+      const innholdssider = sider.filter((s) => s.sidetype && !s.noindex);
       const sitemap =
         '<?xml version="1.0" encoding="UTF-8"?>\n' +
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +

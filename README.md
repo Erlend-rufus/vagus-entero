@@ -43,8 +43,9 @@ selv tildeler.
   klinikken. Bare de to filene nettstedet faktisk bruker ligger i
   `src/bilder/`.
 
-Se `docs/INNHOLDSKONTRAKT.md` for leveranseformatet og `docs/VAKTER.md` for
-hvordan CI-vaktene utvides.
+Se `docs/HANDOFF.md` for grensesnittet mot tekst- og designprosessen
+(rutekart, innholdsformat, hva som er blokkert), `docs/INNHOLDSKONTRAKT.md`
+for leveranseformatet og `docs/VAKTER.md` for hvordan CI-vaktene utvides.
 
 ## Kom i gang
 

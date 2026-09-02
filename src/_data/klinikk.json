@@ -1,8 +1,10 @@
 {
   "juridisk_navn": "Vagus Entero AS",
   "visningsnavn": "Vagus Entero Klinikken",
+  "kortnavn": "Vagus Entero",
   "domene": "enteroklinikken.no",
-  "org_nr": null,
+  "org_nr": "938387127",
+  "mva_status": null,
   "adresse": null,
   "telefon": null,
   "epost": null,
