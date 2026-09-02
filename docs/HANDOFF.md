@@ -216,7 +216,7 @@ Tekst er ikke kodesesjonens; dette er observasjoner, ikke endringer:
   `--ignore-scripts`, Cache-Control. Kontrakt: `klinikk.json`/`ui.json`
   håndheves, plassholdere stopper GODKJENT, prisregelen ser alle seksjoner,
   `rekkefolge` entydig, `bilder`/`ventetid`/`apningstider` reservert,
-  `*`-endelse i ordlister, historikk-baseline i selvtestene, 111 selvtester.
+  `*`-endelse i ordlister, historikk-baseline i selvtestene; 156 selvtester etter alle rundene.
   Innhold gjenopprettet ordrett fra designet (avsnitt, merknader, lenker,
   linjeskift, knappetekster på fagfolk-sidene, «Øygarden»). CSS-paritet mot
   artboardene (mobilrytme, prisblokk, pristabell, steg, faktastripe, hero).
