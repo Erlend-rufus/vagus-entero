@@ -4,7 +4,7 @@
 
 const FELTMELDINGER = {
   sidetype:
-    'sidetype må være en av: forside, undersokelse, tilstand, behandling, pris, henviser, forsikring, statisk',
+    'sidetype må være en av: forside, undersokelse, tilstand, behandling, pris, henviser, forsikring, statisk, bestilling',
   url: 'url må starte og slutte med «/» og kun bruke små bokstaver, tall og bindestrek (f.eks. /koloskopi/)',
   malgruppe: 'malgruppe må være en av: selvbetalende, henviser, forsikring',
   tittel: 'tittel (blir <title> og H1) må være 10–60 tegn',
@@ -12,12 +12,14 @@ const FELTMELDINGER = {
   status: 'status må være UTKAST, KLAR_FOR_MEDISINSK_GJENNOMGANG eller GODKJENT',
   godkjent_av: 'godkjent_av må være null eller et navn (minst 2 tegn)',
   godkjent_dato: 'godkjent_dato må være null eller en dato på formen ÅÅÅÅ-MM-DD',
-  jsonld_type: 'jsonld_type må være MedicalProcedure, MedicalClinic, Physician eller null',
+  jsonld_type: 'jsonld_type må være MedicalProcedure, MedicalCondition, MedicalSignOrSymptom, MedicalClinic, Physician eller null',
   interne_lenker_ut: 'interne_lenker_ut må være en liste av interne url-er (f.eks. /koloskopi/)',
   apne_punkter: 'apne_punkter må være en liste av tekstpunkter',
   i_navigasjon: 'i_navigasjon må være true eller false',
   rekkefolge: 'rekkefolge må være et heltall (0 eller høyere) for menyrekkefølgen',
   sist_oppdatert: 'sist_oppdatert må være en dato på formen ÅÅÅÅ-MM-DD',
+  noindex: 'noindex må være true eller false (true holder siden ute av søk også i produksjon)',
+  sidetittel: 'sidetittel (valgfri <title> uten suffiks, f.eks. «Koloskopi på Straume») må være 10–70 tegn',
   menytittel: 'menytittel (kort etikett i menyen, f.eks. «Undersøkelser») må være 3–30 tegn',
   ingress: 'ingress (vises under overskriften på forsiden) må være 30–300 tegn',
   illustrasjon:

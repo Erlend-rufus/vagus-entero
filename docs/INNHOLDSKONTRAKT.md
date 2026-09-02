@@ -10,17 +10,22 @@ med vilje: en tom side er et bedre utfall enn en oppdiktet side.
 ```yaml
 ---
 sidetype:          # forside | undersokelse | tilstand | behandling | pris
-                   #   | henviser | forsikring | statisk
+                   #   | henviser | forsikring | statisk | bestilling
 url:               # /koloskopi/ — små bokstaver, tall, bindestrek, skråstrek
                    #   først og sist. Unik for hele nettstedet.
 malgruppe:         # selvbetalende | henviser | forsikring
-tittel:            # Blir <title> og sidens H1. 10–60 tegn.
+tittel:            # Sidens H1, og <title> hvis sidetittel mangler. 10–60 tegn.
+sidetittel:        # valgfri: <title> uten suffiks, f.eks. «Koloskopi på Straume».
+                   #   Bygget legger til « | Vagus Entero». 10–70 tegn.
 menytittel:        # valgfri: kort etikett i meny og brødsmulesti (3–30 tegn)
 meta_beskrivelse:  # 70–155 tegn.
 status:            # UTKAST | KLAR_FOR_MEDISINSK_GJENNOMGANG | GODKJENT
 godkjent_av:       # null til fagansvarlig lege har signert. Deretter navnet.
 godkjent_dato:     # null, eller ÅÅÅÅ-MM-DD.
-jsonld_type:       # MedicalProcedure | MedicalClinic | Physician | null
+jsonld_type:       # MedicalProcedure | MedicalCondition | MedicalSignOrSymptom
+                   #   | MedicalClinic | Physician | null
+noindex:           # valgfri: true holder siden ute av søk og sitemap, også i
+                   #   produksjon (sider skrevet for en håndfull mottakere)
 interne_lenker_ut: # liste over url-er siden lenker til, f.eks. [/koloskopi/]
 apne_punkter:      # liste med uavklarte [BEKREFT]-punkter. MÅ være tom
                    #   før status kan bli GODKJENT.
@@ -41,6 +46,15 @@ priser:            # kun sidetype pris, se under
 
 Etter frontmatter kommer brødteksten i vanlig markdown.
 
+## Plassholderen `[TEKST KOMMER]`
+
+Der teksten ennå ikke er levert, skrives nøyaktig `[TEKST KOMMER]` — i
+hvilket som helst tekstfelt, uansett lengdekrav. Den er laget for å være
+umulig å forveksle med godkjent innhold: bygget godtar den i forhåndsvisning,
+en side med den kan aldri bli `GODKJENT`, og et produksjonsbygg som
+inneholder den stopper (vakten `tekst-kommer`). Skriv aldri egne
+plassholdere som ligner på ekte tekst.
+
 ## Reglene bygget håndhever
 
 1. Mangler et obligatorisk felt → bygget feiler og navngir felt og fil.
@@ -54,6 +68,31 @@ Etter frontmatter kommer brødteksten i vanlig markdown.
    til en side som ikke finnes i produksjonsbygget, stopper bygget.
 6. En prisside kan ikke bli `GODKJENT` uten utfylt `priser`-blokk — prislisten
    på nettstedet er lovpålagt (prisopplysningsforskriften § 10).
+7. Beløp i løpende tekst stopper bygget (vakten `priser-i-tekst`) — priser
+   står bare i `belop_nok`-felter.
+8. Bestillingsruten `/bestill/` (sidetype `bestilling`) har egen mal og er
+   den eneste siden integrasjonspartneren rører. Innholdssidene er statiske.
+
+## Tekstpakken fra innholdsprosessen
+
+Tekstpakken leveres som denne frontmatteren — feltene er de samme, så det
+er ingen oversettelse:
+
+| Tekstpakken sier | Frontmatter-felt |
+|---|---|
+| Sidetype · URL-sti · Målgruppe | `sidetype`, `url`, `malgruppe` |
+| Sidetittel (title-tag) · Meta-beskrivelse | `sidetittel`, `meta_beskrivelse` |
+| H1 | `tittel` |
+| Ingress | `ingress` |
+| Overskriftshierarki H2–H3 og brødtekst seksjon for seksjon | `seksjoner` (hver blokk = én H2; `steg`, `veier`, `praktisk` gir H3) |
+| Interne lenker ut | `interne_lenker_ut` + `url` i knapper og kort |
+| JSON-LD: type og feltverdier | `jsonld_type` (feltverdiene hentes fra `klinikk.json` og sidens `tittel`/`meta_beskrivelse`) |
+| Bilde- og alt-tekstbehov | `bilder` med `alt`, eller `illustrasjon` |
+| Status | `status`, `godkjent_av`, `godkjent_dato` |
+| Åpne punkter / [BEKREFT] | `apne_punkter` |
+
+Filen legges i `src/innhold/<url-navn>.md`. `[MEDISINSK GJENNOMGANG KREVES]`
+skrives som et punkt i `apne_punkter`, ikke i brødteksten.
 
 ## Brødtekst-konvensjoner
 

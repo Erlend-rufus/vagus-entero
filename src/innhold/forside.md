@@ -40,7 +40,7 @@ seksjoner:
       - tittel: "Undersøkelse av endetarmen"
         fagterm: "(anoskopi og rektoskopi)"
         illustrasjon: "endetarm"
-        url: "/endetarmsundersokelse/"
+        url: "/undersokelse-av-endetarmen/"
       - tittel: "Små inngrep ved endetarmsplager"
         fagterm: "(proktologi)"
         illustrasjon: "proktologi"

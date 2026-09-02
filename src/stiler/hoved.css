@@ -281,10 +281,14 @@ main {
   white-space: nowrap;
 }
 
-.merke img {
+.merke-plass {
+  /* Tom kvadratisk plass til logoen klinikken eventuelt leverer. Til da er
+     ordmerket i tekst hele merket (beslutning 02.09.2026). */
   width: 46px;
   height: 46px;
   flex: none;
+  border: 1.5px dashed var(--farge-ramme);
+  border-radius: var(--radius);
 }
 
 .hovedmeny {

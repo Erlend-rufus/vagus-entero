@@ -4,7 +4,9 @@
 // - null-felter UTELATES — det gjettes aldri.
 // - MedicalClinic sendes ikke ut før navn + adresse + telefon finnes.
 // - Physician sendes ikke ut før lege er bekreftet.
-// - Andre typer enn de tre tillatte kan ikke oppstå (skjema-enum + vakt).
+// - Tilstands- og symptomsider får MedicalCondition/MedicalSignOrSymptom
+//   med kun navn, beskrivelse og url — aldri behandlingspåstander.
+// - Andre typer enn de tillatte kan ikke oppstå (skjema-enum + vakt).
 
 function fjernTomme(objekt) {
   if (Array.isArray(objekt)) {
@@ -31,10 +33,10 @@ export function lagJsonld(side, klinikk, miljo) {
 
   let objekt = null;
 
-  if (side.jsonld_type === 'MedicalProcedure') {
+  if (['MedicalProcedure', 'MedicalCondition', 'MedicalSignOrSymptom'].includes(side.jsonld_type)) {
     objekt = {
       '@context': 'https://schema.org',
-      '@type': 'MedicalProcedure',
+      '@type': side.jsonld_type,
       name: side.tittel,
       description: side.meta_beskrivelse,
       url: absoluttUrl

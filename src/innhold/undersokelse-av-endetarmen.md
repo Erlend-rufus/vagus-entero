@@ -1,6 +1,6 @@
 ---
 sidetype: "undersokelse"
-url: "/endetarmsundersokelse/"
+url: "/undersokelse-av-endetarmen/"
 malgruppe: "selvbetalende"
 tittel: "Undersøkelse av endetarmen (anoskopi og rektoskopi)"
 menytittel: "Endetarmsundersøkelse"

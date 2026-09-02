@@ -1,0 +1,34 @@
+---
+layout: layouts/base.njk
+---
+{%- from "komponenter/knapper.njk" import knapperad, bestillingsvarsel -%}
+{#- Den isolerte bestillingsruten. Innholdssidene er statiske og rører aldri
+    denne malen; integrasjonspartneren monterer portalen i #bestilling-portal.
+    Fram til portalen er live viser siden bare klinikkens telefon og varselet
+    om når digital bestilling åpner. Skal portalen lastes herfra, må verten
+    føres opp bevisst i sikkerhet/policy.json (connect-src/frame-src) og i
+    vakter/ordlister/eksterne-hvitliste.txt — det er en personvernbeslutning,
+    ikke en konfigurasjonsdetalj. -#}
+<div class="seksjon-indre">
+  {% include "komponenter/brodsmulesti.njk" %}
+  <div class="sidehode">
+    <div>
+      <h1>{{ tittel }}</h1>
+      {%- if ingress %}
+      <p class="ingress">{{ ingress }}</p>
+      {%- endif %}
+      {%- if hode_knapper %}{{ knapperad(hode_knapper, klinikk, collections.innhold, 'hode-handlinger') }}{{ bestillingsvarsel(hode_knapper, klinikk, ui, 'hode-merknad') }}{% endif %}
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="seksjon-indre sek">
+    <div id="bestilling-portal" data-portal-url="{{ klinikk.bestilling.url if klinikk.bestilling and klinikk.bestilling.url else '' }}"></div>
+  </div>
+</section>
+
+{%- if seksjoner %}
+{%- from "komponenter/seksjoner.njk" import seksjoner as visSeksjoner -%}
+{{ visSeksjoner(seksjoner, klinikk, collections.innhold, ui) }}
+{%- endif %}

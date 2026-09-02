@@ -19,6 +19,8 @@ import * as eksterneVerter from '../eksterne-verter.js';
 import * as jsonld from '../jsonld.js';
 import * as lenker from '../lenker.js';
 import * as godkjentStatus from '../godkjent-status.js';
+import * as priserITekst from '../priser-i-tekst.js';
+import * as tekstKommer from '../tekst-kommer.js';
 import * as noindex from '../noindex.js';
 
 let feilede = 0;
@@ -199,6 +201,36 @@ krev(
   ]).length > 0,
   'brødsmulesti: overordnet uten mål feiler'
 );
+
+// --- priser-i-tekst ----------------------------------------------------------
+krev(
+  priserITekst.skannData({ seksjoner: [{ type: 'tekst', avsnitt: ['Undersøkelsen koster 4 500 kr.'] }] }).length === 1,
+  'priser-i-tekst: fanger beløp i avsnitt'
+);
+krev(
+  priserITekst.skannData({ seksjoner: [{ type: 'sporsmal', sporsmal: [{ sporsmal: 'Pris?', svar: 'Fra kr 900' }] }] }).length === 1,
+  'priser-i-tekst: fanger «kr 900» i svar'
+);
+krev(
+  priserITekst.skannData({ seksjoner: [{ type: 'pris', tittel: 'Pris', avsnitt: ['Du betaler selv.'], priser: [{ navn: 'X', belop_nok: 4500 }] }] }).length === 0,
+  'priser-i-tekst: godtar beløp i priser-feltet og tekst uten tall'
+);
+krev(
+  priserITekst.skannData({ ingress: 'Vi åpner 1. januar 2027, og du er hjemme samme dag.' }).length === 0,
+  'priser-i-tekst: årstall og datoer er ikke beløp'
+);
+
+// --- tekst-kommer ------------------------------------------------------------
+{
+  const midl = fs.mkdtempSync(path.join(os.tmpdir(), 'tekst-kommer-'));
+  fs.mkdirSync(path.join(midl, 'dist', 'side'), { recursive: true });
+  fs.writeFileSync(path.join(midl, 'dist', 'side', 'index.html'), '<p>[TEKST KOMMER]</p>');
+  fs.writeFileSync(path.join(midl, 'dist.manifest.json'), JSON.stringify({ produksjon: true, sider: [] }));
+  krev(tekstKommer.kjorDist(path.join(midl, 'dist')).length === 1, 'tekst-kommer: fanger plassholder i produksjonsbygg');
+  fs.writeFileSync(path.join(midl, 'dist.manifest.json'), JSON.stringify({ produksjon: false, sider: [] }));
+  krev(tekstKommer.kjorDist(path.join(midl, 'dist')).length === 0, 'tekst-kommer: tillater plassholder i forhåndsvisning');
+  fs.rmSync(midl, { recursive: true, force: true });
+}
 
 const { tittel: _utelatt, ...utenTittel } = gyldigSide;
 krev(
