@@ -3,7 +3,7 @@
   { tekst: ui.bestill_time, handling: 'bestilling', stil: 'primaer' },
   { tekst: ui.ring_oss, handling: 'telefon', stil: 'sekundaer' }
 ] -%}
-{#- Bunnteksten bærer ehandelsloven § 9-opplysningene og, når klinikken har
+{#- Bunnteksten bærer ehandelsloven § 8-opplysningene og, når klinikken har
     dem, opplysningene tjenesteloven krever om regulert yrke. Alt som er null
     utelates — det står aldri en plassholder her. -#}
 <footer class="bunn" aria-label="{{ ui.bunntekst }}">
@@ -26,15 +26,14 @@
       <p>{{ klinikk.mva_status }}</p>
       {%- endif %}
     </div>
+    {%- if klinikk.telefon or klinikk.epost or collections.bunn.length > 0 %}
     <div>
-      {%- if klinikk.telefon or klinikk.epost %}
       <span class="bunn-navn">{{ ui.kontakt }}</span>
       {%- if klinikk.telefon %}
       <p><a href="tel:{{ klinikk.telefon | replace(' ', '') }}">{{ klinikk.telefon }}</a></p>
       {%- endif %}
       {%- if klinikk.epost %}
       <p><a href="mailto:{{ klinikk.epost }}">{{ klinikk.epost }}</a></p>
-      {%- endif %}
       {%- endif %}
       {%- if collections.bunn.length > 0 %}
       <ul>
@@ -44,7 +43,9 @@
       </ul>
       {%- endif %}
     </div>
-    {%- if klinikk.lege or klinikk.tilsyn %}
+    {%- endif %}
+    {%- set harTilsyn = klinikk.tilsyn and (klinikk.tilsyn.yrkestittel or klinikk.tilsyn.tillatelse or klinikk.tilsyn.myndighet) %}
+    {%- if klinikk.lege or harTilsyn %}
     <div>
       <span class="bunn-navn">{{ ui.fagansvar }}</span>
       <dl>
@@ -67,6 +68,6 @@
       </dl>
     </div>
     {%- endif %}
-    {{ knapperad(toppknapper, klinikk, collections.innhold, 'bunn-handlinger') }}
+    {{ knapperad(toppknapper, klinikk, collections.innhold, 'bunn-handlinger', false, ui) }}
   </div>
 </footer>

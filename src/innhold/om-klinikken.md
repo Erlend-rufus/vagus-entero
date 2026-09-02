@@ -3,6 +3,7 @@ sidetype: "statisk"
 url: "/om-klinikken/"
 malgruppe: "selvbetalende"
 tittel: "Om klinikken"
+sidetittel: "Om klinikken på Straume"
 menytittel: "Om klinikken"
 meta_beskrivelse: "Vagus Entero Klinikken er en privat klinikk for mage, tarm og endetarm på Straume i Øygarden. Vi åpner 1. januar 2027."
 ingress: "Vagus Entero Klinikken er en privat klinikk for mage, tarm og endetarm på Straume i Øygarden. Vi åpner 1. januar 2027."
@@ -10,7 +11,8 @@ status: "UTKAST"
 godkjent_av: null
 godkjent_dato: null
 jsonld_type: null
-interne_lenker_ut: []
+interne_lenker_ut:
+  - "/personvern/"
 apne_punkter:
   - "Seksjonen «Medisinsk fagansvarlig» har plassholdere som klinikken må fylle ut"
   - "Seksjonen «Ansvar og tilsyn» har plassholdere som klinikken må fylle ut"
@@ -48,9 +50,9 @@ seksjoner:
     under: "Klinikken er under etablering. Fagansvarlig lege er på plass; øvrige leger og medarbeidere presenteres her når de er ansatt."
     veier:
       - tittel: "[PLASSHOLDER: navn]"
+        undertittel: "[PLASSHOLDER: spesialitet] · autorisasjonsnummer [000000]"
         avsnitt:
           - "[PLASSHOLDER: kort faglig bakgrunn — utdanning, spesialisering, arbeidssted. Ingen påstander om erfaring, resultat eller kvalitet uten dokumentasjon.]"
-        liten: "[PLASSHOLDER: spesialitet] · autorisasjonsnummer [000000]"
       - tittel: "Øvrige leger og medarbeidere"
         avsnitt:
           - "Klinikken har ennå ikke ansatt øvrig personell. Navn, spesialitet og autorisasjon publiseres her når ansettelsene er gjort."
@@ -69,14 +71,16 @@ seksjoner:
       - tittel: "Taushetsplikt"
         tekst: "Alt helsepersonell har taushetsplikt etter helsepersonelloven § 21."
       - tittel: "Personvern"
-        tekst: "Hvordan vi behandler personopplysningene dine står på siden Personvern."
+        tekst: "Hvordan vi behandler personopplysningene dine står på siden [Personvern](/personvern/)."
   - type: "pris"
     tittel: "Kontakt klinikken"
     avsnitt:
       - "Har du spørsmål om klinikken, undersøkelsene eller hvordan du bestiller, ringer du oss eller sender melding gjennom pasientportalen."
       - "Send aldri helseopplysninger på e-post."
-      - "Praktisk"
-      - "[Adresse], Straume i Øyganden Telefon [00 00 00 00] Åpningstider [PLASSHOLDER]"
+    sidekolonne:
+      etikett: "Praktisk"
+      avsnitt:
+        - "[Adresse], Straume i Øygarden\nTelefon [00 00 00 00]\nÅpningstider [PLASSHOLDER]"
     knapper:
       - tekst: "Bestill time"
         handling: "bestilling"

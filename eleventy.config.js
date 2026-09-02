@@ -1,10 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { lesMiljo } from './verktoy/miljo-logikk.js';
 import { lagJsonld } from './verktoy/jsonld.js';
 import { lagHeadersInnhold, lagRobotsInnhold } from './verktoy/headere.js';
-import { lesInnhold } from './vakter/lib/les-innhold.js';
+import { lesInnhold, avvisKodeFrontmatter } from './vakter/lib/les-innhold.js';
 import { validerInnhold } from './vakter/lib/innholdsvalidering.js';
+import { lesOgValiderDatafiler } from './vakter/lib/datavalidering.js';
+import { formaterTekst, brodsmuletekst } from './verktoy/tekst.js';
 
 // Alle innholdssidetyper deler samme layout: forskjellene ligger i
 // innholdets seksjonsblokker, ikke i malen. Bestillingsruten er den ene
@@ -14,6 +17,7 @@ const SIDELAYOUT = 'layouts/side.njk';
 const BESTILLINGSLAYOUT = 'layouts/bestill.njk';
 
 const LANSERINGSKRITISKE_KLINIKKFELT = ['juridisk_navn', 'org_nr', 'adresse', 'telefon', 'epost'];
+const SYNTETISK_INNHOLD = 'vakter/tester/syntetisk-innhold';
 
 export default function (eleventyConfig) {
   const miljo = lesMiljo();
@@ -26,18 +30,74 @@ export default function (eleventyConfig) {
   eleventyConfig.setOutputDirectory('dist');
   eleventyConfig.setTemplateFormats(['md', 'njk']);
 
-  eleventyConfig.addPassthroughCopy('src/stiler');
-  eleventyConfig.addPassthroughCopy('src/fonter');
-  eleventyConfig.addPassthroughCopy('src/bilder');
+  // Frontmatter er YAML, aldri kode: gray-matter kan kjøre «---js»-blokker
+  // som JavaScript under bygget. Den motoren er slått av her og i vaktenes
+  // egen leser (les-innhold.js) — en innholdsfil skal ikke kunne kjøre noe.
+  eleventyConfig.setFrontMatterParsingOptions({
+    engines: {
+      js: avvisKodeFrontmatter,
+      javascript: avvisKodeFrontmatter,
+      jsLegacy: avvisKodeFrontmatter,
+      node: avvisKodeFrontmatter
+    }
+  });
+
+  // Brødteksten under frontmatter er markdown uten rå HTML: <script>, on*-
+  // attributter og skjema kan ikke skrives inn som tekst. Alt det innholdet
+  // trenger (overskrifter, lister, interne lenker) finnes i markdown.
+  eleventyConfig.amendLibrary('md', (md) => {
+    md.set({ html: false, linkify: false });
+    // Lenker i brødteksten går bare til egne sider: ingen eksterne adresser,
+    // ingen mailto:/tel:, ingen protokollrelative «//»-mål. Alt annet
+    // rendres som tekst.
+    md.validateLink = (url) => /^\/(?!\/)[a-z0-9/-]*(?:#[a-z0-9-]+)?$/.test(url);
+  });
+
+  // Bare kjente filtyper kopieres rett gjennom — en HTML- eller JS-fil som
+  // havner i src/bilder/ skal ikke bli en side i produksjon.
+  eleventyConfig.addPassthroughCopy('src/fonter/**/*.{woff2,txt}');
+  eleventyConfig.addPassthroughCopy('src/bilder/**/*.{svg,png,jpg,webp,avif,ico}');
+
+  // Stilarket får innholdshash i filnavnet: da kan det mellomlagres i et år
+  // (immutable), og ny HTML møter aldri gammel CSS etter et deploy.
+  const cssHash = crypto
+    .createHash('sha256')
+    .update(fs.readFileSync('src/stiler/hoved.css'))
+    .digest('hex')
+    .slice(0, 10);
+  const stilSti = `/stiler/hoved.${cssHash}.css`;
+  eleventyConfig.addPassthroughCopy({ 'src/stiler/hoved.css': stilSti.slice(1) });
+  eleventyConfig.addGlobalData('stilSti', stilSti);
+
+  // Det syntetiske CI-bygget (CI_SYNTETISK=1) tester produksjonsstien med
+  // et lite, godkjent innholdssett av ikke-språklig fylltekst i stedet for det
+  // ekte innholdet: canonical, sitemap, JSON-LD og alle utdatavakter kjøres
+  // da mot ekte HTML i hver PR, ikke første gang på lanseringsdagen.
+  if (miljo.ciSyntetisk) {
+    eleventyConfig.ignores.add('src/innhold/**');
+    for (const navn of fs.readdirSync(SYNTETISK_INNHOLD).filter((f) => f.endsWith('.md'))) {
+      eleventyConfig.addTemplate(`innhold/${navn}`, fs.readFileSync(path.join(SYNTETISK_INNHOLD, navn), 'utf8'));
+    }
+  }
 
   // ---- Validering FØR bygget: hele innholdssettet, samlet -----------------
   eleventyConfig.on('eleventy.before', () => {
-    const sider = lesInnhold();
+    const sider = lesInnhold(miljo.ciSyntetisk ? SYNTETISK_INNHOLD : undefined);
     const feil = validerInnhold(sider);
     if (feil.length > 0) {
       throw new Error(
         `Innholdskontrakten er brutt (${feil.length} feil):\n  - ${feil.join('\n  - ')}\n` +
           'Bygget stopper med vilje. Se docs/INNHOLDSKONTRAKT.md.'
+      );
+    }
+
+    // Datafilene valideres mot skjemaene sine i hvert bygg — klinikk.json og
+    // ui.json er kontrakt, ikke fritekst.
+    const datafeil = lesOgValiderDatafiler();
+    if (datafeil.length > 0) {
+      throw new Error(
+        `Datafilene bryter skjemaet (${datafeil.length} feil):\n  - ${datafeil.join('\n  - ')}\n` +
+          'Bygget stopper med vilje. Se skjema/klinikk.schema.json og skjema/ui.schema.json.'
       );
     }
 
@@ -51,7 +111,16 @@ export default function (eleventyConfig) {
         if (mangler.length > 0) {
           throw new Error(
             `Produksjonsbygg med tomme lanseringskritiske klinikkfelter: ${mangler.join(', ')}. ` +
-              'Ehandelsloven § 9 krever disse i bunnteksten — fyll src/_data/klinikk.json først.'
+              'Ehandelsloven § 8 krever disse i bunnteksten — fyll src/_data/klinikk.json først.'
+          );
+        }
+        // Et nettsted uten forside er ikke et nettsted: produksjon krever at
+        // forsiden er GODKJENT. (Det syntetiske CI-bygget tester stien uten
+        // godkjent innhold, og er unntatt.)
+        const forside = sider.find((side) => side.data.sidetype === 'forside');
+        if (!forside || forside.data.status !== 'GODKJENT') {
+          throw new Error(
+            'Produksjonsbygg uten GODKJENT forside. Forsiden må være godkjent før noe som helst publiseres.'
           );
         }
       }
@@ -63,9 +132,21 @@ export default function (eleventyConfig) {
   // addPreprocessor som returnerer false er Eleventy 3 sin kanoniske
   // drafts-mekanisme: filen går aldri inn i bygget (verken utdata, collections,
   // meny eller sitemap).
+  // Gaten er en tillatelsesliste: i produksjon bygges KUN innholdssider
+  // (filer med sidetype) med status GODKJENT. Alt annet — komponentkatalogen
+  // eller en tilfeldig mal noen legger i src/ — faller bort uten unntak.
   const sidestatus = new Map();
   eleventyConfig.addPreprocessor('produksjonsgate', 'md,njk', (data, _innhold) => {
     if (data.sidetype) {
+      // Innholdssider finnes bare som src/innhold/*.md — det er de filene
+      // kontrakten validerer. En fil med sidetype et annet sted, eller en
+      // .njk med sidetype, ville gått forbi valideringen usignert.
+      const sti = data.page.inputPath.replace(/^\.\//, '');
+      if (!/^src\/innhold\/[^/]+\.md$/.test(sti)) {
+        throw new Error(
+          `${sti}: har sidetype, men ligger utenfor src/innhold/ eller er ikke en .md-fil. Innholdssider valideres bare der — flytt filen.`
+        );
+      }
       sidestatus.set(data.page.inputPath, {
         url: data.url,
         status: data.status,
@@ -74,8 +155,9 @@ export default function (eleventyConfig) {
         noindex: data.noindex === true
       });
       if (miljo.produksjon && data.status !== 'GODKJENT') return false;
+      return undefined;
     }
-    if (miljo.produksjon && data.page.inputPath.includes('komponentkatalog')) return false;
+    if (miljo.produksjon) return false;
     return undefined;
   });
 
@@ -143,6 +225,14 @@ export default function (eleventyConfig) {
       maximumFractionDigits: 0
     }).format(belop)
   );
+  // Prisrader med beløp. Rader med null vises aldri — et beløp finnes eller
+  // det finnes ikke.
+  eleventyConfig.addFilter('medBelop', (priser) =>
+    (priser || []).filter((p) => typeof p.belop_nok === 'number' && p.belop_nok > 0)
+  );
+  // Prosa: escapet, med [tekst](/sti/) som intern lenke og \n som <br>.
+  eleventyConfig.addFilter('tekst', formaterTekst);
+  eleventyConfig.addFilter('brodsmule', brodsmuletekst);
 
   // ---- Etter bygget: _headers, robots.txt, sitemap.xml, manifest ----------
   eleventyConfig.on('eleventy.after', ({ dir, directories, results }) => {

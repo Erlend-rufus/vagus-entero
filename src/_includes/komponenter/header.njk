@@ -15,11 +15,11 @@
     <nav aria-label="{{ ui.hovednavigasjon }}">
       <ul class="hovedmeny">
         {%- for side in collections.nav %}
-        <li><a href="{{ side.url }}"{% if side.url == page.url %} aria-current="page"{% endif %}>{{ side.data.menytittel or side.data.tittel }}</a></li>
+        <li><a href="{{ side.url }}"{% if side.url == page.url %} aria-current="page"{% elif overordnet and side.url == overordnet %} aria-current="true"{% endif %}>{{ side.data.menytittel or side.data.tittel }}</a></li>
         {%- endfor %}
       </ul>
     </nav>
     {%- endif %}
-    {{ knapperad(toppknapper, klinikk, collections.innhold, 'topp-handlinger') }}
+    {{ knapperad(toppknapper, klinikk, collections.innhold, 'topp-handlinger', false, ui) }}
   </div>
 </header>

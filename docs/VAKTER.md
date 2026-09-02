@@ -35,8 +35,12 @@ Slik gjør du det i GitHub:
 
 - Standard er **hele ord**: en oppføring treffer aldri inne i et lengre ord,
   så korte oppføringer er trygge å legge inn.
-- En linje som starter med `~` matcher som **delstreng** (brukes for domener
-  og skriptnavn i den tekniske sporingslisten).
+- En linje som slutter med `*` krever ordgrense foran, men tillater **fri
+  endelse** bak — for egennavn som bøyes og settes sammen («Navnet»,
+  «Navnets», «Navn-utstyr»). Brukes i preparat-, leverandør- og
+  forsikringslistene, men ikke på korte navn som også er vanlige ordstammer.
+- En linje som starter med `~` matcher som **delstreng** hvor som helst
+  (brukes for domener og skriptnavn i den tekniske sporingslisten).
 - Flerords-fraser matcher på tvers av variabel mellomrom.
 
 ### Falske positive
@@ -44,6 +48,9 @@ Slik gjør du det i GitHub:
 Treffer en oppføring en legitim formulering, IKKE fjern oppføringen. Opprett
 i stedet filen `vakter/ordlister/unntak/<samme-filnavn>.txt` og legg inn hele
 den legitime frasen der — da nulles bare det treffet, og regelen står.
+Unntak gjelder forbudslistene (preparatnavn, ventetidsfraser, superlativer,
+leverandører, forsikringsselskaper, vurderingssignaler), ikke den tekniske
+listen `sporingssignaturer.txt`.
 
 ### Nytt ord treffer gammel historikk
 
@@ -51,30 +58,47 @@ Skanning av commit-meldinger bruker en baseline: legger du inn et nytt ord og
 CI feiler på en gammel, uskyldig commit-melding, gjennomgår dere treffet
 manuelt og setter dagens commit-SHA i
 `vakter/ordlister/historikk-baseline.txt`. Da skannes bare meldinger etter
-det punktet. Nye synder fanges alltid.
+det punktet. Havner et forbudt ord i en *ny* commit-melding, feiler CI med
+en gang, og det kan bare fjernes ved å skrive om historikken — det er med
+vilje.
 
 ## Vaktene som kjører
 
 | Vakt | Feiler på |
 |---|---|
-| `innholdskontrakt` | brudd på innholdskontrakten (se `docs/INNHOLDSKONTRAKT.md`) |
+| `innholdskontrakt` | brudd på innholdskontrakten (se `docs/INNHOLDSKONTRAKT.md`), inkludert plassholdere i en GODKJENT side og prisrader uten beløp |
+| `datafiler` | `src/_data/klinikk.json` og `ui.json` som bryter skjemaene sine, og reserverte felt som er fylt ut før visningen finnes |
+| `priser-i-tekst` | beløp i løpende tekst (alle prosafelt og brødteksten) — priser hører bare i `belop_nok` |
 | `ordliste-skann` | treff i forbudslistene — i kildefiler, bygde utdata og commit-meldinger |
 | `sporing` | sporingssignaturer i kode eller utdata |
 | `lagring` | forsøk på lagring i brukerutstyr (nettstedet skal ikke lagre noe som helst) |
 | `norsk-i-maler` | litterær tekst i maler — alt synlig språk skal komme fra `ui.json` eller innholdsfiler |
 | `ui-kryssjekk` | maloppslag uten nøkkel i `ui.json`, og døde nøkler |
-| `eksterne-verter` | enhver referanse til andre domener i bygde utdata (hvitelisten er tom) |
+| `eksterne-verter` | enhver referanse til andre domener i bygde utdata — i attributter, `srcset`, `<meta content>`, CSS (også `image-set()` og CSS-escapes), JavaScript (også `\u`-escaping), innebygde `<style>`/`<script>`-blokker og SVG-filer, også protokollrelative `//`- og `\\`-adresser (hvitelisten er tom) |
+| `innebygd-kode` | `<script>` utenfor JSON-LD, `<style>`, `style=`, `on*`-attributter, `javascript:`, rammer, skjemaelementer, meta refresh og `ping` i bygd HTML — nettstedet har ingen innebygd kode |
 | `jsonld` | forbudte eller ukjente typer i strukturerte data; null-verdier som skulle vært utelatt |
 | `lenker` | interne lenker uten mål i bygget |
-| `godkjent-status` | side uten GODKJENT i produksjonsbygg; komponentkatalogen i produksjon |
-| `klinikk-lansering` | tomme lovpålagte klinikkfelter i ekte produksjonsbygg (ehandelsloven § 9) |
+| `godkjent-status` | side uten GODKJENT i produksjonsbygg; alt som ikke er en innholdsside (komponentkatalogen, løse maler); produksjon uten forside |
+| `klinikk-lansering` | tomme lovpålagte klinikkfelter i ekte produksjonsbygg (ehandelsloven § 8); `CI_SYNTETISK` i et Netlify-bygg |
+| `tekst-kommer` | plassholderen `[TEKST KOMMER]` i et produksjonsbygg |
 | `noindex` | manglende noindex utenfor produksjon (og manglende Basic-Auth-linje når passordvariablene var satt i bygget); gjenglemt noindex/Disallow/Basic-Auth i produksjon |
-| `headere` | avvik mellom bygde `_headers` og `sikkerhet/policy.json` |
+| `headere` | avvik mellom bygde `_headers` og `sikkerhet/policy.json` (CSP, faste headere, Cache-Control) |
 
 Kjør alt lokalt: `npm run vakter` (kildefiler) eller `npm run bygg`
-(bygg + utdatavakter). `npm test` kjører vaktenes **selvtester**: hver test
-planter et brudd og krever at vakten fanger det — en vakt som slutter å
-virke, feiler dermed CI selv.
+(bygg + utdatavakter). `npm test` kjører vaktenes **selvtester**: hver vakt
+har minst én test som planter et brudd og krever at vakten fanger det, med
+sjekk på hvilken melding som kom — en vakt som slutter å virke, feiler
+dermed CI selv. Historikkskannet testes mot et midlertidig git-repo med
+egen baseline, uavhengig av baselinen i hovedrepoet.
+
+### Slik leses bygd HTML
+
+Vaktene `eksterne-verter`, `innebygd-kode`, `lenker` og `jsonld` leser HTML
+og SVG med en ekte HTML-parser (`parse5`, samme algoritme som nettleserne),
+ikke regulære uttrykk. Entiteter dekodes, attributter uten anførselstegn
+leses, og ved dupliserte attributter gjelder det første — akkurat som i
+nettleseren. Det er derfor ikke mulig å «skrive seg rundt» vaktene med
+uvanlig markup.
 
 ## Bevisste unntak fra skanning
 
@@ -85,6 +109,8 @@ virke, feiler dermed CI selv.
   base64-innhold gir bare støy.
 - `src/komponentkatalog.njk` — internt utviklingsverktøy med ikke-språklig
   fylltekst; finnes aldri i produksjonsbygg (håndhevet av egen vakt).
+- `.claude/worktrees/` — midlertidige arbeidskopier fra utviklingsverktøy,
+  aldri en del av bygget.
 
 ## Omtale av leverandører i repoet
 

@@ -8,7 +8,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 
-import { sokIOrdliste } from '../lib/felles.js';
+import { sokIOrdliste, lesOrdliste } from '../lib/felles.js';
 import { tilNorsk } from '../lib/norske-meldinger.js';
 import { validerInnhold } from '../lib/innholdsvalidering.js';
 import * as ordliste from '../ordliste-skann.js';
@@ -22,6 +22,15 @@ import * as godkjentStatus from '../godkjent-status.js';
 import * as priserITekst from '../priser-i-tekst.js';
 import * as tekstKommer from '../tekst-kommer.js';
 import * as noindex from '../noindex.js';
+import * as innebygdKode from '../innebygd-kode.js';
+import * as headere from '../headere.js';
+import * as klinikkLansering from '../klinikk-lansering.js';
+import * as uiKryssjekk from '../ui-kryssjekk.js';
+import { validerKlinikk, validerUi } from '../lib/datavalidering.js';
+import { lesInnholdsfil } from '../lib/les-innhold.js';
+import { lesMiljo } from '../../verktoy/miljo-logikk.js';
+import { formaterTekst, brodsmuletekst } from '../../verktoy/tekst.js';
+import { lagJsonld } from '../../verktoy/jsonld.js';
 
 let feilede = 0;
 function krev(betingelse, beskrivelse) {
@@ -143,13 +152,13 @@ krev(
 krev(
   validerInnhold([
     { fil: 'test.md', data: medSeksjoner([{ type: 'finnespaaikke', tittel: 'Noe' }]) }
-  ]).length > 0,
+  ]).some((m) => m.includes('ukjent eller manglende type')),
   'seksjoner: ukjent blokktype feiler'
 );
 krev(
   validerInnhold([
     { fil: 'test.md', data: medSeksjoner([{ type: 'tidslinje', tittel: 'Uten punkter' }]) }
-  ]).length > 0,
+  ]).some((m) => m.includes('«punkter» mangler')),
   'seksjoner: tidslinje uten punkter feiler'
 );
 krev(
@@ -161,7 +170,7 @@ krev(
         hode_knapper: [{ tekst: 'Les mer', handling: 'intern' }]
       }
     }
-  ]).length > 0,
+  ]).some((m) => m.includes('mangler url')),
   'knapper: intern handling uten url feiler'
 );
 krev(
@@ -173,7 +182,7 @@ krev(
         hode_knapper: [{ tekst: 'Les mer', handling: 'intern', url: '/finnes-ikke/' }]
       }
     }
-  ]).length > 0,
+  ]).some((m) => m.includes('/finnes-ikke/')),
   'knapper: intern lenke uten mål feiler'
 );
 krev(
@@ -186,10 +195,10 @@ krev(
         status: 'GODKJENT',
         godkjent_av: 'Testlege',
         godkjent_dato: '2026-01-01',
-        priser: [{ navn: 'Undersøkelse', belop_nok: null }]
+        seksjoner: [{ type: 'prisliste', tittel: 'Prisliste', priser: [{ navn: 'Undersøkelse', belop_nok: null }] }]
       }
     }
-  ]).length > 0,
+  ]).some((m) => m.includes('mangler beløp')),
   'pris: GODKJENT prisside med uavklart beløp feiler'
 );
 krev(
@@ -198,7 +207,7 @@ krev(
       fil: 'test.md',
       data: { ...gyldigSide, overordnet: '/finnes-ikke/' }
     }
-  ]).length > 0,
+  ]).some((m) => m.includes('overordnet peker på «/finnes-ikke/»')),
   'brødsmulesti: overordnet uten mål feiler'
 );
 
@@ -234,7 +243,7 @@ krev(
 
 const { tittel: _utelatt, ...utenTittel } = gyldigSide;
 krev(
-  validerInnhold([{ fil: 'test.md', data: utenTittel }]).length > 0,
+  validerInnhold([{ fil: 'test.md', data: utenTittel }]).some((m) => m.includes('obligatorisk felt «tittel»')),
   'innholdskontrakt: manglende obligatorisk felt feiler'
 );
 krev(
@@ -363,6 +372,449 @@ krev(
     .kjorHistorikk({ repoRot: repo, kategorier: SYNTETISK_KATEGORI })
     .some((m) => m.includes('TESTFORBUDTORD')),
   'historikk: fanger plantet ord i commit-melding'
+);
+
+
+// --- ordliste: «*»-endelse for egennavn ---------------------------------------
+krev(
+  sokIOrdliste('utstyret er TESTNAVNETS og TESTNAVN-utstyr', [{ tekst: 'TESTNAVN', delstreng: false, endelse: true }]).length === 2,
+  'ordliste: *-oppføring treffer bøyning og sammensetning'
+);
+krev(
+  sokIOrdliste('ordet XTESTNAVN inne i annet', [{ tekst: 'TESTNAVN', delstreng: false, endelse: true }]).length === 0,
+  'ordliste: *-oppføring krever fortsatt ordgrense foran'
+);
+
+// --- tekst-filteret: escaping, interne lenker, linjeskift -------------------
+krev(
+  formaterTekst('a <b>b</b> & "c"') === 'a &lt;b&gt;b&lt;/b&gt; &amp; &quot;c&quot;',
+  'tekst: all HTML escapes'
+);
+krev(
+  formaterTekst('se [priser](/priser/) her') === 'se <a href="/priser/">priser</a> her',
+  'tekst: intern lenke rendres'
+);
+krev(
+  !formaterTekst('se [x](https://ekstern.example/) her').includes('<a '),
+  'tekst: ekstern lenke blir ikke lenke'
+);
+krev(
+  !formaterTekst('[x](javascript:alert(1))').includes('<a '),
+  'tekst: javascript:-lenke blir ikke lenke'
+);
+krev(formaterTekst('linje 1\nlinje 2') === 'linje 1<br>linje 2', 'tekst: linjeskift blir <br>');
+krev(
+  brodsmuletekst('Kikkertundersøkelse av tykktarmen (koloskopi)') === 'Kikkertundersøkelse av tykktarmen',
+  'brødsmule: parentesen til slutt fjernes'
+);
+
+// --- JSON-LD: «<» kan aldri lukke script-elementet -------------------------
+{
+  const ld = lagJsonld(
+    { status: 'GODKJENT', jsonld_type: 'MedicalCondition', tittel: 'x</script><b>', meta_beskrivelse: 'y', url: '/x/' },
+    {},
+    { siteUrl: 'https://example.invalid' }
+  );
+  krev(ld && !ld.includes('</script>') && ld.includes('\\u003c/script>'), 'jsonld: «<» i verdier escapes');
+}
+
+// --- innholdsleser: frontmatter kan ikke være kode --------------------------
+{
+  const midl = fs.mkdtempSync(path.join(os.tmpdir(), 'frontmatter-'));
+  const fil = path.join(midl, 'kode.md');
+  fs.writeFileSync(fil, '---js\n{ sidetype: "statisk" }\n---\n');
+  let kastet = false;
+  try {
+    lesInnholdsfil(fil);
+  } catch (e) {
+    kastet = /---/.test(e.message);
+  }
+  krev(kastet, 'les-innhold: «---js»-frontmatter avvises');
+  fs.rmSync(midl, { recursive: true, force: true });
+}
+
+// --- miljøtolkning -----------------------------------------------------------
+{
+  let kastet = false;
+  try {
+    lesMiljo({ PRODUKSJON: '0' });
+  } catch (e) {
+    kastet = e.message.includes('PRODUKSJON');
+  }
+  krev(kastet, 'miljo: PRODUKSJON=0 stopper bygget i stedet for å tolkes');
+  krev(lesMiljo({ PRODUKSJON: '1', CONTEXT: 'deploy-preview' }).produksjon === false, 'miljo: preview-kontekst overstyrer PRODUKSJON');
+  krev(lesMiljo({ PRODUKSJON: '1', CONTEXT: 'production' }).produksjon === true, 'miljo: PRODUKSJON=1 i production-kontekst er produksjon');
+  let kastet2 = false;
+  try {
+    lesMiljo({ CI_SYNTETISK: '1', NETLIFY: 'true' });
+  } catch (e) {
+    kastet2 = e.message.includes('CI_SYNTETISK');
+  }
+  krev(kastet2, 'miljo: CI_SYNTETISK i Netlify-bygg stopper bygget');
+}
+
+// --- datafiler: klinikk.json og ui.json mot skjema --------------------------
+{
+  const gyldigKlinikk = {
+    juridisk_navn: 'Testklinikken AS', visningsnavn: 'Testklinikken', kortnavn: 'Test', domene: 'test.invalid',
+    org_nr: '123456789', mva_status: null, adresse: null, telefon: null, epost: null, lege: null, tilsyn: null,
+    bestilling: null, apningstider: null, ventetid: null
+  };
+  krev(validerKlinikk(gyldigKlinikk, 'test.json').length === 0, 'datafiler: gyldig klinikk.json passerer');
+  krev(
+    validerKlinikk({ ...gyldigKlinikk, org_nr: '12345678' }, 'test.json').some((m) => m.includes('org_nr')),
+    'datafiler: org.nr med åtte siffer feiler'
+  );
+  krev(
+    validerKlinikk({ ...gyldigKlinikk, ventetid: { uker: 2, oppdatert: '2026-09-01' } }, 'test.json').some((m) => m.includes('reservert')),
+    'datafiler: reservert felt (ventetid) må være null'
+  );
+  krev(validerUi({ hopp_til_innhold: 'x' }, 'test.json').some((m) => m.includes('mangler')), 'datafiler: ui.json uten påkrevd nøkkel feiler');
+}
+
+// --- innholdskontrakt: nye kontekstregler -----------------------------------
+const godkjent = { status: 'GODKJENT', godkjent_av: 'Testlege', godkjent_dato: '2026-01-01' };
+krev(
+  validerInnhold([{ fil: 'a.md', data: { ...gyldigSide, ...godkjent, ingress: 'En ingress med [PLASSHOLDER: noe] som ikke er avklart ennå.' } }]).some((m) => m.includes('plassholder')),
+  'innholdskontrakt: GODKJENT med [PLASSHOLDER] feiler'
+);
+krev(
+  validerInnhold([{ fil: 'a.md', data: { ...gyldigSide, ...godkjent, seksjoner: [{ type: 'pris', tittel: 'Pris og betaling', avsnitt: ['Du betaler selv.'], priser: [{ navn: 'Undersøkelse', belop_nok: null }] }] } }]).some((m) => m.includes('mangler beløp')),
+  'innholdskontrakt: GODKJENT med prisrad uten beløp i seksjon feiler'
+);
+krev(
+  validerInnhold([{ fil: 'a.md', data: { ...gyldigSide, ...godkjent, sidetype: 'pris', seksjoner: [{ type: 'tekst', tittel: 'Bare tekst', avsnitt: ['Ingen prisliste her.'] }] } }]).some((m) => m.includes('prisliste')),
+  'innholdskontrakt: GODKJENT prisside uten prisliste-seksjon feiler'
+);
+krev(
+  validerInnhold([
+    { fil: 'a.md', data: gyldigSide },
+    { fil: 'b.md', data: { ...gyldigSide, url: '/annen/', tittel: 'En annen tittel her ja' } }
+  ]).some((m) => m.includes('rekkefolge')),
+  'innholdskontrakt: to menysider med samme rekkefolge feiler'
+);
+krev(
+  validerInnhold([{ fil: 'a.md', data: { ...gyldigSide, bilder: [{ fil: 'x.avif', alt: 'Et bilde' }] } }]).some((m) => m.includes('reservert')),
+  'innholdskontrakt: bilder-feltet er reservert og må være tomt'
+);
+krev(
+  validerInnhold([{ fil: 'a.md', data: { ...gyldigSide, seksjoner: [{ type: 'tekst', tittel: 'Med lenke', avsnitt: ['Se [siden](/finnes-ikke/) her.'] }] } }]).some((m) => m.includes('/finnes-ikke/')),
+  'innholdskontrakt: lenke i tekst uten mål feiler'
+);
+krev(
+  validerInnhold([{ fil: 'a.md', data: { ...gyldigSide, priser: [{ navn: 'X', belop_nok: 100 }] } }]).some((m) => m.includes('priser')),
+  'innholdskontrakt: priser på toppnivå avvises (hører i prisliste-seksjon)'
+);
+krev(
+  validerInnhold([{ fil: 'a.md', data: medSeksjoner([{ type: 'prisliste', tittel: 'Prisliste', kolonner: { tjeneste: 'Tjeneste', omfang: 'Omfang', pris: 'Pris' }, priser: [{ navn: 'Undersøkelse', omfang: 'Alt inkludert', belop_nok: 4500 }] }]) }]).length === 0,
+  'innholdskontrakt: gyldig prisliste med kolonner passerer'
+);
+krev(
+  validerInnhold([{ fil: 'a.md', data: medSeksjoner([{ type: 'prisliste', tittel: 'Prisliste', priser: [{ navn: 'Undersøkelse', belop_nok: 4500.5 }] }]) }]).some((m) => m.includes('belop_nok')),
+  'innholdskontrakt: desimalbeløp avvises'
+);
+
+// --- dist-vakter: innebygd kode, eksterne verter i flere former -------------
+{
+  const midl = fs.mkdtempSync(path.join(os.tmpdir(), 'innebygd-'));
+  const d = path.join(midl, 'dist');
+  fs.mkdirSync(d, { recursive: true });
+  fs.writeFileSync(`${d}.manifest.json`, JSON.stringify({ produksjon: false, context: null, ciSyntetisk: false, basicAuthAktiv: false, siteUrl: null, sider: [] }));
+  fs.writeFileSync(
+    path.join(d, 'index.html'),
+    '<html><head><meta property="og:image" content="https://cdn.example/x.png"><style>@import "https://fonts.example/a.css";</style></head>' +
+      '<body style="color:red" onload="x()"><img src="//bilder.example/a.png"><form action="/x"></form><iframe src="/y"></iframe>' +
+      '<script>fetch("https://api.example/")</script></body></html>'
+  );
+  fs.writeFileSync(path.join(d, 'x.svg'), '<svg xmlns="http://www.w3.org/2000/svg"><image href="https://bilde.example/a.png"/><script>1</script></svg>');
+  const ik = innebygdKode.kjorDist(d);
+  for (const [tekst, navn] of [['<script> utenfor JSON-LD', 'script'], ['<style>-element', 'style'], ['style=-attributt', 'style-attributt'], ['onload-hendelsesattributt', 'on-attributt'], ['<form>-element', 'form'], ['<iframe>-element', 'iframe']]) {
+    krev(ik.some((m) => m.includes(tekst)), `innebygd-kode: fanger ${navn}`);
+  }
+  const ev = eksterneVerter.kjorDist(d);
+  for (const vert of ['cdn.example', 'fonts.example', 'bilder.example', 'api.example', 'bilde.example']) {
+    krev(ev.some((m) => m.includes(vert)), `eksterne-verter: fanger «${vert}»`);
+  }
+  krev(ev.some((m) => m.includes('<script> i SVG')), 'eksterne-verter: fanger skript i SVG-fil');
+  krev(lenker.kjorDist(d).length === 0 || !lenker.kjorDist(d).some((m) => m.includes('..')), 'lenker: ingen «..»-treff uten «..»');
+  fs.writeFileSync(path.join(d, 'index.html'), '<a href="/bilder/../../package.json">x</a>');
+  krev(lenker.kjorDist(d).some((m) => m.includes('inneholder «.»/«..»')), 'lenker: «..» i intern sti avvises');
+  fs.rmSync(midl, { recursive: true, force: true });
+}
+
+// --- headere, klinikk-lansering, ui-kryssjekk -------------------------------
+{
+  const midl = fs.mkdtempSync(path.join(os.tmpdir(), 'headere-'));
+  const d = path.join(midl, 'dist');
+  fs.mkdirSync(d, { recursive: true });
+  fs.writeFileSync(path.join(d, '_headers'), '/*\n  X-Content-Type-Options: nosniff\n');
+  const hf = headere.kjorDist(d);
+  krev(hf.some((m) => m.includes('Content-Security-Policy') && m.includes('mangler')), 'headere: fanger manglende CSP-linje');
+  krev(hf.some((m) => m.includes('Referrer-Policy')), 'headere: fanger manglende fast header');
+  krev(hf.some((m) => m.includes('Cache-Control')), 'headere: fanger manglende Cache-Control');
+
+  fs.writeFileSync(`${d}.manifest.json`, JSON.stringify({ produksjon: true, context: 'production', ciSyntetisk: false, sider: [] }));
+  const klinikkSti = path.join(midl, 'klinikk.json');
+  fs.writeFileSync(klinikkSti, JSON.stringify({ juridisk_navn: 'Testklinikken AS', org_nr: '123456789', adresse: null, telefon: null, epost: 'post@example.invalid' }));
+  const kl = klinikkLansering.kjorDist(d, { klinikkSti });
+  krev(kl.some((m) => m.includes('«adresse»')) && kl.some((m) => m.includes('«telefon»')) && !kl.some((m) => m.includes('«epost»')), 'klinikk-lansering: fanger nøyaktig de tomme lovpålagte feltene i ekte produksjonsbygg');
+  fs.writeFileSync(`${d}.manifest.json`, JSON.stringify({ produksjon: true, context: 'deploy-preview', ciSyntetisk: true, sider: [] }));
+  krev(klinikkLansering.kjorDist(d).some((m) => m.includes('CI_SYNTETISK')), 'klinikk-lansering: CI_SYNTETISK i Netlify-kontekst feiler');
+  fs.writeFileSync(`${d}.manifest.json`, JSON.stringify({ produksjon: true, context: null, ciSyntetisk: true, sider: [] }));
+  krev(klinikkLansering.kjorDist(d, { klinikkSti }).length === 0, 'klinikk-lansering: syntetisk CI-bygg utenfor Netlify passerer');
+
+  const rot = path.join(midl, 'repo');
+  fs.mkdirSync(path.join(rot, 'src/_data'), { recursive: true });
+  fs.mkdirSync(path.join(rot, 'src/_includes'), { recursive: true });
+  fs.writeFileSync(path.join(rot, 'src/_data/ui.json'), JSON.stringify({ brukt: 'x', dod_nokkel: 'y' }));
+  fs.writeFileSync(path.join(rot, 'src/_includes/mal.njk'), '<p>{{ ui.brukt }} {{ ui.finnes_ikke }}</p>');
+  const uf = uiKryssjekk.kjorKilde({ rot });
+  krev(uf.some((m) => m.includes('finnes_ikke')), 'ui-kryssjekk: fanger oppslag uten nøkkel');
+  krev(uf.some((m) => m.includes('dod_nokkel')), 'ui-kryssjekk: fanger død nøkkel');
+  fs.rmSync(midl, { recursive: true, force: true });
+}
+
+// --- godkjent-status: ikke-innholdsside og manglende forside i produksjon --
+{
+  const midl = fs.mkdtempSync(path.join(os.tmpdir(), 'godkjent-'));
+  const d = path.join(midl, 'dist');
+  fs.mkdirSync(d, { recursive: true });
+  fs.writeFileSync(`${d}.manifest.json`, JSON.stringify({ produksjon: true, context: 'production', ciSyntetisk: false, sider: [{ url: '/katalog/', sidetype: null, status: null }] }));
+  const gf = godkjentStatus.kjorDist(d);
+  krev(gf.some((m) => m.includes('ingen sidetype')), 'godkjent-status: side uten sidetype i produksjon feiler');
+  krev(gf.some((m) => m.includes('forsiden')), 'godkjent-status: produksjon uten forside feiler');
+  fs.rmSync(midl, { recursive: true, force: true });
+}
+
+// --- historikk: baseline unntar eldre commits -------------------------------
+fs.writeFileSync(path.join(repo, 'fil.txt'), 'y');
+git('add', '.');
+git('commit', '-q', '-m', 'uskyldig melding etter baseline');
+const baselineSha = git('rev-parse', 'HEAD').trim();
+krev(
+  ordliste.kjorHistorikk({ repoRot: repo, kategorier: SYNTETISK_KATEGORI, baseline: baselineSha }).length === 0,
+  'historikk: commits før baseline skannes ikke'
+);
+krev(
+  ordliste.kjorHistorikk({ repoRot: repo, kategorier: SYNTETISK_KATEGORI }).some((m) => m.includes('TESTFORBUDTORD')),
+  'historikk: uten baseline i testrepoet skannes hele historikken'
+);
+
+
+// --- HTML-vaktene mot omgåelser: uten anførselstegn, entiteter, dupliserte attributter, backslash ---
+{
+  const midl = fs.mkdtempSync(path.join(os.tmpdir(), 'omgaaelse-'));
+  const d = path.join(midl, 'dist');
+  fs.mkdirSync(d, { recursive: true });
+  fs.writeFileSync(`${d}.manifest.json`, JSON.stringify({ produksjon: false, context: null, ciSyntetisk: false, basicAuthAktiv: false, siteUrl: null, sider: [] }));
+  fs.writeFileSync(
+    path.join(d, 'index.html'),
+    '<html><head><meta http-equiv=refresh content="0;url=https://omdirigert.example/">' +
+      '<script type="text/javascript" type="application/ld+json">fetch("https://dupl.example/")</script>' +
+      '<style>@import url(https:\\2f\\2f escapet.example/a.css); .x{background:image-set("https://sett.example/a.png" 1x)}</style></head>' +
+      '<body onload=x()><img src=//uten.example/a.png><a href="/\\backslash.example/x">b</a>' +
+      '<a href=&#106;avascript:alert(1)>c</a><img srcset="https://sett2.example/a.png 1x"><video poster="https://plakat.example/p.jpg"></video>' +
+      '<a href="mailto:post@example.invalid">m</a><a href="tel:12345678">t</a></body></html>'
+  );
+  fs.writeFileSync(path.join(d, 'x.svg'), '<svg xmlns="http://www.w3.org/2000/svg" onload="x()"><a href="javascript:alert(1)"><text>x</text></a></svg>');
+  const ik = innebygdKode.kjorDist(d);
+  krev(ik.some((m) => m.includes('meta refresh')), 'innebygd-kode: meta refresh uten anførselstegn');
+  krev(ik.some((m) => m.includes('<script> utenfor JSON-LD')), 'innebygd-kode: duplisert type-attributt teller som første (nettleserens regel)');
+  krev(ik.some((m) => m.includes('onload')), 'innebygd-kode: on-attributt uten anførselstegn');
+  krev(ik.some((m) => m.includes('kode-/data-URL')), 'innebygd-kode: javascript: skrevet med entitet');
+  krev(ik.some((m) => m.includes('x.svg') && m.includes('onload')), 'innebygd-kode: on-attributt i SVG-fil');
+  krev(ik.some((m) => m.includes('x.svg') && m.includes('kode-/data-URL')), 'innebygd-kode: javascript:-lenke i SVG-fil');
+  const ev = eksterneVerter.kjorDist(d);
+  for (const vert of ['omdirigert.example', 'dupl.example', 'escapet.example', 'sett.example', 'uten.example', 'backslash.example', 'sett2.example', 'plakat.example']) {
+    krev(ev.some((m) => m.includes(vert)), `eksterne-verter: fanger «${vert}»`);
+  }
+  krev(!ev.some((m) => m.includes('example.invalid') || m.includes('12345678')), 'eksterne-verter: mailto:/tel: er ikke eksterne verter');
+  krev(jsonld.kjorDist(d).length === 0, 'jsonld: skript med duplisert type leses ikke som JSON-LD');
+
+  fs.mkdirSync(path.join(d, 'katalog'), { recursive: true });
+  fs.writeFileSync(path.join(d, 'index.html'), '<a href=/katalog/>k</a><a href="/katalog">k2</a><img srcset="/finnes-ikke.png 1x">');
+  const lf = lenker.kjorDist(d);
+  krev(lf.some((m) => m.includes('/katalog/')), 'lenker: katalog uten index.html er ikke et mål');
+  krev(lf.some((m) => m.includes('/finnes-ikke.png')), 'lenker: srcset sjekkes');
+  fs.rmSync(midl, { recursive: true, force: true });
+}
+krev(formaterTekst('[x](//vert.example/)').includes('<a ') === false, 'tekst: protokollrelativt mål blir ikke lenke');
+
+
+// --- kontekstregler fra etterprøvingen -----------------------------------------
+krev(
+  validerInnhold([
+    { fil: 'a.md', data: { ...gyldigSide, ...godkjent, seksjoner: [{ type: 'tekst', tittel: 'Med lenke', avsnitt: ['Se siden [Personvern](/b/) her.'] }] } },
+    { fil: 'b.md', data: { ...gyldigSide, ...godkjent, url: '/b/', rekkefolge: 2, tittel: 'En annen tittel her ja' } }
+  ]).length === 0,
+  'innholdskontrakt: lenke med stor forbokstav er ikke en plassholder'
+);
+krev(
+  validerInnhold([{ fil: 'a.md', data: { ...gyldigSide, ...godkjent, ingress: 'Se [plassholder: noe] som ikke er avklart ennå her.' } }]).some((m) => m.includes('plassholder')),
+  'innholdskontrakt: plassholder med små bokstaver stopper GODKJENT'
+);
+krev(
+  validerInnhold([
+    { fil: 'a.md', data: { ...gyldigSide, ...godkjent, seksjoner: [{ type: 'tekst', tittel: 'Med lenke', avsnitt: ['Se [utkastet](/b/) her.'] }] } },
+    { fil: 'b.md', data: { ...gyldigSide, url: '/b/', rekkefolge: 2, tittel: 'En annen tittel her ja' } }
+  ]).some((m) => m.includes('ikke er GODKJENT')),
+  'innholdskontrakt: GODKJENT side kan ikke lenke til UTKAST-side'
+);
+krev(
+  validerInnhold([{ fil: 'a.md', data: medSeksjoner([{ type: 'pris', tittel: 'Pris og betaling', avsnitt: ['Du betaler selv.'], sidekolonne: { etikett: 'Merk', avsnitt: ['Noe å merke seg.'] }, priser: [{ navn: 'Undersøkelse', belop_nok: 100 }] }]) }]).some((m) => m.includes('både sidekolonne og priser')),
+  'innholdskontrakt: prisblokk med både sidekolonne og priser feiler'
+);
+krev(
+  validerInnhold([{ fil: 'a.md', data: medSeksjoner([{ type: 'prisliste', tittel: 'Prisliste', priser: [{ navn: 'Undersøkelse', omfang: 'Alt inkludert', belop_nok: 4500 }] }]) }]).some((m) => m.includes('mangler kolonner')),
+  'innholdskontrakt: omfang uten kolonner feiler'
+);
+krev(
+  validerInnhold([{ fil: 'a.md', data: { ...gyldigSide, sidetype: 'forside', url: '/', overordnet: '/testside/' } }, { fil: 'b.md', data: { ...gyldigSide, rekkefolge: 2 } }]).some((m) => m.includes('forsiden kan ikke ha overordnet')),
+  'innholdskontrakt: forside med overordnet feiler'
+);
+krev(
+  tilNorsk([{ keyword: 'minLength', instancePath: '/seksjoner/0/avsnitt/1', params: { limit: 3 } }])[0].includes('minst 3 tegn'),
+  'norske-meldinger: lengdekrav i seksjon navngis'
+);
+
+// --- priser-i-tekst: brødtekst og nye felt ------------------------------------
+krev(priserITekst.skannData({}, 'Undersøkelsen koster 4 500 kr.').length === 1, 'priser-i-tekst: fanger beløp i brødteksten');
+krev(priserITekst.skannData({ seksjoner: [{ type: 'prisliste', priser: [{ navn: 'X', omfang: 'inkl. 500 kr til analyse', belop_nok: 4500 }] }] }).length === 1, 'priser-i-tekst: fanger beløp i omfang');
+krev(priserITekst.skannData({ hode_merknad: 'Fra kr 900' }).length === 1, 'priser-i-tekst: fanger beløp i hode_merknad');
+
+// --- miljø: SITE_URL og PREVIEW_* ----------------------------------------------
+for (const [verdi, navn] of [['https://www.eksempel.no/', 'skråstrek til slutt'], ['http://www.eksempel.no', 'http'], ['https://www.eksempel.no/sti', 'sti']]) {
+  let kastet = false;
+  try { lesMiljo({ SITE_URL: verdi }); } catch (e) { kastet = e.message.includes('SITE_URL'); }
+  krev(kastet, `miljo: SITE_URL med ${navn} avvises`);
+}
+krev(lesMiljo({ SITE_URL: 'https://www.eksempel.no' }).siteUrl === 'https://www.eksempel.no', 'miljo: gyldig SITE_URL godtas');
+{
+  let kastet = false;
+  try { lesMiljo({ PREVIEW_BRUKER: 'a:b', PREVIEW_PASSORD: 'x' }); } catch (e) { kastet = e.message.includes('PREVIEW_BRUKER'); }
+  krev(kastet, 'miljo: kolon i PREVIEW_BRUKER avvises');
+}
+
+// --- noindex per side i produksjon ---------------------------------------------
+{
+  const midl = fs.mkdtempSync(path.join(os.tmpdir(), 'noindex-prod-'));
+  const d = path.join(midl, 'dist');
+  fs.mkdirSync(path.join(d, 'stille'), { recursive: true });
+  fs.mkdirSync(path.join(d, 'aapen'), { recursive: true });
+  fs.writeFileSync(`${d}.manifest.json`, JSON.stringify({ produksjon: true, context: 'production', ciSyntetisk: true, basicAuthAktiv: false, siteUrl: 'https://example.invalid', sider: [{ url: '/stille/', sidetype: 'forsikring', status: 'GODKJENT', noindex: true }, { url: '/aapen/', sidetype: 'statisk', status: 'GODKJENT', noindex: false }] }));
+  fs.writeFileSync(path.join(d, '_headers'), '/*\n  X-Content-Type-Options: nosniff\n');
+  fs.writeFileSync(path.join(d, 'robots.txt'), 'User-agent: *\nAllow: /\n');
+  fs.writeFileSync(path.join(d, 'sitemap.xml'), '<urlset></urlset>');
+  fs.writeFileSync(path.join(d, 'stille', 'index.html'), '<html><head><meta name="robots" content="noindex, nofollow"></head></html>');
+  fs.writeFileSync(path.join(d, 'aapen', 'index.html'), '<html><head></head></html>');
+  krev(noindex.kjorDist(d).length === 0, 'noindex: side med noindex: true får ha meta noindex i produksjon');
+  fs.writeFileSync(path.join(d, 'stille', 'index.html'), '<html><head></head></html>');
+  krev(noindex.kjorDist(d).some((m) => m.includes('noindex: true')), 'noindex: side med noindex: true MÅ ha meta noindex i produksjon');
+  fs.rmSync(midl, { recursive: true, force: true });
+}
+
+
+// --- ordlister lastes fra fil --------------------------------------------------
+{
+  const midl = fs.mkdtempSync(path.join(os.tmpdir(), 'ordliste-'));
+  const fil = path.join(midl, 'liste.txt');
+  fs.writeFileSync(fil, '# kommentar\nHeltOrd\n\nNavn*\n~del\n');
+  const lest = lesOrdliste(fil);
+  krev(lest.length === 3 && lest[0].tekst === 'HeltOrd' && !lest[0].delstreng && !lest[0].endelse, 'ordliste: vanlig oppføring leses fra fil');
+  krev(lest[1].tekst === 'Navn' && lest[1].endelse === true, 'ordliste: *-oppføring leses fra fil');
+  krev(lest[2].tekst === 'del' && lest[2].delstreng === true, 'ordliste: ~-oppføring leses fra fil');
+  fs.rmSync(midl, { recursive: true, force: true });
+}
+{
+  const kategorier = ordliste.lesKategorier();
+  krev(kategorier.length === 6 && kategorier.every((k) => k.oppforinger.length > 0), 'ordliste-skann: alle seks forbudslistene lastes fra vakter/ordlister og er ikke tomme');
+}
+krev(ordliste.lesBaseline(path.join(os.tmpdir(), 'finnes-ikke-' + process.pid)) === null, 'historikk: manglende baseline-fil gir null');
+{
+  const midl = fs.mkdtempSync(path.join(os.tmpdir(), 'baseline-'));
+  fs.mkdirSync(path.join(midl, 'vakter/ordlister'), { recursive: true });
+  fs.writeFileSync(path.join(midl, 'vakter/ordlister/historikk-baseline.txt'), '# kommentar\n\nabc123def\n');
+  krev(ordliste.lesBaseline(midl) === 'abc123def', 'historikk: baseline leses forbi kommentarer og tomme linjer');
+  fs.rmSync(midl, { recursive: true, force: true });
+}
+
+// --- headere: avvik, ikke bare fravær --------------------------------------------
+{
+  const midl = fs.mkdtempSync(path.join(os.tmpdir(), 'headere2-'));
+  const d = path.join(midl, 'dist');
+  fs.mkdirSync(d, { recursive: true });
+  fs.writeFileSync(`${d}.manifest.json`, JSON.stringify({ produksjon: true, sider: [] }));
+  const { lagHeadersInnhold } = await import('../../verktoy/headere.js');
+  const riktig = lagHeadersInnhold({ produksjon: true, noindex: false, basicAuthBruker: null, basicAuthPassord: null });
+  fs.writeFileSync(path.join(d, '_headers'), riktig);
+  krev(headere.kjorDist(d).length === 0, 'headere: riktig generert _headers passerer');
+  fs.writeFileSync(path.join(d, '_headers'), riktig.replace("upgrade-insecure-requests", "upgrade-insecure-requests; script-src 'self' https://cdn.example"));
+  krev(headere.kjorDist(d).some((m) => m.includes('Content-Security-Policy') && m.includes('avviker')), 'headere: påhengt CSP-direktiv fanges');
+  fs.writeFileSync(path.join(d, '_headers'), riktig.replace('  Referrer-Policy: no-referrer', '  Referrer-Policy: no-referrer\n  Content-Security-Policy: default-src *'));
+  krev(headere.kjorDist(d).some((m) => m.includes('står 2 ganger')), 'headere: ekstra CSP-linje fanges');
+  fs.writeFileSync(path.join(d, '_headers'), riktig.replace('Referrer-Policy: no-referrer', 'Referrer-Policy: origin'));
+  krev(headere.kjorDist(d).some((m) => m.includes('Referrer-Policy') && m.includes('avviker')), 'headere: svakere Referrer-Policy fanges');
+  fs.rmSync(midl, { recursive: true, force: true });
+}
+
+// --- noindex: produksjonsgrenen -------------------------------------------------
+{
+  const midl = fs.mkdtempSync(path.join(os.tmpdir(), 'noindex2-'));
+  const d = path.join(midl, 'dist');
+  fs.mkdirSync(d, { recursive: true });
+  fs.writeFileSync(`${d}.manifest.json`, JSON.stringify({ produksjon: true, context: 'production', ciSyntetisk: true, basicAuthAktiv: false, siteUrl: 'https://example.invalid', sider: [{ url: '/', sidetype: 'forside', status: 'GODKJENT', noindex: false }] }));
+  fs.writeFileSync(path.join(d, '_headers'), '/*\n  X-Robots-Tag: noindex, nofollow\n  Basic-Auth: a:b\n');
+  fs.writeFileSync(path.join(d, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
+  fs.writeFileSync(path.join(d, 'index.html'), '<html><head><meta name="robots" content="noindex, nofollow"></head></html>');
+  const nf = noindex.kjorDist(d);
+  for (const [tekst, navn] of [['X-Robots-Tag', 'gjenglemt X-Robots-Tag'], ['Basic-Auth', 'gjenglemt Basic-Auth'], ['Disallow', 'gjenglemt Disallow'], ['sitemap.xml mangler', 'manglende sitemap'], ['gjenglemt meta-robots', 'gjenglemt meta noindex']]) {
+    krev(nf.some((m) => m.includes(tekst)), `noindex (produksjon): fanger ${navn}`);
+  }
+  fs.rmSync(midl, { recursive: true, force: true });
+}
+
+// --- innebygd-kode og eksterne-verter: unntak og egne filer ----------------------
+{
+  const midl = fs.mkdtempSync(path.join(os.tmpdir(), 'unntak-'));
+  const d = path.join(midl, 'dist');
+  fs.mkdirSync(d, { recursive: true });
+  fs.writeFileSync(`${d}.manifest.json`, JSON.stringify({ produksjon: false, context: null, ciSyntetisk: false, basicAuthAktiv: false, siteUrl: null, sider: [] }));
+  fs.writeFileSync(path.join(d, 'index.html'), '<html><head><script type="application/ld+json">{"@context":"https://schema.org","@type":"MedicalClinic","name":"x"}</script><meta http-equiv="content-security-policy" content="default-src *"><link rel="import" href="/x.html"></head><body><div srcdoc="x"></div><img src="data:image/png;base64,AAAA"></body></html>');
+  fs.writeFileSync(path.join(d, 'egen.css'), '.a{background:url(https://css.example/a.png)}');
+  fs.writeFileSync(path.join(d, 'egen.js'), 'fetch("https://js.example/")');
+  const ik = innebygdKode.kjorDist(d);
+  krev(!ik.some((m) => m.includes('<script> utenfor JSON-LD')), 'innebygd-kode: ekte JSON-LD-blokk er tillatt');
+  krev(ik.some((m) => m.includes('CSP i meta')), 'innebygd-kode: CSP i meta fanges');
+  krev(ik.some((m) => m.includes('rel="import"')), 'innebygd-kode: link rel=import fanges');
+  krev(ik.some((m) => m.includes('srcdoc')), 'innebygd-kode: srcdoc fanges');
+  krev(ik.some((m) => m.includes('kode-/data-URL')), 'innebygd-kode: data:-URL fanges');
+  const ev = eksterneVerter.kjorDist(d);
+  krev(!ev.some((m) => m.includes('schema.org')), 'eksterne-verter: schema.org i JSON-LD er unntatt');
+  krev(ev.some((m) => m.includes('data:-URI')), 'eksterne-verter: data:-URI fanges');
+  krev(ev.some((m) => m.includes('css.example')), 'eksterne-verter: egne CSS-filer skannes');
+  krev(ev.some((m) => m.includes('js.example')), 'eksterne-verter: egne JS-filer skannes');
+  fs.writeFileSync(path.join(d, 'index.html'), '<script type="application/ld+json">{"@type":"Ukjent","x":"y"}</script><script type="application/ld+json">{ikke json</script>');
+  const jf = jsonld.kjorDist(d);
+  krev(jf.some((m) => m.includes('utenfor tillatt-listen')), 'jsonld: ukjent toppnivåtype fanges');
+  krev(jf.some((m) => m.includes('ikke gyldig JSON')), 'jsonld: ugyldig JSON fanges');
+  fs.rmSync(midl, { recursive: true, force: true });
+}
+krev(norskIMaler.skannJsOgCss('const t = "Les mer og bestill";', 'test.js').length === 1, 'norsk-i-maler: fanger norsk streng i JS');
+
+
+krev(
+  validerKlinikk({ juridisk_navn: 'Testklinikken AS', visningsnavn: 'Testklinikken', kortnavn: 'Test', domene: 'test.invalid', org_nr: '123456789', mva_status: null, adresse: null, telefon: null, epost: null, lege: null, tilsyn: null, bestilling: { url: 'https://portal.invalid/' }, apningstider: null, ventetid: null }, 'test.json').some((m) => m.includes('bestilling.merknad')),
+  'datafiler: bestilling.url uten merknad feiler'
+);
+krev(
+  validerInnhold([{ fil: 'a.md', data: medSeksjoner([{ type: 'veier', tittel: 'To veier', veier: [{ tittel: 'Første vei', undertittel: '(fagterm) · 10 minutter', avsnitt: ['Kort tekst.'] }, { tittel: 'Andre vei', avsnitt: ['Kort tekst.'], liten: 'Liten linje etterpå.' }] }]) }]).length === 0,
+  'innholdskontrakt: vei med undertittel og vei med liten passerer'
+);
+
+
+krev(
+  validerInnhold([{ fil: 'a.md', data: { ...gyldigSide, ...godkjent, ingress: 'Ring oss på telefon [00 00 00 00] i åpningstiden vår.' } }]).some((m) => m.includes('plassholder')),
+  'innholdskontrakt: sifferplassholder [00 00 00 00] stopper GODKJENT'
 );
 
 fs.rmSync(tmp, { recursive: true, force: true });

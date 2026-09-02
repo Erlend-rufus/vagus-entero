@@ -24,6 +24,8 @@ import * as noindex from './noindex.js';
 import * as headere from './headere.js';
 import * as tekstKommer from './tekst-kommer.js';
 import * as priserITekst from './priser-i-tekst.js';
+import * as datafiler from './datafiler.js';
+import * as innebygdKode from './innebygd-kode.js';
 
 const args = process.argv.slice(2);
 const distKataloger = [];
@@ -53,7 +55,8 @@ const kjoringer = [
   { navn: 'lagring (kildefiler)', fn: () => lagring.kjorKilde() },
   { navn: 'norsk-i-maler', fn: () => norskIMaler.kjorKilde() },
   { navn: 'ui-kryssjekk', fn: () => uiKryssjekk.kjorKilde() },
-  { navn: 'priser-i-tekst', fn: () => priserITekst.kjorKilde() }
+  { navn: 'priser-i-tekst', fn: () => priserITekst.kjorKilde() },
+  { navn: 'datafiler', fn: () => datafiler.kjorKilde() }
 ];
 
 if (historikk) {
@@ -72,7 +75,8 @@ for (const dist of distKataloger) {
     { navn: `klinikk-lansering (${dist})`, fn: () => klinikkLansering.kjorDist(dist) },
     { navn: `noindex (${dist})`, fn: () => noindex.kjorDist(dist) },
     { navn: `headere (${dist})`, fn: () => headere.kjorDist(dist) },
-    { navn: `tekst-kommer (${dist})`, fn: () => tekstKommer.kjorDist(dist) }
+    { navn: `tekst-kommer (${dist})`, fn: () => tekstKommer.kjorDist(dist) },
+    { navn: `innebygd-kode (${dist})`, fn: () => innebygdKode.kjorDist(dist) }
   );
 }
 

@@ -1,9 +1,12 @@
 # Navn på forsikringsselskaper skal ikke forekomme i repoet — omtal dem som
 # «behandlingsforsikring» generelt.
-Gjensidige
+# «*» bak et navn betyr fri endelse (bøyninger og sammensetninger). Korte
+# navn som også er vanlige ordstammer står uten «*», ellers ville de treffe
+# vanlige ord.
+Gjensidige*
 Tryg
-Fremtind
-Storebrand
+Fremtind*
+Storebrand*
 Vertikal Helse
 If Skadeforsikring
 If Forsikring

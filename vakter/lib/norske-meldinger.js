@@ -31,24 +31,27 @@ const FELTMELDINGER = {
   overordnet:
     'overordnet må være url-en til siden over i brødsmulestien (f.eks. /undersokelser/)',
   seksjoner:
-    'seksjoner er sidens innholdsblokker. Hver blokk må ha en type: tekst, tidslinje, steg, sporsmal, veier, praktisk, kort, kort_bred eller pris — se docs/INNHOLDSKONTRAKT.md',
-  bilder: 'hvert bilde må ha fil og alt (alt kan bare være tom sammen med dekorativt: true)',
+    'seksjoner er sidens innholdsblokker. Hver blokk må ha en type: tekst, tidslinje, steg, sporsmal, veier, praktisk, kort, kort_bred, pris eller prisliste — se docs/INNHOLDSKONTRAKT.md',
+  bilder: 'hvert bilde må ha fil og alt (alt kan bare være tom sammen med dekorativt: true) — feltet er reservert og skal være tomt til visningen finnes',
+  hode_merknad: 'hode_merknad (valgfri merknadslinje under knappene i sidehodet) må være 10–300 tegn',
+  i_bunntekst: 'i_bunntekst må være true eller false (true legger siden i bunntekstens lenkeliste)',
   priser:
-    'hver prislinje må ha navn og belop_nok — kroner inkl. mva over 0, eller null når prisen ikke er fastsatt ennå (raden utelates da fra nettstedet)'
+    'priser hører hjemme i en seksjon av type prisliste (eller pris), ikke på toppnivå — hver linje har navn, belop_nok (hele kroner inkl. mva, eller null) og eventuelt omfang'
 };
 
 // Blokktypene og hva de krever, brukt når feilen ligger inne i en seksjon.
 const BLOKKMELDINGER = {
   tekst: 'krever tittel og avsnitt (1–8 avsnitt)',
-  tidslinje: 'krever tittel og punkter (2–8 punkter med naar og tekst)',
+  tidslinje: 'krever tittel og punkter (2–8 punkter med naar og tekst), og kan ha eksempelmerknad og etter',
   steg: 'krever tittel og steg (2–4 steg med tittel og tekst)',
   sporsmal: 'krever tittel og sporsmal (2–14 par av sporsmal og svar)',
-  veier: 'krever tittel og veier (2–3 veier med tittel og avsnitt)',
-  praktisk: 'krever tittel og punkter (2–4 punkter med tittel og tekst)',
+  veier: 'krever tittel og veier (2–4 veier med tittel og avsnitt; undertittel, liten, knapp og illustrasjon er valgfrie)',
+  praktisk: 'krever tittel og punkter (2–6 punkter med tittel og tekst), og kan ha merknad',
   kort: 'krever tittel og kort (2–6 kort med tittel)',
   kort_bred: 'krever tittel og avsnitt',
-  pris: 'krever tittel og avsnitt, og kan ha knapper og priser',
-  prisliste: 'krever tittel og priser (navn og belop_nok per linje; belop_nok kan være null)'
+  pris: 'krever tittel og avsnitt, og kan ha knapper, sidekolonne (etikett + avsnitt) eller priser',
+  prisliste:
+    'krever tittel og priser (navn, belop_nok og eventuelt omfang per linje; belop_nok er hele kroner eller null), og kan ha kolonner (tjeneste, omfang, pris), tabellmerknad og merknad'
 };
 
 function feltFraSti(instancePath, params) {
@@ -68,13 +71,27 @@ function seksjonsmelding(feil) {
     return `seksjon nr. ${nr}: obligatorisk felt «${feil.params.missingProperty}» mangler`;
   }
   if (feil.keyword === 'discriminator') {
-    return `seksjon nr. ${nr}: ukjent eller manglende type — velg tekst, tidslinje, steg, sporsmal, veier, praktisk, kort, kort_bred eller pris`;
+    return `seksjon nr. ${nr}: ukjent eller manglende type — velg tekst, tidslinje, steg, sporsmal, veier, praktisk, kort, kort_bred, pris eller prisliste`;
   }
   if (feil.keyword === 'additionalProperties') {
     return `seksjon nr. ${nr}: ukjent felt «${feil.params.additionalProperty}»`;
   }
   const felt = rest.length > 0 ? rest.join(' → ') : 'blokken';
-  return `seksjon nr. ${nr}: «${felt}» er ugyldig (${feil.keyword})`;
+  if (feil.keyword === 'minLength' || feil.keyword === 'maxLength') {
+    return `seksjon nr. ${nr}: «${felt}» er for ${feil.keyword === 'minLength' ? 'kort' : 'lang'} (${feil.keyword === 'minLength' ? 'minst' : 'høyst'} ${feil.params.limit} tegn)`;
+  }
+  if (feil.keyword === 'minItems' || feil.keyword === 'maxItems') {
+    return `seksjon nr. ${nr}: «${felt}» har for ${feil.keyword === 'minItems' ? 'få' : 'mange'} elementer (${feil.keyword === 'minItems' ? 'minst' : 'høyst'} ${feil.params.limit})`;
+  }
+  if (feil.keyword === 'enum' || feil.keyword === 'const') {
+    return `seksjon nr. ${nr}: «${felt}» har en verdi som ikke er tillatt`;
+  }
+  if (feil.keyword === 'anyOf') return null; // følgefeil av delregelen som allerede er meldt
+  const type = feil.parentSchema && feil.parentSchema.properties && feil.parentSchema.properties.type
+    ? feil.parentSchema.properties.type.const
+    : null;
+  const krav = type && BLOKKMELDINGER[type] ? ` — ${type} ${BLOKKMELDINGER[type]}` : '';
+  return `seksjon nr. ${nr}: «${felt}» er ugyldig (${feil.keyword})${krav}`;
 }
 
 export function tilNorsk(ajvFeil) {
@@ -91,6 +108,8 @@ export function tilNorsk(ajvFeil) {
       meldinger.add(iSeksjon);
       continue;
     }
+    if (iSeksjon === null && /^\/seksjoner\//.test(feil.instancePath || '')) continue;
+    if (feil.keyword === 'anyOf') continue; // følgefeil: den konkrete delregelen er allerede meldt
     const felt = feltFraSti(feil.instancePath, feil.params);
     if (feil.keyword === 'required') {
       meldinger.add(

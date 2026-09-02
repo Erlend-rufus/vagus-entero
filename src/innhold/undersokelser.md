@@ -18,6 +18,7 @@ i_navigasjon: true
 i_bunntekst: false
 rekkefolge: 1
 illustrasjon: "fordoyelse-hero"
+hode_merknad: "Er du usikker på hvilken undersøkelse du trenger, ringer du oss — vi går gjennom plagene dine først."
 hode_knapper:
   - tekst: "Bestill time"
     handling: "bestilling"
@@ -30,9 +31,9 @@ seksjoner:
     under: "Hver side forklarer forberedelser, hvordan undersøkelsen foregår, og hva som skjer etterpå."
     veier:
       - tittel: "Kikkertundersøkelse av spiserør og magesekk"
+        undertittel: "(gastroskopi) · 10–20 minutter"
         avsnitt:
           - "Et tynt, bøyelig kamera gjennom munnen. Undersøker spiserør, magesekk og øverste del av tolvfingertarmen."
-        liten: "(gastroskopi) · 10–20 minutter"
         illustrasjon: "gastroskopi"
         knapp:
           tekst: "Les om undersøkelsen"
@@ -40,9 +41,9 @@ seksjoner:
           url: "/gastroskopi/"
           stil: "sekundaer"
       - tittel: "Kikkertundersøkelse av tykktarmen"
+        undertittel: "(koloskopi) · 20–45 minutter"
         avsnitt:
           - "Tarmens lengste strekning. Krever tømming dagen før, og bedøvelse tilbys."
-        liten: "(koloskopi) · 20–45 minutter"
         illustrasjon: "koloskopi"
         knapp:
           tekst: "Les om undersøkelsen"
@@ -50,9 +51,9 @@ seksjoner:
           url: "/koloskopi/"
           stil: "sekundaer"
       - tittel: "Undersøkelse av endetarmen"
+        undertittel: "(anoskopi og rektoskopi) · 5–15 minutter"
         avsnitt:
           - "Kort undersøkelse av endetarmsåpningen og endetarmen. Ingen tømming nødvendig."
-        liten: "(anoskopi og rektoskopi) · 5–15 minutter"
         illustrasjon: "endetarm"
         knapp:
           tekst: "Les om undersøkelsen"
@@ -60,9 +61,9 @@ seksjoner:
           url: "/undersokelse-av-endetarmen/"
           stil: "sekundaer"
       - tittel: "Små inngrep ved endetarmsplager"
+        undertittel: "(proktologi) · 15–30 minutter"
         avsnitt:
           - "Hemoroider, sprekker og andre plager behandles ofte i samme time, i lokalbedøvelse."
-        liten: "(proktologi) · 15–30 minutter"
         illustrasjon: "proktologi"
         knapp:
           tekst: "Les om undersøkelsen"

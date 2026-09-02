@@ -1,5 +1,6 @@
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
+import path from 'node:path';
 import {
   finnRepoTekstfiler,
   finnDistFiler,
@@ -19,7 +20,7 @@ const KATEGORIER = [
   { fil: 'vakter/ordlister/vurderingssignaler.txt', kategori: 'vurderingssignal' }
 ];
 
-function lesKategorier(kategorier = KATEGORIER) {
+export function lesKategorier(kategorier = KATEGORIER) {
   return kategorier.map(({ fil, kategori }) => ({
     kategori,
     oppforinger: lesOrdliste(fil),
@@ -60,7 +61,25 @@ export function kjorDist(distKatalog) {
 // Skann av commit-meldinger. Krever full klon (fetch-depth: 0 i Actions) —
 // en grunn klon gir stille tomt resultat, og det er nettopp den typen stille
 // vakt-død vi ikke aksepterer: da feiler vi i stedet.
-export function kjorHistorikk({ repoRot = '.', kategorier = lesKategorier() } = {}) {
+export function lesBaseline(repoRot = '.') {
+  const baselineFil = path.join(repoRot, 'vakter/ordlister/historikk-baseline.txt');
+  if (!fs.existsSync(baselineFil)) return null;
+  return (
+    lesTekst(baselineFil)
+      .split('\n')
+      .map((l) => l.trim())
+      .filter((l) => l && !l.startsWith('#'))[0] || null
+  );
+}
+
+// baseline: commit-SHA som eldre historikk unntas fra («--not <sha>»). Leses
+// fra repoet som standard; selvtestene sender null (hele historikken i
+// testrepoet) — en baseline fra hovedrepoet finnes ikke der.
+export function kjorHistorikk({
+  repoRot = '.',
+  kategorier = lesKategorier(),
+  baseline = lesBaseline(repoRot)
+} = {}) {
   const git = (args) => execFileSync('git', args, { cwd: repoRot, encoding: 'utf8' });
 
   const grunn = git(['rev-parse', '--is-shallow-repository']).trim();
@@ -69,14 +88,6 @@ export function kjorHistorikk({ repoRot = '.', kategorier = lesKategorier() } = 
       'git-klonen er grunn (shallow) — historikkskannet ser ingenting. Sett fetch-depth: 0 i workflow-en.'
     ];
   }
-
-  const baselineFil = 'vakter/ordlister/historikk-baseline.txt';
-  const baseline = fs.existsSync(baselineFil)
-    ? lesTekst(baselineFil)
-        .split('\n')
-        .map((l) => l.trim())
-        .filter((l) => l && !l.startsWith('#'))[0] || null
-    : null;
 
   const args = ['log', '--all', '--format=%H%x00%B%x01'];
   if (baseline) args.push('--not', baseline);

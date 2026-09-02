@@ -7,7 +7,7 @@
     {%- if foreldre %}
     <li><a href="{{ foreldre.url }}">{{ foreldre.data.menytittel or foreldre.data.tittel }}</a></li>
     {%- endif %}
-    <li aria-current="page">{{ menytittel or tittel }}</li>
+    <li aria-current="page">{{ tittel | brodsmule }}</li>
   </ol>
 </nav>
 {%- endif %}

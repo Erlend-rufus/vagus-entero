@@ -74,5 +74,7 @@ export function lagJsonld(side, klinikk, miljo) {
   }
 
   const renset = fjernTomme(objekt);
-  return renset ? JSON.stringify(renset, null, 0) : null;
+  // «<» skrives som \u003c: da kan ingen tekstverdi lukke <script>-elementet
+  // JSON-LD-en ligger i, uansett hva som står i tittel eller beskrivelse.
+  return renset ? JSON.stringify(renset, null, 0).replace(/</g, '\\u003c') : null;
 }

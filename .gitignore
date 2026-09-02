@@ -6,3 +6,7 @@ dist-produksjon/
 .cache/
 *.log
 .DS_Store
+.env
+.env.*
+.netlify/
+.claude/worktrees/

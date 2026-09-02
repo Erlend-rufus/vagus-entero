@@ -10,7 +10,8 @@ status: "UTKAST"
 godkjent_av: null
 godkjent_dato: null
 jsonld_type: null
-interne_lenker_ut: []
+interne_lenker_ut:
+  - "/kontakt/"
 apne_punkter:
   - "Seksjonen «Behandlingsansvarlig» har plassholdere som klinikken må fylle ut"
   - "Seksjonen «Hva vi behandler, og hvorfor» har plassholdere som klinikken må fylle ut"
@@ -18,18 +19,12 @@ apne_punkter:
   - "Seksjonen «Lagring og sletting» har plassholdere som klinikken må fylle ut"
   - "Seksjonen «Dine rettigheter» har plassholdere som klinikken må fylle ut"
   - "Seksjonen «Spørsmål om personvern» har plassholdere som klinikken må fylle ut"
-  - "Knappen «Kontakt oss» mangler et mål — avklar hvor den skal peke"
   - "Hele teksten skal gjennom medisinsk gjennomgang og signeres av fagansvarlig lege før status kan bli GODKJENT"
   - "Prisene er ikke fastsatt — beløpene står som null og utelates fra siden"
 i_navigasjon: false
 i_bunntekst: true
 rekkefolge: 30
-hode_knapper:
-  - tekst: "Bestill time"
-    handling: "bestilling"
-  - tekst: "Ring oss"
-    handling: "telefon"
-    stil: "sekundaer"
+hode_merknad: "Sist oppdatert [PLASSHOLDER: dato]. Denne erklæringen skal gjennomgås juridisk før publisering."
 seksjoner:
   - type: "tekst"
     tittel: "Behandlingsansvarlig"
@@ -81,6 +76,13 @@ seksjoner:
     tittel: "Spørsmål om personvern"
     avsnitt:
       - "Kontakt klinikken på [E-post] eller telefon [00 00 00 00]. Send aldri helseopplysninger på e-post — bruk pasientportalen eller ring oss."
-      - "Merk"
-      - "Denne erklæringen er et utkast satt opp av designhensyn. Innholdet skal gjennomgås av jurist og fagansvarlig lege før publisering, og lagringstider og databehandlere må bekreftes."
+    sidekolonne:
+      etikett: "Merk"
+      avsnitt:
+        - "Denne erklæringen er et utkast satt opp av designhensyn. Innholdet skal gjennomgås av jurist og fagansvarlig lege før publisering, og lagringstider og databehandlere må bekreftes."
+    knapper:
+      - tekst: "Kontakt oss"
+        handling: "intern"
+        url: "/kontakt/"
+        stil: "invers"
 ---

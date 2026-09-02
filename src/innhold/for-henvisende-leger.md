@@ -10,13 +10,14 @@ status: "UTKAST"
 godkjent_av: null
 godkjent_dato: null
 jsonld_type: null
-interne_lenker_ut: []
+interne_lenker_ut:
+  - "/priser/"
 apne_punkter:
   - "Seksjonen «Slik henviser du» har plassholdere som klinikken må fylle ut"
   - "Seksjonen «Hva klinikken tar imot» har plassholdere som klinikken må fylle ut"
   - "Seksjonen «Faglig profil og utstyr» har plassholdere som klinikken må fylle ut"
   - "Seksjonen «Hva pasienten og du får tilbake» har plassholdere som klinikken må fylle ut"
-  - "Knappen «Se hele prislisten» mangler et mål — avklar hvor den skal peke"
+  - "Designets knapp «Skriv ut som A4» med merknaden om utskriftsversjonen er ikke bygget: en JS-fri utskriftsvei (utskrifts-CSS eller egen A4-side) må besluttes først"
   - "Hele teksten skal gjennom medisinsk gjennomgang og signeres av fagansvarlig lege før status kan bli GODKJENT"
   - "Prisene er ikke fastsatt — beløpene står som null og utelates fra siden"
   - "Leveransens brødsmulesti går via en «For fagfolk»-side som ikke ble levert. Siden er derfor lagt rett under forsiden, og lenken ligger i bunnteksten i stedet for i hovedmenyen"
@@ -25,9 +26,7 @@ i_bunntekst: true
 rekkefolge: 20
 illustrasjon: "gastroskopi"
 hode_knapper:
-  - tekst: "Bestill time"
-    handling: "bestilling"
-  - tekst: "Ring oss"
+  - tekst: "Ring lege-til-lege"
     handling: "telefon"
     stil: "sekundaer"
 fakta:
@@ -46,9 +45,10 @@ seksjoner:
       - tittel: "Kanal"
         tekst: "[PLASSHOLDER: elektronisk henvisning via [kanal], eller post til adressen under.]"
       - tittel: "Adresse"
-        tekst: "Vagus Entero AS [PLASSHOLDER: gateadresse] [PLASSHOLDER: postnr] Straume"
+        tekst: "Vagus Entero AS\n[PLASSHOLDER: gateadresse]\n[PLASSHOLDER: postnr] Straume"
       - tittel: "Hva henvisningen bør inneholde"
         tekst: "Aktuell problemstilling, varighet, tidligere utredning, faste medisiner (særlig blodfortynnende), kjente sykdommer og relevante prøvesvar."
+    merknad: "Pasienten trenger ikke henvisning for å bestille time hos oss. En henvisning gir likevel legen nyttig sykehistorie, og pasienten kan legge den ved bestillingen."
   - type: "veier"
     tittel: "Hva klinikken tar imot"
     flate: "sand"
@@ -81,14 +81,14 @@ seksjoner:
     tittel: "Priser du kan oppgi til pasienten"
     avsnitt:
       - "Klinikken har ingen offentlig driftsavtale. Pasienten betaler selv, eller bruker behandlingsforsikring. Utgiftene teller ikke mot egenandelstaket."
-      - "Fullstendig prisliste ligger på priser og betaling. Prisene under er plassholdere."
+      - "Fullstendig prisliste ligger på [priser og betaling](/priser/). Prisene under er plassholdere."
     knapper:
-      - tekst: "priser og betaling"
+      - tekst: "Ring lege-til-lege"
+        handling: "telefon"
+        stil: "invers"
+      - tekst: "Se hele prislisten"
         handling: "intern"
         url: "/priser/"
-        stil: "sekundaer"
-      - tekst: "Ring oss"
-        handling: "telefon"
         stil: "sekundaer"
     priser:
       - navn: "Gastroskopi"

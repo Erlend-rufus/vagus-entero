@@ -2,24 +2,40 @@
 layout: layouts/base.njk
 ---
 {%- from "komponenter/knapper.njk" import knapperad, bestillingsvarsel -%}
+{%- from "komponenter/illustrasjon.njk" import illustrasjon as visIllustrasjon -%}
 {#- Den isolerte bestillingsruten. Innholdssidene er statiske og rører aldri
     denne malen; integrasjonspartneren monterer portalen i #bestilling-portal.
     Fram til portalen er live viser siden bare klinikkens telefon og varselet
     om når digital bestilling åpner. Skal portalen lastes herfra, må verten
-    føres opp bevisst i sikkerhet/policy.json (connect-src/frame-src) og i
+    føres opp bevisst i sikkerhet/policy.json (script-src, connect-src og
+    frame-src etter behov) og i
     vakter/ordlister/eksterne-hvitliste.txt — det er en personvernbeslutning,
     ikke en konfigurasjonsdetalj. -#}
 <div class="seksjon-indre">
   {% include "komponenter/brodsmulesti.njk" %}
-  <div class="sidehode">
+  <div class="sidehode{{ '' if illustrasjon else ' sidehode-enkel' }}">
     <div>
       <h1>{{ tittel }}</h1>
       {%- if ingress %}
-      <p class="ingress">{{ ingress }}</p>
+      <p class="ingress">{{ ingress | tekst | safe }}</p>
       {%- endif %}
-      {%- if hode_knapper %}{{ knapperad(hode_knapper, klinikk, collections.innhold, 'hode-handlinger') }}{{ bestillingsvarsel(hode_knapper, klinikk, ui, 'hode-merknad') }}{% endif %}
+      {%- if hode_knapper %}{{ knapperad(hode_knapper, klinikk, collections.innhold, 'hode-handlinger', false, ui) }}{{ bestillingsvarsel(hode_knapper, klinikk, ui, 'hode-merknad') }}{% endif %}
+      {%- if hode_merknad %}
+      <p class="hode-merknad">{{ hode_merknad | tekst | safe }}</p>
+      {%- endif %}
     </div>
+    {%- if illustrasjon %}
+    <div class="hodeil">{{ visIllustrasjon(illustrasjon, '') }}</div>
+    {%- endif %}
   </div>
+
+  {%- if fakta %}
+  <dl class="fakta">
+    {%- for punkt in fakta %}
+    <div><dt>{{ punkt.term }}</dt><dd>{{ punkt.verdi }}</dd></div>
+    {%- endfor %}
+  </dl>
+  {%- endif %}
 </div>
 
 <section>

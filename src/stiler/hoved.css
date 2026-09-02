@@ -3,17 +3,25 @@
    Erstatter den rene petrol-paletten: varm krem og sand som flater, dyp
    petrol som blekk og handling, terrakotta kun som aksent.
 
+   Målene følger designets artboards (1440 og 390 px) fra Claude Design,
+   Utkast 08: sider/underside.css, sider/underside-mobil.css og forsidens
+   egen <style>. Der artboardene og tokenfilen spriker, er artboardene fasit.
+
    Kontraster er målt (WCAG-relativ luminans). Endres en verdi, skal den
    måles på nytt før merge.
      tekst på krem            #26302E  12,3:1   (sand 11,0:1)
-     dempet tekst på krem     #5A6660   5,4:1   (sand 4,8:1)
-     primær på krem           #0C444B   9,8:1   (hvit på den 10,8:1)
+     dempet tekst på krem     #5A6660   5,4:1   (sand 4,8:1 · hvit 6,0:1)
+     primær på krem           #0C444B   9,8:1   (sand 8,7:1 · hvit 10,8:1)
+     hvit på primær           #FFFFFF  10,8:1   (eksempel-merke, etiketter)
      primær mørk på krem      #08343A  12,2:1   (hvit på den 13,4:1)
      primær lys på primær     #CBDCD2   7,6:1   (dempet tekst på mørk flate)
      ramme på krem            #857C6E   3,7:1   (krav 3:1, WCAG 1.4.11)
-     aksent på krem           #B96A4B   3,6:1   (sand 3,3:1) — kun tekst
-                                                 ≥ 24 px og grafikk, krav 3:1
+     aksent på krem           #B96A4B   3,6:1   (sand 3,3:1 · hvit 4,0:1) —
+                                                 kun tekst ≥ 24 px og grafikk,
+                                                 krav 3:1
      delelinje på krem        #E7DDCD   1,2:1   — ren dekor, aldri funksjonell
+     sand mot hvit                      1,2:1   — hover-flateskifte på kort,
+                                                 ikke et tekstpar
    ========================================================================== */
 
 /* ---- Skrift -------------------------------------------------------------- */
@@ -55,8 +63,8 @@
 :root {
   /* Flater */
   --farge-bakgrunn: #f8f3ec;      /* varm krem — grunnflate */
-  --farge-flate: #efe6d7;         /* sand — seksjonsveksling */
-  --farge-flate-kort: #ffffff;    /* kort på krem */
+  --farge-flate: #efe6d7;         /* sand — seksjonsveksling, kort på krem */
+  --farge-flate-kort: #ffffff;    /* kort på sand */
   --farge-delelinje: #e7ddcd;     /* dekorlinje, aldri funksjonell */
   --farge-ramme: #857c6e;         /* funksjonell ramme */
 
@@ -67,6 +75,7 @@
   --farge-primaer-mork: #08343a;
   --farge-primaer-lys: #cbdcd2;
   --farge-aksent: #b96a4b;        /* kun stegnummer ≥ 24 px, strek og punkter */
+  --farge-delelinje-mork: rgba(203, 220, 210, 0.35); /* tabellinje på petrol */
 
   /* Skrift */
   --skrift-overskrift: 'EB Garamond Norsk', 'EB Garamond Reserve', Georgia,
@@ -74,11 +83,15 @@
   --skrift: 'Work Sans Norsk', 'Work Sans Reserve', system-ui, -apple-system,
     'Segoe UI', sans-serif;
 
-  --tekst-1: 1.125rem;                                  /* 18 px — basis */
-  --tekst-2: 1.3125rem;                                 /* 21 px — ingress */
-  --tekst-3: clamp(1.5rem, 1.25rem + 1vw, 1.6875rem);   /* 24–27 px — h3 */
-  --tekst-4: clamp(1.75rem, 1.2rem + 2.4vw, 2.75rem);   /* 28–44 px — h2 */
-  --tekst-5: clamp(2.25rem, 1.4rem + 3.6vw, 3.625rem);  /* 36–58 px — h1 */
+  /* Skalaen er kalibrert mot artboardene: h1 58/36 px, h2 44/31 px.
+     Designets tokenfil oppgir 40–76 og 32–48 px, men artboardene bruker
+     verdiene under — avklares med design før tokenene eventuelt heves. */
+  --tekst-1: 1.125rem;                                    /* 18 px — basis */
+  --tekst-2: 1.3125rem;                                   /* 21 px — ingress */
+  --tekst-3: clamp(1.5rem, 1.25rem + 1vw, 1.6875rem);     /* 24–27 px — h3 */
+  --tekst-4: clamp(1.9375rem, 1.2rem + 2.4vw, 2.75rem);   /* 31–44 px — h2 */
+  --tekst-5: clamp(2.25rem, 1.4rem + 3.6vw, 3.625rem);    /* 36–58 px — h1 */
+  --tekst-hero: clamp(2.75rem, 1.4rem + 4.6vw, 4.625rem); /* 44–74 px — forside */
 
   --vekt-normal: 400;
   --vekt-overskrift: 500;
@@ -186,13 +199,15 @@ svg {
   height: auto;
 }
 
+/* Nettstedet har ingen animasjon; blokken er en garanti for at heller ikke
+   nettleserens egne overganger spiller når brukeren har bedt om ro. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    animation: none !important;
-    transition: none !important;
-    scroll-behavior: auto !important;
+    animation: none;
+    transition: none;
+    scroll-behavior: auto;
   }
 }
 
@@ -262,7 +277,7 @@ main {
 .topp-indre {
   max-width: var(--maks-bredde);
   margin-inline: auto;
-  padding: var(--avstand-4) var(--sidepadding);
+  padding: var(--avstand-5) var(--sidepadding);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -297,7 +312,7 @@ main {
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 0 var(--avstand-5);
+  gap: 0 1.875rem;
   max-width: none;
   margin-inline-start: auto;
 }
@@ -311,7 +326,8 @@ main {
 }
 
 .hovedmeny a:hover,
-.hovedmeny a[aria-current='page'] {
+.hovedmeny a[aria-current='page'],
+.hovedmeny a[aria-current='true'] {
   color: var(--farge-primaer);
   text-decoration: underline;
   text-decoration-thickness: 0.12em;
@@ -406,12 +422,13 @@ main {
 }
 
 /* ---- Sidehode (H1, ingress, handling, illustrasjon) ---------------------- */
+/* Undersidenes mål: 1.15fr/0.85fr, 24 px over og 48 px under, blob 44/56. */
 .sidehode {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
   gap: var(--avstand-7);
   align-items: center;
-  padding-block: var(--avstand-5) var(--avstand-8);
+  padding-block: var(--avstand-5) var(--avstand-7);
 }
 
 .sidehode h1 {
@@ -426,7 +443,7 @@ main {
 }
 
 .sidehode .ingress {
-  margin-block: var(--avstand-5) var(--avstand-6);
+  margin-block: 1.375rem 1.875rem;
 }
 
 .hode-handlinger {
@@ -438,7 +455,7 @@ main {
 
 .hode-merknad {
   color: var(--farge-tekst-dempet);
-  margin-block-start: var(--avstand-4);
+  margin-block: 0.875rem 0;
   max-width: 48ch;
 }
 
@@ -446,17 +463,51 @@ main {
   justify-self: center;
   background: var(--farge-flate);
   border-radius: 47% 53% 44% 56% / 58% 46% 54% 42%;
-  padding: var(--avstand-7) var(--avstand-8);
+  padding: 2.75rem 3.5rem;
 }
 
 .hodeil img {
   display: block;
 }
 
+/* Forsiden har eget hero: bredere venstrekolonne, 74 px H1 på maks 13ch,
+   ingress maks 44ch, og hero-illustrasjonen i 300 px (attributtene
+   reserverer 180×258, CSS skalerer opp). */
+.sidehode-forside {
+  grid-template-columns: 1.12fr 0.88fr;
+  padding-block: var(--avstand-8) 3.5rem;
+}
+
+.sidehode-forside h1 {
+  font-size: var(--tekst-hero);
+  max-width: 13ch;
+}
+
+.sidehode-forside .ingress {
+  max-width: 44ch;
+  margin-block: 1.625rem 2.125rem;
+}
+
+.sidehode-forside .hodeil {
+  padding: 2.5rem 3.25rem;
+}
+
+.sidehode-forside .hodeil img {
+  width: 300px;
+}
+
+/* Uten illustrasjon (f.eks. personvern): én kolonne, 32 px under. */
+.sidehode-enkel {
+  grid-template-columns: 1fr;
+  padding-block-end: var(--avstand-6);
+}
+
 /* ---- Faktastripe --------------------------------------------------------- */
+/* minmax(0, 1fr) lar sporene krympe under innholdets minste bredde, slik
+   at overflow: hidden (som bare finnes for radiusen) aldri klipper tekst. */
 .fakta {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1px;
   background: var(--farge-delelinje);
   border-radius: var(--radius-kort);
@@ -466,21 +517,26 @@ main {
 
 .fakta > div {
   background: var(--farge-flate-kort);
-  padding: var(--avstand-5);
+  padding: var(--avstand-5) 1.625rem;
 }
 
 .fakta dt {
   color: var(--farge-tekst-dempet);
-  margin-block-end: var(--avstand-1);
+  margin-block-end: 0.375rem;
 }
 
 .fakta dd {
   margin: 0;
   font-family: var(--skrift-overskrift);
-  font-size: var(--tekst-3);
+  font-size: 1.625rem;
   font-weight: var(--vekt-overskrift);
   color: var(--farge-primaer);
   line-height: 1.15;
+}
+
+.fakta dt,
+.fakta dd {
+  overflow-wrap: anywhere;
 }
 
 /* ---- Seksjoner ----------------------------------------------------------- */
@@ -493,43 +549,76 @@ main {
 }
 
 .sek .under {
+  font-size: 1.1875rem;
   color: var(--farge-tekst-dempet);
   margin-block-end: var(--avstand-6);
   max-width: 62ch;
+}
+
+/* Første seksjon rett etter sidehodet (uten faktastripe) får 24 px over,
+   slik artboardene gjør: 48 + 24 = 72 px fra sidehode til H2. */
+main > :first-child:has(> .sidehode):not(:has(> .fakta)) + section > .sek,
+main > :first-child:has(> .sidehode):not(:has(> .fakta)) + .sek {
+  padding-block-start: var(--avstand-5);
+}
+
+/* Møter en sandflate sidehodet direkte (Kontakt), trenger den 48 px. */
+main > :first-child:has(> .sidehode):not(:has(> .fakta)) + section.flate-sand > .sek {
+  padding-block-start: var(--avstand-7);
+}
+
+/* Rutenett som følger rett etter overskriften får 32 px ekstra (design:
+   14 + 32 = 46 px); står det en «under»-tekst imellom, gir den avstanden. */
+.sek > h2 + .steg,
+.sek > h2 + .praktisk,
+.sek > h2 + .veier,
+.sek > h2 + .kort-bred {
+  margin-block-start: var(--avstand-6);
+}
+
+.sek > h2 + .stegstrek {
+  margin-block-start: var(--avstand-3);
 }
 
 .merknad {
   color: var(--farge-tekst-dempet);
 }
 
+.sek .merknad {
+  margin-block-start: var(--avstand-5);
+}
+
 /* ---- Tidslinje ----------------------------------------------------------- */
 .eksempel {
   display: inline-flex;
-  align-items: flex-start;
-  gap: var(--avstand-3);
+  align-items: center;
+  gap: 0.625rem;
   background: var(--farge-flate-kort);
   border: 2px solid var(--farge-aksent);
   color: var(--farge-tekst);
   border-radius: var(--radius);
-  padding: var(--avstand-2) var(--avstand-4);
+  padding: var(--avstand-2) 0.875rem;
   font-weight: var(--vekt-utheving);
-  margin-block-end: var(--avstand-6);
+  margin-block-end: 1.75rem;
   max-width: 62ch;
 }
 
+/* Merket er terrakotta med hvitt utropstegn: tegnet holdes ≥ 24 px slik
+   aksentregelen krever (4,0:1 mot krav 3:1 for stor tekst), og gis tom
+   alt-tekst så skjermlesere ikke leser «!». */
 .eksempel::before {
-  content: '!';
+  content: '!' / '';
   flex: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
-  margin-block-start: 0.2em;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background: var(--farge-aksent);
   color: #fff;
-  font-size: 0.85em;
+  font-size: 1.35em;
+  line-height: 1;
 }
 
 .tidslinje {
@@ -552,7 +641,7 @@ main {
 
 .tidslinje li {
   position: relative;
-  padding: 0 0 var(--avstand-6) 68px;
+  padding: 0 0 1.875rem 68px;
 }
 
 .tidslinje li:last-child {
@@ -577,7 +666,7 @@ main {
 
 .tidslinje .naar {
   font-family: var(--skrift-overskrift);
-  font-size: var(--tekst-3);
+  font-size: 1.5rem;
   font-weight: var(--vekt-overskrift);
   color: var(--farge-primaer);
   display: block;
@@ -587,6 +676,10 @@ main {
 .tidslinje p {
   max-width: 58ch;
   margin-block-end: 0;
+}
+
+.tidslinje-etter {
+  margin-block: 1.625rem 0;
 }
 
 /* ---- Steg (eneste sted terrakotta brukes som tekst) ---------------------- */
@@ -600,12 +693,17 @@ main {
   max-width: none;
 }
 
+.steg li {
+  position: relative;
+}
+
 .steg-nr {
   font-family: var(--skrift-overskrift);
-  font-size: var(--tekst-3);
+  font-size: 1.625rem;
+  line-height: var(--linjehoyde-overskrift);
   color: var(--farge-aksent);
   display: block;
-  margin-block-end: var(--avstand-2);
+  margin-block-end: 0.625rem;
 }
 
 .steg h3 {
@@ -622,10 +720,22 @@ main {
   display: block;
   width: 100%;
   height: 46px;
-  margin-block-end: var(--avstand-2);
+  margin-block-end: var(--avstand-1);
+}
+
+/* Under bølgestreken (forsiden) står stegene kant i kant med innrykk, som
+   i artboardet; uten strek (undersidene) står de med 32 px mellomrom. */
+.stegstrek + .steg {
+  gap: 0;
+}
+
+.stegstrek + .steg li {
+  padding: 1.875rem 2.125rem 0;
 }
 
 /* ---- Spørsmål og svar (JS-fritt) ----------------------------------------- */
+/* 75ch i både design og bygg — bevisst unntak fra readme-regelen om 65ch,
+   fordi spørsmålslinjen deler bredden med +/–-tegnet. */
 .sporsmal {
   max-width: 75ch;
 }
@@ -644,8 +754,9 @@ main {
   justify-content: space-between;
   gap: var(--avstand-5);
   min-height: 56px;
-  padding: var(--avstand-3) var(--avstand-1);
+  padding: 0.875rem var(--avstand-1);
   cursor: pointer;
+  font-size: 1.25rem;
   font-weight: var(--vekt-utheving);
   color: var(--farge-primaer);
   list-style: none;
@@ -659,7 +770,7 @@ main {
   content: '+';
   flex: none;
   font-family: var(--skrift-overskrift);
-  font-size: var(--tekst-3);
+  font-size: 1.75rem;
   color: var(--farge-aksent);
   line-height: 1;
 }
@@ -673,7 +784,7 @@ main {
 }
 
 .sporsmal .svar {
-  padding: 0 var(--avstand-1) var(--avstand-5);
+  padding: 0 var(--avstand-1) 1.25rem;
 }
 
 .sporsmal .svar p {
@@ -695,15 +806,25 @@ main {
 .vei {
   background: var(--farge-flate-kort);
   border-radius: var(--radius-kort);
-  padding: var(--avstand-6) var(--avstand-7) var(--avstand-7);
+  padding: 2.25rem 2.5rem 2.5rem;
   display: flex;
   flex-direction: column;
-  gap: var(--avstand-3);
+  gap: 0.875rem;
   align-items: flex-start;
+}
+
+/* På krem får kortene sandflate (design: Undersøkelser), på sand hvit. */
+section:not(.flate-sand) .vei {
+  background: var(--farge-flate);
+}
+
+section:not(.flate-sand) .vei .knapp-sekundaer:hover {
+  background: var(--farge-flate-kort);
 }
 
 .vei h3 {
   margin-block: 0;
+  font-size: 1.875rem;
 }
 
 .vei-illustrasjon {
@@ -711,10 +832,7 @@ main {
   height: 72px;
   display: block;
   flex: none;
-}
-
-.vei .liten {
-  margin-block-start: calc(var(--avstand-2) * -1);
+  margin-block-end: 0.375rem;
 }
 
 .vei p {
@@ -724,6 +842,11 @@ main {
 
 .vei .liten {
   color: var(--farge-tekst-dempet);
+}
+
+/* Fagterm-/varighetslinjen rett under overskriften trekkes 6 px opp. */
+.vei h3 + .liten {
+  margin-block-start: -0.375rem;
 }
 
 .vei .knapp,
@@ -744,6 +867,7 @@ main {
 
 .praktisk h3 {
   margin-block: 0 var(--avstand-2);
+  font-size: 1.5rem;
 }
 
 .praktisk p {
@@ -759,7 +883,7 @@ main {
   margin: 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--avstand-5);
+  gap: 1.25rem;
   max-width: none;
 }
 
@@ -767,18 +891,25 @@ main {
   background: var(--farge-flate-kort);
   border-radius: var(--radius-kort) var(--radius-kort) 46% 46% /
     var(--radius-kort) var(--radius-kort) 12% 12%;
-  padding: var(--avstand-6) var(--avstand-5) var(--avstand-7);
+  padding: 1.75rem 1.5rem 2rem;
   display: flex;
   flex-direction: column;
-  gap: var(--avstand-3);
+  gap: 0.875rem;
   align-items: flex-start;
   height: 100%;
   text-decoration: none;
   color: var(--farge-tekst);
 }
 
+/* Kortet er allerede hvitt, så «en knapp lysere» er umulig; hover viser
+   i stedet systemets neste flate (sand) og understreker lenketeksten. */
 a.kort:hover {
-  background: #fffdf9;
+  background: var(--farge-flate);
+}
+
+a.kort:hover .kort-les {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .kort-illustrasjon {
@@ -806,15 +937,16 @@ a.kort:hover {
   color: var(--farge-primaer);
 }
 
-/* Bred kortvariant — én tjeneste på tvers */
+/* Bred kortvariant — én tjeneste på tvers. Seksjonens h2 og «under» står
+   utenfor kortet; kortet har illustrasjon, tekst og knapp. */
 .kort-bred {
   display: grid;
-  grid-template-columns: 120px 1fr auto;
+  grid-template-columns: 96px 1fr auto;
   gap: var(--avstand-6);
   align-items: center;
   background: var(--farge-flate-kort);
-  border-radius: var(--radius-flate);
-  padding: var(--avstand-7);
+  border-radius: var(--radius-kort);
+  padding: 2.25rem 2.5rem;
 }
 
 .kort-bred img {
@@ -822,13 +954,12 @@ a.kort:hover {
   height: 96px;
 }
 
-.kort-bred h2 {
-  margin-block: 0 var(--avstand-2);
+.kort-bred p {
+  max-width: 52ch;
 }
 
-.kort-bred p {
+.kort-bred div > :last-child {
   margin-block-end: 0;
-  max-width: 52ch;
 }
 
 /* ---- Infoboks ------------------------------------------------------------ */
@@ -844,27 +975,42 @@ a.kort:hover {
   margin-block-end: 0;
 }
 
-/* ---- Prisblokk (dyp petrol) og pristabell -------------------------------- */
+/* ---- Prisblokk (dyp petrol) ---------------------------------------------- */
+/* Blokken ligger inntil seksjonen over (dens 64 px bunnpadding gir
+   avstanden) og bunnens toppmargin gir 64 px under. Ingen egen margin. */
 .prisblokk {
   background: var(--farge-primaer);
   color: #fff;
   border-radius: var(--radius-flate);
-  padding: var(--avstand-8) var(--avstand-7);
+  padding: 3.25rem 4rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--avstand-8);
+  gap: 3.5rem;
   align-items: start;
-  margin-block: var(--avstand-8);
+  margin-block: 0;
+}
+
+/* Bare tekstkolonnen: én kolonne, tekst maks 65ch. */
+.prisblokk-enkel,
+.prisblokk:has(> :only-child) {
+  grid-template-columns: 1fr;
 }
 
 .prisblokk h2 {
   color: #fff;
-  margin-block: 0 var(--avstand-5);
+  font-size: clamp(1.9375rem, 1.2rem + 2.2vw, 2.5rem);
+  margin-block: 0 1.125rem;
 }
 
 .prisblokk p {
   color: var(--farge-primaer-lys);
+  line-height: 1.65;
   max-width: 48ch;
+}
+
+.prisblokk-enkel p,
+.prisblokk:has(> :only-child) p {
+  max-width: var(--maks-linje);
 }
 
 .prisblokk a:not(.knapp):not(.knapp-sekundaer):not(.knapp-invers) {
@@ -888,14 +1034,30 @@ a.kort:hover {
 .prisblokk-handlinger {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--avstand-4);
-  margin-block-start: var(--avstand-6);
+  gap: 0.875rem;
+  margin-block-start: 1.625rem;
 }
 
+/* Høyrekolonnen: hvit 600-etikett og dempet tekst. */
+.prisblokk .prisblokk-etikett {
+  color: #fff;
+  font-weight: var(--vekt-utheving);
+  margin-block-end: 0.625rem;
+}
+
+.prisblokk-side > :last-child {
+  margin-block-end: 0;
+}
+
+/* Finnes både sidetekst og tabell, står de under hverandre til høyre. */
+.prisblokk:has(> .prisblokk-side + .pristabell) .prisblokk-tekst {
+  grid-row: 1 / span 2;
+}
+
+/* ---- Pristabell ---------------------------------------------------------- */
 .pristabell {
   width: 100%;
   border-collapse: collapse;
-  max-width: var(--maks-linje);
 }
 
 .pristabell caption {
@@ -907,7 +1069,8 @@ a.kort:hover {
 .pristabell th,
 .pristabell td {
   text-align: start;
-  padding: var(--avstand-3) var(--avstand-1);
+  vertical-align: top;
+  padding: 0.9375rem 0.375rem;
   border-block-end: 1px solid var(--farge-delelinje);
   font-weight: var(--vekt-normal);
 }
@@ -917,23 +1080,32 @@ a.kort:hover {
   color: var(--farge-primaer);
 }
 
-.pris-belop {
+/* Spesifisiteten må slå «.pristabell td» over, ellers vinner vekt 400. */
+.pristabell .pris-belop {
   text-align: end;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
   font-weight: var(--vekt-utheving);
 }
 
+.pris-omfang,
 .pris-merknad {
   color: var(--farge-tekst-dempet);
 }
 
+/* Liten tabell inne i prisblokken */
 .prisblokk .pristabell th,
 .prisblokk .pristabell td {
-  border-color: rgba(203, 220, 210, 0.35);
+  border-color: var(--farge-delelinje-mork);
+  padding: 0.875rem var(--avstand-1);
+}
+
+.prisblokk .pristabell thead th {
+  color: #fff;
 }
 
 .prisblokk .pristabell caption,
+.prisblokk .pris-omfang,
 .prisblokk .pris-merknad {
   color: var(--farge-primaer-lys);
 }
@@ -945,28 +1117,42 @@ a.kort:hover {
   margin-block-start: var(--avstand-8);
 }
 
+/* Kolonnene følger antall barn: navn · kontakt · [fagansvar] · [knapper].
+   :where() holder spesifisiteten lik, slik at mobilreglene under vinner. */
 .bunn-indre {
   max-width: var(--maks-bredde);
   margin-inline: auto;
   padding: var(--avstand-7) var(--sidepadding);
   display: grid;
   grid-template-columns: 1.05fr 0.95fr 1.15fr auto;
-  gap: var(--avstand-6);
+  gap: 2.25rem;
   align-items: start;
+}
+
+.bunn-indre:where(:has(> :nth-child(3):last-child)) {
+  grid-template-columns: 1.05fr 0.95fr 1.15fr;
+}
+
+.bunn-indre:where(:has(> .bunn-handlinger:nth-child(3))) {
+  grid-template-columns: 1.05fr 0.95fr auto;
+}
+
+.bunn-indre:where(:has(> :nth-child(2):last-child)) {
+  grid-template-columns: 1fr 1fr;
 }
 
 .bunn-navn {
   font-family: var(--skrift-overskrift);
-  font-size: var(--tekst-3);
+  font-size: 1.4375rem;
   font-weight: var(--vekt-overskrift);
   color: var(--farge-primaer);
   display: block;
-  margin-block-end: var(--avstand-2);
+  margin-block-end: 0.625rem;
 }
 
 .bunn p {
   color: var(--farge-tekst-dempet);
-  margin-block-end: var(--avstand-1);
+  margin-block-end: 0.3125rem;
   max-width: none;
 }
 
@@ -980,6 +1166,10 @@ a.kort:hover {
   margin: 0;
   padding: 0;
   max-width: none;
+}
+
+.bunn p + ul {
+  margin-block-start: var(--avstand-2);
 }
 
 .bunn li a {
@@ -1001,7 +1191,7 @@ a.kort:hover {
 .bunn dt {
   font-weight: var(--vekt-utheving);
   color: var(--farge-tekst);
-  margin-block-start: var(--avstand-3);
+  margin-block-start: 0.625rem;
 }
 
 .bunn dt:first-child {
@@ -1022,18 +1212,28 @@ a.kort:hover {
 /* ---- Komponentkatalog (kun utenfor produksjon) --------------------------- */
 .katalog-del {
   border-block-start: 1px solid var(--farge-delelinje);
-  padding-block-start: var(--avstand-5);
-  margin-block-start: var(--avstand-6);
+}
+
+.katalog-tittel {
+  color: var(--farge-tekst-dempet);
+  font-family: var(--skrift);
+  font-size: var(--tekst-1);
+  font-weight: var(--vekt-utheving);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-block: var(--avstand-5) var(--avstand-4);
 }
 
 /* ---- Responsivt ---------------------------------------------------------- */
+/* ≤ 60rem: kolonner stables, sidehodet blir én kolonne med illustrasjonen
+   over overskriften, og stegene bytter bølgestrek mot vertikal linje. */
 @media (max-width: 60rem) {
   .kortliste {
     grid-template-columns: repeat(2, 1fr);
   }
 
   .fakta {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .steg,
@@ -1043,17 +1243,32 @@ a.kort:hover {
     grid-template-columns: 1fr;
   }
 
+  .praktisk,
+  .veier {
+    gap: var(--avstand-5);
+  }
+
+  .praktisk p,
+  .steg p,
+  .vei p {
+    max-width: none;
+  }
+
   .prisblokk {
     gap: var(--avstand-6);
   }
 
+  .prisblokk:has(> .prisblokk-side + .pristabell) .prisblokk-tekst {
+    grid-row: auto;
+  }
+
   .bunn-indre {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .sidehode {
     grid-template-columns: 1fr;
-    gap: var(--avstand-6);
+    gap: 1.75rem;
   }
 
   .sidehode h1 {
@@ -1063,14 +1278,69 @@ a.kort:hover {
   .hodeil {
     order: -1;
     justify-self: start;
-    padding: var(--avstand-6);
+    padding: 1.75rem 2.125rem;
   }
 
   .hodeil img {
     width: 130px;
   }
+
+  /* Forsidens mobil-artboard legger illustrasjonen ETTER ingressen,
+     sentrert og 170 px bred. */
+  .sidehode-forside .hodeil {
+    order: 0;
+    justify-self: center;
+    padding: 1.625rem 2.125rem;
+  }
+
+  .sidehode-forside .hodeil img {
+    width: 170px;
+  }
+
+  /* Steg: bølgestreken skjules, stegene får designets vertikale linje med
+     tallet lagt oppå streken. */
+  .stegstrek {
+    display: none;
+  }
+
+  .steg,
+  .stegstrek + .steg {
+    position: relative;
+    gap: 0;
+  }
+
+  .steg::before {
+    content: '';
+    position: absolute;
+    left: 38px;
+    top: 14px;
+    bottom: 18px;
+    width: 2.5px;
+    background: var(--farge-primaer);
+  }
+
+  .steg li,
+  .stegstrek + .steg li {
+    padding: 1.375rem 0 0 58px;
+  }
+
+  .steg-nr {
+    position: absolute;
+    left: 26px;
+    top: 1.375rem;
+    margin: 0;
+    padding: 4px 0;
+    line-height: 1;
+    background: var(--farge-bakgrunn);
+  }
+
+  .flate-sand .steg-nr {
+    background: var(--farge-flate);
+  }
 }
 
+/* ≤ 40rem: mobil-artboardets mål (390 px): 40 px seksjonsluft, mindre
+   typografi, krympet merke, knapperad over menyen og stablet pristabell. */
 @media (max-width: 40rem) {
   .kortliste,
   .bunn-indre,
@@ -1078,9 +1348,48 @@ a.kort:hover {
     grid-template-columns: 1fr;
   }
 
+  .kortliste {
+    gap: 0.875rem;
+  }
+
+  .kort {
+    border-radius: var(--radius-kort);
+  }
+
   .kort-bred {
-    justify-items: start;
     gap: var(--avstand-4);
+    padding: 1.75rem 1.5rem;
+  }
+
+  .kort-bred img {
+    width: 72px;
+    height: 72px;
+  }
+
+  .utkast-banner {
+    text-align: start;
+    font-size: 1.0625rem;
+  }
+
+  .topp-indre {
+    padding-block: var(--avstand-4);
+    gap: 0.875rem;
+  }
+
+  .merke {
+    flex: 1;
+    font-size: var(--tekst-2);
+    gap: 0.625rem;
+  }
+
+  .merke-plass {
+    width: 38px;
+    height: 38px;
+  }
+
+  .topp-indre > nav {
+    order: 3;
+    width: 100%;
   }
 
   .hovedmeny {
@@ -1103,7 +1412,20 @@ a.kort:hover {
     width: 100%;
   }
 
-  .topp-handlinger,
+  /* Knapperaden legges over menyen, to like brede knapper; blir det for
+     trangt (320 px) bryter de til hver sin rad. */
+  .topp-handlinger {
+    order: 2;
+    width: 100%;
+    gap: 0.625rem;
+  }
+
+  .topp-handlinger > * {
+    flex: 1 1 8.5rem;
+    padding-inline: 0.875rem;
+    font-size: 1.0625rem;
+  }
+
   .hode-handlinger,
   .prisblokk-handlinger {
     width: 100%;
@@ -1111,9 +1433,53 @@ a.kort:hover {
     align-items: stretch;
   }
 
-  .prisblokk {
-    border-radius: var(--radius-kort);
-    padding: var(--avstand-6) var(--avstand-5);
+  .sidehode {
+    padding-block: var(--avstand-4) 2.25rem;
+  }
+
+  .sidehode-forside {
+    padding-block: 2.125rem 2rem;
+  }
+
+  .sidehode .ingress {
+    font-size: 1.1875rem;
+    margin-block: 1.125rem 1.5rem;
+    max-width: none;
+  }
+
+  .sidehode-forside .ingress {
+    margin-block: 1rem 1.375rem;
+  }
+
+  .hode-merknad {
+    max-width: none;
+  }
+
+  .fakta > div {
+    padding: 1.125rem 1.25rem;
+  }
+
+  .fakta dt {
+    font-size: 1.0625rem;
+  }
+
+  .fakta dd {
+    font-size: 1.375rem;
+  }
+
+  .sek {
+    padding-block: 2.5rem;
+  }
+
+  .sek .under {
+    font-size: var(--tekst-1);
+    margin-block-end: var(--avstand-5);
+  }
+
+  .eksempel {
+    align-items: flex-start;
+    font-size: 1.0625rem;
+    line-height: 1.45;
   }
 
   .tidslinje li {
@@ -1126,5 +1492,99 @@ a.kort:hover {
 
   .tidslinje li::before {
     left: 8px;
+  }
+
+  .tidslinje .naar {
+    font-size: 1.3125rem;
+  }
+
+  .sporsmal summary {
+    font-size: 1.1875rem;
+  }
+
+  .vei {
+    padding: 1.75rem 1.5rem 1.875rem;
+  }
+
+  .vei h3 {
+    font-size: 1.625rem;
+  }
+
+  .prisblokk {
+    border-radius: var(--radius-kort);
+    padding: 2.125rem 1.625rem;
+  }
+
+  .prisblokk p {
+    max-width: none;
+  }
+
+  /* Stablet pristabell: hver rad blir en blokk med delelinje, beløpet
+     venstrestilt under. Kolonneoverskriftene skjules visuelt, men beholdes
+     for skjermlesere. */
+  .pristabell {
+    font-size: 1.0625rem;
+  }
+
+  .pristabell caption {
+    padding-block-end: var(--avstand-2);
+  }
+
+  .pristabell thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .pristabell tr {
+    display: block;
+    padding-block: 0.875rem;
+    border-block-end: 1px solid var(--farge-delelinje);
+  }
+
+  .pristabell th,
+  .pristabell td {
+    display: block;
+    border: 0;
+    padding: 0.125rem var(--avstand-1);
+  }
+
+  .pristabell .pris-belop {
+    text-align: start;
+    white-space: normal;
+    padding-block-start: 0.375rem;
+  }
+
+  .prisblokk .pristabell tr {
+    border-color: var(--farge-delelinje-mork);
+  }
+
+  .bunn {
+    margin-block-start: 2.5rem;
+  }
+
+  .bunn-indre {
+    padding-block: 2.25rem;
+    gap: 1.75rem;
+  }
+}
+
+/* ≤ 22.5rem (360 px): reflow uten horisontal rulling (WCAG 1.4.10) —
+   H1 krympes, lange ord kan brytes, og faktastripen blir én kolonne. */
+@media (max-width: 22.5rem) {
+  h1 {
+    font-size: 2rem;
+    overflow-wrap: anywhere;
+  }
+
+  .sidehode-forside h1 {
+    font-size: 2.375rem;
+  }
+
+  .fakta {
+    grid-template-columns: 1fr;
   }
 }

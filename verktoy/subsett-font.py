@@ -29,7 +29,10 @@ UNICODES = (
     "U+0020-007E,U+00A0,U+00AB,U+00BB,U+00C4-00C6,U+00C9,U+00D6,U+00D8,U+00DC,"
     "U+00E0,U+00E4-00E6,U+00E8-00EB,U+00F4,U+00F6,U+00F8,U+00FC,"
     "U+00A7,U+00B0,U+00D7,U+2013,U+2014,U+2018,U+2019,U+201C,U+201D,"
-    "U+2022,U+2026,U+2039,U+203A,U+2212"
+    "U+2022,U+2026,U+2039,U+203A,U+2212,"
+    # Midtprikk (·) i bunntekst og prismerknader. (Pilen i Bestill time-knappen
+    # er inline SVG — kildefontene har ikke U+2197.)
+    "U+00B7"
 )
 
 # Kun de OpenType-funksjonene nettstedet faktisk bruker. «*» tar med
