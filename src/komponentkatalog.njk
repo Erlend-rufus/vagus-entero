@@ -7,64 +7,443 @@ status: null
 sidetype: null
 eleventyExcludeFromCollections: true
 ---
-{# Intern side for designutvikling. Utelates fra produksjonsbygg av
-   produksjonsgaten i eleventy.config.js, og vakter/godkjent-status.js feiler
-   hvis den likevel dukker opp der. Fylltekst er ikke-språklig med vilje —
-   norsk pasienttekst finnes kun i src/innhold/. Denne filen er unntatt fra
-   norsk-i-maler-vakten (dokumentert i docs/VAKTER.md). #}
-<article class="side">
-  <h1>Komponentkatalog</h1>
+{#- Intern side for designutvikling. Utelates fra produksjonsbygg av
+    produksjonsgaten i eleventy.config.js, og vakter/godkjent-status.js feiler
+    hvis den likevel dukker opp der. Fylltekst er ikke-språklig med vilje —
+    norsk pasienttekst finnes kun i src/innhold/. Denne filen er unntatt fra
+    norsk-i-maler-vakten (dokumentert i docs/VAKTER.md).
 
-  <section class="katalog-del">
-    <h2>Typografi</h2>
-    <p class="ingress">Xxxx xxxxx xx xxxxxxx xxxxx xxx xxxxxx, xxx xxxxx xxxxxxx xxx xxxxxxxx xxxxxx æ ø å.</p>
+    Markupen her er den samme som malene produserer (layouts/side.njk og
+    komponenter/seksjoner.njk), slik at katalogen viser komponentene slik
+    de faktisk rendres. Endres markupen der, oppdateres den her. -#}
+{%- from "komponenter/illustrasjon.njk" import illustrasjon, merke -%}
+
+<div class="seksjon-indre">
+  <h1>Komponentkatalog</h1>
+  <p class="ingress">Xxxx xxxxx xx xxxxxxx xxxxx xxx xxxxxx, xxx xxxxx xxxxxxx xxx xxxxxxxx xxxxxx æ ø å.</p>
+</div>
+
+{# ---- Typografi ---------------------------------------------------------- #}
+<section class="katalog-del">
+  <div class="seksjon-indre sek">
+    <p class="katalog-tittel">Typografi</p>
+    <h2>Xxxxx xxxxxx xx xxxxxxx</h2>
+    <p class="under">Xxxx xxxxx xx xxxxxxx xxxxx xxx xxxxxx, xxx xxxxx xxxxxxx xxx xxxxxxxx.</p>
     <p>Xxxx xxxxx xx xxxxxxx xxxxx xxx xxxxxx. Xxx xxxxx xxxxxxx xxx xxxxxxxx xxxxxx, xx xxxxx xxxxx xxxx xxxxxxxx. Æ ø å Æ Ø Å 0123456789 – — « » ’</p>
     <h3>Xxxxx xxxxxx</h3>
-    <p>Xxxx xxxxx xx <a href="/komponentkatalog/">xxxxxxx xxxxx</a> xxx xxxxxx.</p>
-  </section>
+    <p>Xxxx xxxxx xx <a href="/komponentkatalog/">xxxxxxx xxxxx</a> xxx xxxxxx, <strong>xxxxx xxxxxxx</strong> xxx xxxxxxxx.<br>Xxxx xxxxx xxxxx xx xxxxx.</p>
+    <p class="merknad">Xxxx xxxxx xx xxxxxxx xxxxx xxx xxxxxx.</p>
+  </div>
+</section>
 
-  <section class="katalog-del">
-    <h2>Knapper</h2>
-    <p>
-      <a class="knapp" href="/komponentkatalog/">Xxxxx xxxx</a>
-      <a class="knapp knapp-sekundaer" href="/komponentkatalog/">Xxxxx xxxx</a>
-    </p>
-  </section>
+{# ---- Knapper ------------------------------------------------------------ #}
+<section class="katalog-del">
+  <div class="seksjon-indre sek">
+    <p class="katalog-tittel">Knapper</p>
+    <div class="hode-handlinger">
+      <a class="knapp" href="/komponentkatalog/">Xxxxx xxxx<span aria-hidden="true">↗</span></a>
+      <a class="knapp-sekundaer" href="/komponentkatalog/">Xxxxx xxxx</a>
+    </div>
+  </div>
+</section>
 
-  <section class="katalog-del">
-    <h2>Kort</h2>
-    <ul class="kortliste">
-      <li class="kort">
-        <h3><a href="/komponentkatalog/">Xxxxxxxxx</a></h3>
-        <p>Xxxx xxxxx xx xxxxxxx xxxxx xxx xxxxxx xxx xxxxx.</p>
+{# ---- Sidehode med illustrasjon og faktastripe --------------------------- #}
+<section class="katalog-del">
+  <div class="seksjon-indre">
+    <p class="katalog-tittel">Sidehode</p>
+    <div class="sidehode">
+      <div>
+        <h1>Xxxxxxxxxxxxxxxxx xx xxxxxxxxx (xxxxxxxxx)</h1>
+        <p class="ingress">Xxxxx xxx xxxxxxxx xx xxxxxxxxx xxx xx xxxxxxx xxxxxx. Xxx xxxx xxxxxxx xx xxxxxxxxxx xxx, xxxxxxx xxxxxxxxxxxxx xxxxxxx, xx xxx xxx xxxxx xxxxxxx.</p>
+        <div class="hode-handlinger">
+          <a class="knapp" href="/komponentkatalog/">Xxxxx xxxx<span aria-hidden="true">↗</span></a>
+          <a class="knapp-sekundaer" href="/komponentkatalog/">Xxxx xxx</a>
+        </div>
+        <p class="hode-merknad">Xx xxxxxx xxx xxxxxxxxxxxxxx xxx XX Xxxxxxxxxxx x xx xxxx xxxxxx, xx xxxxxx xxx xxx XxxxXX.</p>
+      </div>
+      <div class="hodeil">{{ illustrasjon('koloskopi', '') }}</div>
+    </div>
+    <dl class="fakta">
+      <div><dt>Xxxxxxxxxxxxx xxx</dt><dd>20–45 xxxxxxxx</dd></div>
+      <div><dt>Xxxxxxx xx xxxxxx</dt><dd>Xxxxx xxx</dd></div>
+      <div><dt>Xxxxxxxxx</dt><dd>Xxxxxx</dd></div>
+      <div><dt>Xxxxxxx</dt><dd>Xxxxxxxxxx xxxxx xxx</dd></div>
+    </dl>
+  </div>
+</section>
+
+{# ---- Sidehode, forsidevariant ------------------------------------------- #}
+<section class="katalog-del">
+  <div class="seksjon-indre">
+    <p class="katalog-tittel">Sidehode, forside</p>
+    <div class="sidehode sidehode-forside">
+      <div>
+        <h1>Xxxxxxx xxx xxxx, xxxx xx xxxxxxxx</h1>
+        <p class="ingress">Xxxxxx xxxxxxx xxx xxxxxxxxx xx xxxxxxxxxx xx xxxxxx x xxxx, xxxx xx xxxxxxxx. Xx xxxxx xx Xxxxxxx x Xxxxxxxx 1. xxxxxx 2027.</p>
+        <div class="hode-handlinger">
+          <a class="knapp" href="/komponentkatalog/">Xxxxx xxxx<span aria-hidden="true">↗</span></a>
+          <a class="knapp-sekundaer" href="/komponentkatalog/">Xxxx xxx</a>
+        </div>
+      </div>
+      <div class="hodeil">{{ illustrasjon('fordoyelse-hero', '') }}</div>
+    </div>
+  </div>
+</section>
+
+{# ---- Sidehode uten illustrasjon + tofelts faktastripe ------------------- #}
+<section class="katalog-del">
+  <div class="seksjon-indre">
+    <p class="katalog-tittel">Sidehode, enkel</p>
+    <div class="sidehode sidehode-enkel">
+      <div>
+        <h1>Xxxxxxxxxxxxxxxxxx</h1>
+        <p class="ingress">Xxxxx xxx xxxxxxxx xx xxxxxxxxx xxx xx xxxxxxx xxxxxx, xx xxx xxx xxxxx xxxxxxx.</p>
+      </div>
+    </div>
+    <dl class="fakta">
+      <div><dt>Xxxxxx</dt><dd>1. xxxxxx 2027</dd></div>
+      <div><dt>Xxxx</dt><dd>Xxxxxxx, Xxxxxxxx</dd></div>
+    </dl>
+  </div>
+</section>
+
+{# ---- Tidslinje ---------------------------------------------------------- #}
+<section class="katalog-del">
+  <div class="seksjon-indre sek">
+    <p class="katalog-tittel">Tidslinje</p>
+    <h2>Xxxx xxxxxxxxxx xx xxx</h2>
+    <p class="under">Xxxxxx xx xxxx xxx xxx xx xxxxx xxxx xx xxxxxxxxxx. Xx xxx xxxxxxxxxxx xx xxxxxxxxx xxxxxxxxx x xxx xxx xxx xxxxx.</p>
+    <p class="eksempel">XXXXXXXX xx xxxxxxxx — xxxxxx xxxxxx xxxxxxxxxxx. Xxxxxxxx, xxxx xx xxxxxxxxxxx xxxxxxxxxx xx xxxxxxxxxxxx xxxx.</p>
+    <ol class="tidslinje">
+      <li><span class="naar">Xxxxx xxx, xxx xxxxxxxx</span><p>Xxxx xxxx xxx. Xxxxx xxx, xxxx, xxxxxx xx xxxxx xxxxxxxxxx. Xxxxx xxxxxxx xxx xxxx.</p></li>
+      <li><span class="naar">Xxxxx xxx, xx. 12</span><p>Xxxxx xxxxx xxxxxx. Xxxxx xxxxx xxxx xxxxx xxxxxx: xxxx, xxxx xxxx xxxxxxxxxxx, xxxxxxx, xx xxxxx xxxxx xxxx xxxx.</p></li>
+      <li><span class="naar">Xxxxxx xxx, xx. [XXXXXXXXXXX]</span><p>Xxxxxx xxx xx xxxxxxxxxxxxx [XXXXXXXX], xxxxxxx x xxxx xxxxx xxxxxxxxxx xx xxx xxxx.</p></li>
+    </ol>
+    <p class="tidslinje-etter">Xxxx xxxxx xx xxxxxxx xxxxx xxx xxxxxx, xxx xxxxx xxxxxxx xxx xxxxxxxx.</p>
+  </div>
+</section>
+
+{# ---- Steg med bølgestrek (forsiden) ------------------------------------- #}
+<section class="katalog-del">
+  <div class="seksjon-indre sek">
+    <p class="katalog-tittel">Steg med strek</p>
+    <h2>Xxxx xxxxxxx xxx</h2>
+    <svg class="stegstrek" viewBox="0 0 1296 46" preserveAspectRatio="none" fill="none" stroke="#0c444b" stroke-width="2.5" aria-hidden="true" focusable="false"><path d="M0 30 C 140 30 160 12 216 12 C 280 12 300 34 432 34 C 560 34 580 14 648 14 C 720 14 740 34 864 34 C 990 34 1010 12 1080 12 C 1180 12 1240 28 1296 28"/><circle cx="216" cy="12" r="7" fill="#b96a4b"/><circle cx="648" cy="14" r="7" fill="#b96a4b"/><circle cx="1080" cy="12" r="7" fill="#b96a4b"/></svg>
+    <ol class="steg">
+      <li><span class="steg-nr" aria-hidden="true">1</span><h3>Xx xxxxxxx</h3><p>Xxxxxxx, xxxxx xxx xxxxxxxxx.</p></li>
+      <li><span class="steg-nr" aria-hidden="true">2</span><h3>Xxx xxxxxxxxxxxxx</h3><p>Xxxxxxx xxxxxxx xx xxxxxxxxxxxxx x xxx xxx.</p></li>
+      <li><span class="steg-nr" aria-hidden="true">3</span><h3>Xxxxx xx xxxxx</h3><p>Xxxxx xxx xxxxxxx xxxxxxx xxx xxx, xx xxxx xxxxxxx xxxxxxxxxx.</p></li>
+    </ol>
+  </div>
+</section>
+
+{# ---- Steg uten strek, på sand ------------------------------------------- #}
+<section class="katalog-del flate-sand">
+  <div class="seksjon-indre sek">
+    <p class="katalog-tittel">Steg på sand</p>
+    <h2>Xxxx xxxxxxx xxxxxxxxxxxxx</h2>
+    <ol class="steg">
+      <li><span class="steg-nr" aria-hidden="true">1</span><h3>Xxx xx xxxxxxxx</h3><p>Xx xxxxxxx xxx xxxxx xx xxxxxxx xxxx, xxxxxxxxx xx xxxxxxxxx xxxxxxxxx.</p></li>
+      <li><span class="steg-nr" aria-hidden="true">2</span><h3>Xxxxx xxxxxxxxxxxxx</h3><p>Xxxxx xxxxx xx xxxxxxxx xxxxxx xxx xxxxxxx xxxxxxxxxxxxxxxxx xx xxxxxxxxxx xxxxxxxxx. Xx xxxxxx xx xxxxx.</p></li>
+      <li><span class="steg-nr" aria-hidden="true">3</span><h3>Xxxxx xxxxxxxxxxxxx</h3><p>Xx xxxxxx xxxx, xx xxxxx xxx xxxxxxx xxxxxxx xxx xxx xxx xx xxxxxx xxxx.</p></li>
+    </ol>
+  </div>
+</section>
+
+{# ---- Spørsmål og svar --------------------------------------------------- #}
+<section class="katalog-del">
+  <div class="seksjon-indre sek">
+    <p class="katalog-tittel">Spørsmål og svar</p>
+    <h2>Xxxxxxxx xx xxxx</h2>
+    <p class="under">Xxxxxxx xxxxx xx xxxxxx. Xx xxxx xxxxxxxxxx xx xxxxxxxxxxxx xxxx xxx xxxxxxxxxxxx.</p>
+    <div class="sporsmal">
+      <details><summary>Xxx xx xx xx xxx xx xx xxxxxxx</summary><div class="svar"><p>Xx xxx xxxx xx xxxxxx xxxxxxxxxxxxxxx xxxxxxxxx, xxx xxxxxxxx, xx xxxxxx, xxx xxxxxxxxx xxxxx xxxxx xxxxxx- xxxxx xxxxxxxxxxx.</p></div></details>
+      <details open><summary>Xxxxxxxxx xx xxxxxxxxxxxxxxx</summary><div class="svar"><p>Xxxxxxxxx xxxxxx xxxxxxxxx xx xxxxxxxxxxxxxxx. Xxxxx xxx xxxxxxx xxxxxxxxxxxxx xxx xxx xxx xxxxxxxxxxxxx.</p></div></details>
+      <details><summary>Xxx xxx xxxxx xxx xxxxxxx?</summary><div class="svar"><p>Xxx xx xxxx xxxxxxxxxx xxxxx xxxxxxxxx, xxxx xx xxxx xxxxx xxx xxxx xxxxxx xx xxxxx.</p></div></details>
+    </div>
+  </div>
+</section>
+
+{# ---- Veier på krem (sandkort) ------------------------------------------- #}
+<section class="katalog-del">
+  <div class="seksjon-indre sek">
+    <p class="katalog-tittel">Veier på krem</p>
+    <h2>Xxxx xxxxxxxxxxxxx x xxxxxxxxxxxxxxxxxxx</h2>
+    <p class="under">Xxxx xxxx xxxxxxxxx xxxxxxxxxxxxx, xxxxxxx xxxxxxxxxxxxx xxxxxxx, xx xxx xxx xxxxx xxxxxxx.</p>
+    <ul class="veier">
+      <li class="vei">
+        {{ merke('gastroskopi', 'vei-illustrasjon', 72) }}
+        <h3>Xxxxxxxxxxxxxxxxxxx xx xxxxxxxx xx xxxxxxxx</h3>
+        <p class="liten">(xxxxxxxxxxx) · 10–20 xxxxxxxx</p>
+        <p>Xx xxxx, xxxxxxx xxxxxx xxxxxxx xxxxxx. Xxxxxxxxxx xxxxxxxx, xxxxxxxx xx xxxxxxx xxx xx xxxxxxxxxxxxxxxx.</p>
+        <a class="knapp-sekundaer" href="/komponentkatalog/">Xxx xx xxxxxxxxxxxxx</a>
       </li>
-      <li class="kort">
-        <h3><a href="/komponentkatalog/">Xxxxxxxxx</a></h3>
-        <p>Xxxx xxxxx xx xxxxxxx xxxxx xxx xxxxxx xxx xxxxx.</p>
+      <li class="vei">
+        {{ merke('koloskopi', 'vei-illustrasjon', 72) }}
+        <h3>Xxxxxxxxxxxxxxxxxxx xx xxxxxxxxxx</h3>
+        <p class="liten">(xxxxxxxxx) · 20–45 xxxxxxxx</p>
+        <p>Xxxxxxx xxxxxxx xxxxxxxxx. Xxxxxx xxxxxxx xxxxx xxx, xx xxxxxxxxx xxxxxx.</p>
+        <a class="knapp-sekundaer" href="/komponentkatalog/">Xxx xx xxxxxxxxxxxxx</a>
       </li>
     </ul>
-  </section>
+  </div>
+</section>
 
-  <section class="katalog-del">
-    <h2>Infoboks</h2>
+{# ---- Veier på sand (hvite kort), uten illustrasjon ---------------------- #}
+<section class="katalog-del flate-sand">
+  <div class="seksjon-indre sek">
+    <p class="katalog-tittel">Veier på sand</p>
+    <h2>Xx xxxxx x xxxxxxxx</h2>
+    <ul class="veier">
+      <li class="vei">
+        <h3>Xxxxxxx xxxx x xxxxxxxxxxxxxxxx</h3>
+        <p>Xx xxxxxx xxxxxxxxxxxx xx xxx x xxxxxxxxxxxxxxxx xxx, xx xxxxxx xxx xxx XxxxXX.</p>
+        <p class="liten">Xx xxxxxx xxx xx xxxx xxxxxx, xx xxxxxxxxxxxxxxxxxxxx xxxx xxxxxxxxx x xxxxxxxxxx xxxxxxxxxxxxx.</p>
+        <a class="knapp" href="/komponentkatalog/">Xxxxxxx xxxx<span aria-hidden="true">↗</span></a>
+      </li>
+      <li class="vei">
+        <h3>Xxxx xxx</h3>
+        <p>Xxx xx xxxxxx xxx xxxx xxxxx, xxxxx xx xx xxxxxxx xx xxxxxxx xxxxxxxxxxxxx xxx xxxxxx, xxxxxx xx xxx.</p>
+        <p class="liten">Xxxxxxx [00 00 00 00] · xxxx [XXXXXXXXXXX: xxxxxxxxxxxxx]</p>
+        <a class="knapp-sekundaer" href="/komponentkatalog/">Xxxx xxx</a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+{# ---- Praktisk med merknad ----------------------------------------------- #}
+<section class="katalog-del">
+  <div class="seksjon-indre sek">
+    <p class="katalog-tittel">Praktisk</p>
+    <h2>Xxxx xxxxxxxx xx</h2>
+    <ul class="praktisk">
+      <li><h3>Xxxxx</h3><p>[XXXXXXXXXXX: xxxxxxxxxxxx xxxxxxxxxx xxx [xxxxx], xxxxx xxxx xxx xxxxxxxx xxxxx.]</p></li>
+      <li><h3>Xxxxxxx</h3><p>Xxxxx Xxxxxx XX<br>[XXXXXXXXXXX: xxxxxxxxxxxx]<br>[XXXXXXXXXXX: xxxxxx] Xxxxxxx</p></li>
+      <li><h3>Xxx xxxxxxxxxxxx xxx xxxxxxxxx</h3><p>Xxxxxxx xxxxxxxxxxxxxx, xxxxxxxxx, xxxxxxxxx xxxxxxxxx, xxxxx xxxxxxxxx, xxxxxx xxxxxxxxx xx xxxxxxxxx xxxxxxxxx.</p></li>
+    </ul>
+    <p class="merknad">Xxxxxxxxx xxxxxxx xxxx xxxxxxxxxx xxx x xxxxxxxx xxxx xxx xxx. Xx xxxxxxxxxx xxx xxxxxxx xxxxx xxxxxx xxxxxxxxxxxx.</p>
+  </div>
+</section>
+
+{# ---- Kortliste (forsidens undersøkelsesutvalg) -------------------------- #}
+<section class="katalog-del">
+  <div class="seksjon-indre sek">
+    <p class="katalog-tittel">Kort</p>
+    <h2>Xxxxxxxxxxxxx xx xxxxxxxxxx</h2>
+    <p class="under">Xxxx xxxxx xx xxxx xxxxxxxxxxxx xxxxxx xxx xxxxx xxxxx – xxx xxxxxxx xxxxxxxxxxx xx xxxxxxxxxxxxx.</p>
+    <ul class="kortliste">
+      <li>
+        <a class="kort" href="/komponentkatalog/">
+          {{ merke('gastroskopi', 'kort-illustrasjon', 46) }}
+          <span><span class="kort-tittel">Xxxxxxxxxxxxxxxxxxx xx xxxxxxxx xx xxxxxxxx</span><span class="kort-fagterm">(xxxxxxxxxxx)</span></span>
+          <span class="kort-les">Xxx xxx ›</span>
+        </a>
+      </li>
+      <li>
+        <a class="kort" href="/komponentkatalog/">
+          {{ merke('koloskopi', 'kort-illustrasjon', 46) }}
+          <span><span class="kort-tittel">Xxxxxxxxxxxxxxxxxxx xx xxxxxxxxxx</span><span class="kort-fagterm">(xxxxxxxxx)</span></span>
+          <span class="kort-les">Xxx xxx ›</span>
+        </a>
+      </li>
+      <li>
+        <a class="kort" href="/komponentkatalog/">
+          {{ merke('endetarm', 'kort-illustrasjon', 46) }}
+          <span><span class="kort-tittel">Xxxxxxxxxxxx xx xxxxxxxxxx</span><span class="kort-fagterm">(xxxxxxxx xx xxxxxxxxxx)</span></span>
+          <span class="kort-les">Xxx xxx ›</span>
+        </a>
+      </li>
+      <li>
+        <div class="kort">
+          {{ merke('proktologi', 'kort-illustrasjon', 46) }}
+          <span><span class="kort-tittel">Xxx xxxxxxx xxx xxxxxxxxxxxxxxx</span><span class="kort-fagterm">(xxxxxxxxxx)</span></span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+{# ---- Bredt kort på sand ------------------------------------------------- #}
+<section class="katalog-del flate-sand">
+  <div class="seksjon-indre sek">
+    <p class="katalog-tittel">Bredt kort</p>
+    <h2>Xxxxxxxxx xxxxxxxxx xx xxxxxxxx xx xxxxx</h2>
+    <p class="under">Xxxxxxxx xx xx xxxxxxxxx xxxxxxxx xxx xxxxxxx xx xxxxxxxxx xx xxxx. Xxxxxxxxxxx xxxxxx xxxxxxxx xx xxxxxxxxxxxx xxxxxxxxxxxxxx, xx xxx xxxx xxxx.</p>
+    <div class="kort-bred">
+      {{ merke('overvekt', '', 96) }}
+      <div>
+        <p>Xxxxx xxx xxxxxxx xxxxxxxxxxxxx xxx, xxxxxxxxxx xxx, xx xxxxxxxx xxxxxxxxxxxx xxx xxxxxxxxxxx, xxxxxxxxxxxx xx xxxxxxxxx xx xxxxxx. Xxxxxxxxxxxx xxxxxxx xxxxx xxxxxxxxxxxx.</p>
+      </div>
+      <a class="knapp-sekundaer" href="/komponentkatalog/">Xx xxxxxxxxx xx xxxxxxxx xx xxxxx</a>
+    </div>
+  </div>
+</section>
+
+{# ---- Infoboks ----------------------------------------------------------- #}
+<section class="katalog-del">
+  <div class="seksjon-indre sek">
+    <p class="katalog-tittel">Infoboks</p>
     <div class="infoboks">
       <p>Xxxx xxxxx xx xxxxxxx xxxxx xxx xxxxxx, xxx xxxxx xxxxxxx xxx xxxxxxxx.</p>
+      <p>Xxxx xxxxx xx xxxxxxx xxxxx xxx xxxxxx.</p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="katalog-del">
-    <h2>Pristabell</h2>
+{# ---- Prisliste (egen seksjon) ------------------------------------------- #}
+<section class="katalog-del">
+  <div class="seksjon-indre sek">
+    <p class="katalog-tittel">Prisliste</p>
+    <h2>Xxxxxxxxx</h2>
+    <p class="under">Xxxxxxx xxxxx xx xxxxxxxxxxxx. Xxxxxxxxxxx xxxxxxxxx xxx xxxxxxxxxxx xxxxxxxxxx xx xxxxx xxxxx xxx xxxxxxxxx xxxxx.</p>
     <table class="pristabell">
+      <caption>Xxxx xxxxx xx xxxxxxxxxxx xxxxxxxxx xxxxxxxxxxxxxxx.</caption>
+      <thead><tr><th scope="col">Xxxxxxxxxxxxx xxxxx xxxxxxxxxx</th><th scope="col">Xxxxxxxxx</th><th scope="col" class="pris-belop">Xxxx</th></tr></thead>
       <tbody>
-        <tr>
-          <th scope="row">Xxxxxxxxx xxxx</th>
-          <td class="pris-belop">{{ 0 | kroner }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Xxxxxxxxx xxxx <span class="pris-merknad">(xxxx)</span></th>
-          <td class="pris-belop">{{ 0 | kroner }}</td>
-        </tr>
+        <tr><th scope="row">Xxxxxxxxxxxxxxxxxxx xx xxxxxxxx xx xxxxxxxx (xxxxxxxxxxx)</th><td class="pris-omfang">[XXXXXXXXXXX: xxx xxx xx xxxxxxxxx]</td><td class="pris-belop">{{ 4500 | kroner }}</td></tr>
+        <tr><th scope="row">Xxxxxxxxxxxxxxxxxxx xx xxxxxxxxxx (xxxxxxxxx)</th><td class="pris-omfang">[XXXXXXXXXXX]</td><td class="pris-belop">{{ 12500 | kroner }}</td></tr>
+        <tr><th scope="row">Xxxxxxxxxxx xx xxxxxxxxx xxxxx xxx</th><td class="pris-omfang">[XXXXXXXXXXX]</td><td class="pris-belop">{{ 0 | kroner }}</td></tr>
       </tbody>
     </table>
-  </section>
-</article>
+    <p class="merknad">Xxxx xxxxx xx xxxxxxx xxxxx xxx xxxxxx, xxx xxxxx xxxxxxx xxx xxxxxxxx.</p>
+  </div>
+</section>
+
+{# ---- Prisliste uten beløpskolonne --------------------------------------- #}
+<section class="katalog-del flate-sand">
+  <div class="seksjon-indre sek">
+    <p class="katalog-tittel">Prisliste uten beløp</p>
+    <h2>Xxxxxxxxx</h2>
+    <table class="pristabell">
+      <caption>Xxxx xxxxx xx xxxxxxxxxxx xxxxxxxxx xxxxxxxxxxxxxxx.</caption>
+      <thead><tr><th scope="col">Xxxxxxxxxxxxx xxxxx xxxxxxxxxx</th><th scope="col">Xxxxxxxxx</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Xxxxxxxxxxxxxxxxxxx xx xxxxxxxx xx xxxxxxxx (xxxxxxxxxxx)</th><td class="pris-omfang">[XXXXXXXXXXX: xxx xxx xx xxxxxxxxx]</td></tr>
+        <tr><th scope="row">Xxxxxxxxxxxxxxxxxxx xx xxxxxxxxxx (xxxxxxxxx)</th><td class="pris-omfang">[XXXXXXXXXXX]</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{# ---- Prisblokk med sidetekst og liten tabell ---------------------------- #}
+<section class="katalog-del">
+  <div class="seksjon-indre sek">
+    <p class="katalog-tittel">Prisblokk</p>
+  </div>
+  <div class="seksjon-indre">
+    <div class="prisblokk">
+      <div class="prisblokk-tekst">
+        <h2>Xxxx xx xxxxxxxx</h2>
+        <p>Xxxxxxxxx xxx xxxxx xxxxxxxxx xxxxxxxxxxxx. Xx xxxxxxx xxxx, xxxxx xxxxxxxxxxxxxxxxxxxx xxxxxx xxxxxxxxxxxxx — xxxxx xxxxxxxxx xxx xxxxxxxxxxxxxxxxxxx xxxx xxx xx xxxxxxxxx.</p>
+        <p>Xxxxxxxxxxx xxxxxxxxx xxxxxxxxxx xxx xxxxxx. <a href="/komponentkatalog/">Xxxxxx xx xxxxxxxx</a>.</p>
+        <div class="prisblokk-handlinger">
+          <a class="knapp knapp-invers" href="/komponentkatalog/">Xxxxxxx xxxx<span aria-hidden="true">↗</span></a>
+          <a class="knapp-sekundaer" href="/komponentkatalog/">Xxxxxx xx xxxxxxxx</a>
+        </div>
+      </div>
+      <div class="prisblokk-side">
+        <p class="prisblokk-etikett">Xxxxxxxxx xxxxxxxxxxxxxxx</p>
+        <p>Xxxxxxxxxx xxxx xxxxxx xxxxxxxxxxxxxxxxxxxxxxxx § 10: xxxxxxxxxxx xxxxxxxxx xxxxxxxxxxxxxxx, xx xxx xxx xx xxxxxxxxx x xxxx xxxx.<br>Xxxxxxx [00 00 00 00]<br>Xxxxxxxxxxxx [XXXXXXXXXXX]</p>
+      </div>
+      <table class="pristabell pristabell-kompakt">
+        <tbody>
+          <tr><th scope="row">Xxxxxxxxxxx</th><td class="pris-belop">{{ 4500 | kroner }}</td></tr>
+          <tr><th scope="row">Xxxxxxxxx <span class="pris-merknad">(xxxx)</span></th><td class="pris-belop">{{ 12500 | kroner }}</td></tr>
+          <tr><th scope="row">Xxxxxxxx xx xxxxxxxxxx</th><td class="pris-belop">{{ 0 | kroner }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+{# ---- Prisblokk, enkel (bare tekst) -------------------------------------- #}
+<section class="katalog-del">
+  <div class="seksjon-indre sek">
+    <p class="katalog-tittel">Prisblokk, enkel</p>
+  </div>
+  <div class="seksjon-indre">
+    <div class="prisblokk prisblokk-enkel">
+      <div class="prisblokk-tekst">
+        <h2>Xx xx xxxxxxx xx xxx xx xxxxxxx?</h2>
+        <p>Xxxx xxx, xxxxx xx xxxxxxxxx xxx xxxxxxx xxx. Xx xxx xxxxxxx xxxxxxx xxxx xx xxxxxxx xxxxxxxxxxxxx xxx xx xxxxxxx, xxx xx xxxxxxxxx. Xxxx xxxxx xx xxxxxxx xxxxx xxx xxxxxx, xxx xxxxx xxxxxxx xxx xxxxxxxx xxxxxx.</p>
+        <div class="prisblokk-handlinger">
+          <a class="knapp knapp-invers" href="/komponentkatalog/">Xxxxxxx xxxx<span aria-hidden="true">↗</span></a>
+          <a class="knapp-sekundaer" href="/komponentkatalog/">Xxxx xxx</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ---- Bunn: fire, tre og to barn ----------------------------------------- #}
+<section class="katalog-del">
+  <div class="seksjon-indre sek">
+    <p class="katalog-tittel">Bunn</p>
+  </div>
+  <div class="bunn">
+    <div class="bunn-indre">
+      <div>
+        <span class="bunn-navn">Xxxxx Xxxxxx Xxxxxxxxx</span>
+        <p class="bunn-domene">xxxxxxxxxxxxxxx.xx</p>
+        <p>[Xxxxxxx] · Xxx.xx [000 000 000]</p>
+        <p>Xxxxx Xxxxxx XX</p>
+      </div>
+      <div>
+        <span class="bunn-navn">Xxxxxxx</span>
+        <p><a href="/komponentkatalog/">00 00 00 00</a></p>
+        <p><a href="/komponentkatalog/">xxxx@xxxxxxxxxxxxxxx.xx</a></p>
+        <ul>
+          <li><a href="/komponentkatalog/">Xxx xxxxxxxxxx xxxxx</a></li>
+          <li><a href="/komponentkatalog/">Xxx xxxxxxxxxxxxxxxxxxxx</a></li>
+          <li><a href="/komponentkatalog/">Xxxxxxxxxx</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="bunn-navn">Xxxxxxxxx xx xxxxxx</span>
+        <dl>
+          <dt>Xxxxxxxxx xxxxxxxxxxxx</dt><dd>[XXXXXXXXXXX: xxxx, xxxxxxxxxxxxxxxxxx]</dd>
+          <dt>Xxxxxxxxxxxx xx xxxx</dt><dd>[XXXXXXXXXXX: xxxxxxxxxxxx, Xxxxx]</dd>
+          <dt>Xxxxxxxxxxxxxxx</dt><dd>[XXXXXXXXXXX: xxxxxxxxx xxx xxxxxxxxx]</dd>
+        </dl>
+      </div>
+      <div class="bunn-handlinger">
+        <a class="knapp" href="/komponentkatalog/">Xxxxxxx xxxx<span aria-hidden="true">↗</span></a>
+        <a class="knapp-sekundaer" href="/komponentkatalog/">Xxxx xxx</a>
+      </div>
+    </div>
+  </div>
+  <div class="bunn">
+    <div class="bunn-indre">
+      <div>
+        <span class="bunn-navn">Xxxxx Xxxxxx Xxxxxxxxx</span>
+        <p class="bunn-domene">xxxxxxxxxxxxxxx.xx</p>
+        <p>Xxx.xx [000 000 000]</p>
+      </div>
+      <div>
+        <ul>
+          <li><a href="/komponentkatalog/">Xxx xxxxxxxxxx xxxxx</a></li>
+          <li><a href="/komponentkatalog/">Xxxxxxxxxx</a></li>
+        </ul>
+      </div>
+      <div class="bunn-handlinger">
+        <a class="knapp-sekundaer" href="/komponentkatalog/">Xxxx xxx</a>
+      </div>
+    </div>
+  </div>
+  <div class="bunn">
+    <div class="bunn-indre">
+      <div>
+        <span class="bunn-navn">Xxxxx Xxxxxx Xxxxxxxxx</span>
+        <p class="bunn-domene">xxxxxxxxxxxxxxx.xx</p>
+        <p>Xxx.xx [000 000 000]</p>
+      </div>
+      <div>
+        <span class="bunn-navn">Xxx xxxxxxx</span>
+        <ul>
+          <li><a href="/komponentkatalog/">Xxx xxxxxxxxxx xxxxx</a></li>
+          <li><a href="/komponentkatalog/">Xxxxxxxxxx</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

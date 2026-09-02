@@ -1,11 +1,13 @@
 {#- Strektegningene er dekor: de gjentar det overskriften allerede sier, og
-    får derfor tom alt-tekst. Målene er SVG-enes egne, slik at plassen er
-    reservert før filen er lastet (ingen layouthopp). -#}
+    får derfor tom alt-tekst. Målene er designets mål i sidehodet (Utkast 08,
+    undersidene): hero-illustrasjonen 180×258, de øvrige 220×220. Plassen er
+    dermed reservert før filen er lastet (ingen layouthopp); forsiden og mobil
+    skalerer via CSS (.hodeil img). -#}
 {%- macro illustrasjon(navn, klasse) -%}
   {%- if navn == 'fordoyelse-hero' -%}
-    <img class="{{ klasse }}" src="/bilder/illustrasjoner/{{ navn }}.svg" alt="" width="300" height="430">
+    <img class="{{ klasse }}" src="/bilder/illustrasjoner/{{ navn }}.svg" alt="" width="180" height="258">
   {%- else -%}
-    <img class="{{ klasse }}" src="/bilder/illustrasjoner/{{ navn }}.svg" alt="" width="200" height="200">
+    <img class="{{ klasse }}" src="/bilder/illustrasjoner/{{ navn }}.svg" alt="" width="220" height="220">
   {%- endif -%}
 {%- endmacro -%}
 

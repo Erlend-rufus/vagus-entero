@@ -157,6 +157,28 @@ står som UTKAST og finnes bare i forhåndsvisning.
 - **Kart i «Finn fram».** Kart fra tredjepart er forbudt; klinikken må levere
   et eget, statisk kartbilde.
 
+## Til designprosessen — avvik i designleveransen (02.09)
+
+Kilden motsier seg selv noen steder; bygget følger artboardene og noterer
+valget i `src/stiler/hoved.css`:
+
+- Typografitokenene (`tokens/typografi.css`: `--tekst-5` 76 px) mot
+  artboardenes faktiske størrelser (58 px for undersidenes H1) — tokenfil og
+  type-skala bør harmoniseres.
+- `readme.md` sier maks-bredde 70 rem *og* sidepadding 72 px; artboardene
+  ignorerer maks-bredden (1296 px innhold). Bygget beholder 70 rem/48 px.
+- `--farge-flate-markert` (nedtonet veikort «Vi tar ikke imot») er ikke
+  definert i tokenfilen.
+- Kort-bred-radius er 24 px på forsiden og 18 px på Undersøkelser; mobil
+  seksjonspadding 48 px på forsiden og 40 px på undersidene. Bygget bruker
+  undersidenes verdier.
+- `.sporsmal` har 75ch i både design-CSS og artboard, mot readme-regelen
+  65ch.
+- Mobil-artboardet for Undersøkelser lar fedmekortet stå i rad med 142 px
+  tekstbredde — trolig en forglemmelse; bygget stabler.
+- Fontene mangler tegnet «↗» i latin-subsettet; pilen i «Bestill time» er
+  derfor inline SVG.
+
 ## Til innholdsprosessen — funn fra revisjonen 02.09
 
 Tekst er ikke kodesesjonens; dette er observasjoner, ikke endringer:
