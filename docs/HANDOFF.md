@@ -14,7 +14,7 @@ Eleventy-prosjektet, og alt som ble bygget inn i det er intakt og kjører:
 | Innholdskontrakten | `skjema/innhold.schema.json`, forklart i `docs/INNHOLDSKONTRAKT.md` | hvert bygg (`eleventy.before`) — bygget stopper på brudd |
 | Forbudslistene | `vakter/ordlister/*.txt` (preparatnavn, ventetidsfraser, superlativer, leverandører, forsikringsselskaper, omtalesignaler, sporingssignaturer) | `vakter/ordliste-skann.js` mot kildefiler, bygd HTML og commit-meldinger |
 | Alle vaktene (18) | `vakter/*.js`, orkestrert av `vakter/kjor-alle.js` | GitHub Actions (`.github/workflows/ci.yml`) **og** Netlifys eget bygg (`npm run bygg`) |
-| Selvtestene (111) | `vakter/tester/kjor-selvtester.js` | `npm test`, i CI |
+| Selvtestene (156) | `vakter/tester/kjor-selvtester.js` | `npm test`, i CI |
 
 ClickUp-oppgaven «Next.js besluttet» (28.08) er ikke gjennomført. Ingen av
 rammene i den krever Next: statisk generering, JS-fri navigasjon, null
@@ -230,7 +230,7 @@ Tekst er ikke kodesesjonens; dette er observasjoner, ikke endringer:
   tabell, `SITE_URL` og `PREVIEW_*` valideres, `noindex: true` virker i
   produksjon, CSS-filnavnet er innholdshashet (immutable), HTML utenfor
   produksjon er `private`, og CI-ens syntetiske produksjonsbygg bygger nå
-  tre godkjente fylltekst-sider så hele produksjonsstien testes i hver PR.
+  tre godkjente fylltekst-sider så hele produksjonsstien testes i hver PR. Selvtestene sjekker nå meldingen, ikke bare at noe feilet; headere-vakten krever nøyaktig policy (ingen påhengte direktiver eller dupliserte linjer); klinikk-lansering-testen er uavhengig av den ekte klinikk.json.
 - **02.09.2026** — Lighthouse i CI aggregerer per audit-median (to av tre
   kjøringer må bryte budsjettet); rapportene lastes opp som artefakt ved brudd.
 - **02.09.2026** — Grensesnittavtalen tatt inn: `[TEKST KOMMER]` i kontrakten

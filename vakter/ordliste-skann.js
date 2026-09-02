@@ -20,7 +20,7 @@ const KATEGORIER = [
   { fil: 'vakter/ordlister/vurderingssignaler.txt', kategori: 'vurderingssignal' }
 ];
 
-function lesKategorier(kategorier = KATEGORIER) {
+export function lesKategorier(kategorier = KATEGORIER) {
   return kategorier.map(({ fil, kategori }) => ({
     kategori,
     oppforinger: lesOrdliste(fil),
