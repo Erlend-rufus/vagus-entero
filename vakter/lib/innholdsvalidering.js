@@ -13,9 +13,10 @@ addFormats(ajv);
 const validerMotSkjema = ajv.compile(skjema);
 
 // Plassholdere i innholdet: [TEKST KOMMER], [PLASSHOLDER …], [PREPARAT],
-// [KLOKKESLETT] og alt annet i hakeparentes med stor forbokstav. En GODKJENT
-// side kan ikke inneholde noen av dem.
-const PLASSHOLDER = /\[[A-ZÆØÅ][^\]]*\]/;
+// [KLOKKESLETT] — alt i hakeparentes er plassholder, uansett store eller små
+// bokstaver. Unntaket er lenkesyntaksen [tekst](/sti/). En GODKJENT side kan
+// ikke inneholde noen plassholder.
+const PLASSHOLDER = /\[[^\]\n]+\](?!\()/;
 
 // Samler alle knappene på en side: sidehodet, veiene og prisblokkene.
 function alleKnapper(data) {
@@ -61,6 +62,7 @@ export function validerInnhold(sider) {
   const meld = (fil, tekst) => feil.push(`${fil}: ${tekst}`);
 
   const setteUrler = new Map();
+  const statusForUrl = new Map(sider.map(({ data }) => [data.url, data.status]));
   const rekkefolger = { i_navigasjon: new Map(), i_bunntekst: new Map() };
 
   for (const { fil, data, body } of sider) {
@@ -86,6 +88,19 @@ export function validerInnhold(sider) {
         }
       }
     }
+
+    if (data.sidetype === 'forside' && data.overordnet) {
+      meld(fil, 'forsiden kan ikke ha overordnet — den er toppen av brødsmulestien');
+    }
+
+    (data.seksjoner || []).forEach((blokk, i) => {
+      if (blokk.type === 'pris' && blokk.sidekolonne && Array.isArray(blokk.priser)) {
+        meld(fil, `seksjon nr. ${i + 1}: prisblokken har både sidekolonne og priser — bare én av dem vises i høyre kolonne, velg`);
+      }
+      if (blokk.type === 'prisliste' && !blokk.kolonner && (blokk.priser || []).some((rad) => rad.omfang)) {
+        meld(fil, `seksjon nr. ${i + 1}: prislisten har omfang på rader, men mangler kolonner — omfang vises bare med kolonnehoder`);
+      }
+    });
 
     if (Array.isArray(data.bilder) && data.bilder.length > 0) {
       meld(fil, 'bilder er et reservert felt: ingen mal viser bilder ennå, så listen må være tom til visningen finnes (ellers ville bildene forsvinne stille)');
@@ -165,6 +180,10 @@ export function validerInnhold(sider) {
     for (const [hva, url] of pekere) {
       if (!setteUrler.has(url)) {
         meld(fil, `${hva} peker på «${url}», som ingen innholdsside har som url`);
+      } else if (data.status === 'GODKJENT' && statusForUrl.get(url) !== 'GODKJENT') {
+        // I produksjon finnes ikke målet — lenken ville blitt død (tekst) eller
+        // forsvunnet stille (knapp). Godkjenning må skje i riktig rekkefølge.
+        meld(fil, `status er GODKJENT, men ${hva} peker på «${url}», som ikke er GODKJENT — målet må godkjennes først`);
       }
     }
   }

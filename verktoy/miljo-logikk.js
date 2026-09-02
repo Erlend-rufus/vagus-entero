@@ -32,7 +32,14 @@ export function lesMiljo(env = process.env) {
   const produksjon = produksjonSatt && kontekstErProduksjon;
   const noindex = !produksjon;
 
+  // SITE_URL er nettstedets opprinnelse: https, bare vertsnavn, ingen sti og
+  // ingen skråstrek på slutten — den limes rett foran sidenes url-er.
   const siteUrl = env.SITE_URL || null;
+  if (siteUrl !== null && !/^https:\/\/[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/.test(siteUrl)) {
+    throw new Error(
+      `SITE_URL=${siteUrl} er ikke gyldig. Skriv https://vertsnavn uten sti og uten skråstrek til slutt (f.eks. https://www.eksempel.no).`
+    );
+  }
 
   const ciSyntetisk = lesBryter('CI_SYNTETISK', env.CI_SYNTETISK);
   if (ciSyntetisk && env.NETLIFY) {
@@ -43,6 +50,13 @@ export function lesMiljo(env = process.env) {
 
   const basicAuthBruker = env.PREVIEW_BRUKER || null;
   const basicAuthPassord = env.PREVIEW_PASSORD || null;
+  // Verdiene skrives på én linje i _headers som «bruker:passord» — kolon,
+  // mellomrom og kontrolltegn ville ødelagt formatet stille.
+  for (const [navn, verdi] of [['PREVIEW_BRUKER', basicAuthBruker], ['PREVIEW_PASSORD', basicAuthPassord]]) {
+    if (verdi !== null && !/^[\x21-\x39\x3b-\x7e]{1,128}$/.test(verdi)) {
+      throw new Error(`${navn} inneholder kolon, mellomrom eller tegn utenfor ASCII — bruk bare bokstaver, tall og vanlige tegn.`);
+    }
+  }
   const basicAuthAktiv = !produksjon && Boolean(basicAuthBruker && basicAuthPassord);
 
   return {

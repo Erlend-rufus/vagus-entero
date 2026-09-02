@@ -8,7 +8,7 @@
     "node": ">=22"
   },
   "scripts": {
-    "bygg": "eleventy && node vakter/kjor-alle.js --dist",
+    "bygg": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && eleventy && node vakter/kjor-alle.js --dist",
     "bygg:ren": "eleventy",
     "server": "eleventy --serve",
     "vakter": "node vakter/kjor-alle.js",

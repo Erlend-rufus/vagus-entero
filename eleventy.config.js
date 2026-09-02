@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { lesMiljo } from './verktoy/miljo-logikk.js';
 import { lagJsonld } from './verktoy/jsonld.js';
 import { lagHeadersInnhold, lagRobotsInnhold } from './verktoy/headere.js';
@@ -16,6 +17,7 @@ const SIDELAYOUT = 'layouts/side.njk';
 const BESTILLINGSLAYOUT = 'layouts/bestill.njk';
 
 const LANSERINGSKRITISKE_KLINIKKFELT = ['juridisk_navn', 'org_nr', 'adresse', 'telefon', 'epost'];
+const SYNTETISK_INNHOLD = 'vakter/tester/syntetisk-innhold';
 
 export default function (eleventyConfig) {
   const miljo = lesMiljo();
@@ -53,13 +55,34 @@ export default function (eleventyConfig) {
 
   // Bare kjente filtyper kopieres rett gjennom — en HTML- eller JS-fil som
   // havner i src/bilder/ skal ikke bli en side i produksjon.
-  eleventyConfig.addPassthroughCopy('src/stiler/**/*.css');
   eleventyConfig.addPassthroughCopy('src/fonter/**/*.{woff2,txt}');
   eleventyConfig.addPassthroughCopy('src/bilder/**/*.{svg,png,jpg,webp,avif,ico}');
 
+  // Stilarket får innholdshash i filnavnet: da kan det mellomlagres i et år
+  // (immutable), og ny HTML møter aldri gammel CSS etter et deploy.
+  const cssHash = crypto
+    .createHash('sha256')
+    .update(fs.readFileSync('src/stiler/hoved.css'))
+    .digest('hex')
+    .slice(0, 10);
+  const stilSti = `/stiler/hoved.${cssHash}.css`;
+  eleventyConfig.addPassthroughCopy({ 'src/stiler/hoved.css': stilSti.slice(1) });
+  eleventyConfig.addGlobalData('stilSti', stilSti);
+
+  // Det syntetiske CI-bygget (CI_SYNTETISK=1) tester produksjonsstien med
+  // et lite, godkjent innholdssett av ikke-språklig fylltekst i stedet for det
+  // ekte innholdet: canonical, sitemap, JSON-LD og alle utdatavakter kjøres
+  // da mot ekte HTML i hver PR, ikke første gang på lanseringsdagen.
+  if (miljo.ciSyntetisk) {
+    eleventyConfig.ignores.add('src/innhold/**');
+    for (const navn of fs.readdirSync(SYNTETISK_INNHOLD).filter((f) => f.endsWith('.md'))) {
+      eleventyConfig.addTemplate(`innhold/${navn}`, fs.readFileSync(path.join(SYNTETISK_INNHOLD, navn), 'utf8'));
+    }
+  }
+
   // ---- Validering FØR bygget: hele innholdssettet, samlet -----------------
   eleventyConfig.on('eleventy.before', () => {
-    const sider = lesInnhold();
+    const sider = lesInnhold(miljo.ciSyntetisk ? SYNTETISK_INNHOLD : undefined);
     const feil = validerInnhold(sider);
     if (feil.length > 0) {
       throw new Error(

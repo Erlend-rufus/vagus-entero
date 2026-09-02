@@ -37,8 +37,13 @@ forhåndsvisninger — men da er Basic-Auth ikke lenger valgfri.
 
 1. Domene registrert og DNS pekt til Netlify.
 2. TLS-sertifikat provisjonert og verifisert i Netlify.
-3. `SITE_URL` satt i Netlify-dashbordet (production-konteksten), f.eks.
-   `https://www.<domene>.no` — uten den feiler produksjonsbygget med vilje.
+3. `SITE_URL` satt i Netlify-dashbordet (production-konteksten), nøyaktig
+   `https://www.<domene>.no` — https, bare vertsnavn, ingen skråstrek til
+   slutt. Uten den, eller med feil form, feiler produksjonsbygget med vilje.
+4. `SECRETS_SCAN_OMIT_KEYS` står i `netlify.toml`: forhåndsvisningspassordet
+   skrives med vilje til `_headers`, og Netlifys hemmelighetsskann skal ikke
+   stoppe bygget for det. `PREVIEW_BRUKER`/`PREVIEW_PASSORD` kan ikke
+   inneholde kolon eller mellomrom.
 
 ## Selve flippen (én gjennomgått økt)
 

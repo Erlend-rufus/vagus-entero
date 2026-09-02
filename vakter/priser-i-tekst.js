@@ -9,7 +9,9 @@ export const navn = 'priser-i-tekst';
 const KRONER = /(?:\bkr\.?\s?\d[\d\s.]*|\d[\d\s.]*\s?(?:kr\b|kroner\b|,-))/iu;
 const TEKSTFELT = new Set([
   'tittel', 'sidetittel', 'meta_beskrivelse', 'ingress', 'avsnitt', 'tekst', 'under',
-  'merknad', 'eksempelmerknad', 'svar', 'sporsmal', 'liten', 'verdi', 'naar', 'menytittel'
+  'merknad', 'eksempelmerknad', 'svar', 'sporsmal', 'liten', 'verdi', 'naar', 'menytittel',
+  'etter', 'hode_merknad', 'tabellmerknad', 'etikett', 'omfang', 'navn', 'fagterm', 'term',
+  'tjeneste', 'pris', 'apne_punkter'
 ]);
 
 function* tekster(node, sti = []) {
@@ -21,25 +23,28 @@ function* tekster(node, sti = []) {
     for (let i = 0; i < node.length; i += 1) yield* tekster(node[i], [...sti, String(i)]);
   } else if (node && typeof node === 'object') {
     for (const [k, v] of Object.entries(node)) {
-      if (k === 'priser') continue; // beløpene skal stå her
+      if (k === 'belop_nok') continue; // beløpene skal stå her (og er tall, ikke tekst)
       yield* tekster(v, [...sti, k]);
     }
   }
 }
 
-export function skannData(data) {
+export function skannData(data, body = '') {
   const treff = [];
   for (const [sti, tekst] of tekster(data)) {
     const m = KRONER.exec(tekst);
     if (m) treff.push({ sti, funn: m[0].trim() });
   }
+  // Brødteksten under frontmatter er også løpende tekst.
+  const iBrodtekst = KRONER.exec(body || '');
+  if (iBrodtekst) treff.push({ sti: 'brødtekst', funn: iBrodtekst[0].trim() });
   return treff;
 }
 
 export function kjorKilde() {
   const feil = [];
-  for (const { fil, data } of lesInnhold()) {
-    for (const { sti, funn } of skannData(data)) {
+  for (const { fil, data, body } of lesInnhold()) {
+    for (const { sti, funn } of skannData(data, body)) {
       feil.push(`${fil}: beløp «${funn}» i løpende tekst (${sti}) — priser hører kun hjemme i pristabellen`);
     }
   }

@@ -27,7 +27,7 @@
     "html": "public, max-age=0, must-revalidate",
     "stier": {
       "/fonter/*": "public, max-age=604800",
-      "/stiler/*": "public, max-age=86400",
+      "/stiler/*": "public, max-age=31536000, immutable",
       "/bilder/*": "public, max-age=86400"
     }
   }

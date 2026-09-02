@@ -637,6 +637,79 @@ krev(
 }
 krev(formaterTekst('[x](//vert.example/)').includes('<a ') === false, 'tekst: protokollrelativt mål blir ikke lenke');
 
+
+// --- kontekstregler fra etterprøvingen -----------------------------------------
+krev(
+  validerInnhold([
+    { fil: 'a.md', data: { ...gyldigSide, ...godkjent, seksjoner: [{ type: 'tekst', tittel: 'Med lenke', avsnitt: ['Se siden [Personvern](/b/) her.'] }] } },
+    { fil: 'b.md', data: { ...gyldigSide, ...godkjent, url: '/b/', rekkefolge: 2, tittel: 'En annen tittel her ja' } }
+  ]).length === 0,
+  'innholdskontrakt: lenke med stor forbokstav er ikke en plassholder'
+);
+krev(
+  validerInnhold([{ fil: 'a.md', data: { ...gyldigSide, ...godkjent, ingress: 'Se [plassholder: noe] som ikke er avklart ennå her.' } }]).some((m) => m.includes('plassholder')),
+  'innholdskontrakt: plassholder med små bokstaver stopper GODKJENT'
+);
+krev(
+  validerInnhold([
+    { fil: 'a.md', data: { ...gyldigSide, ...godkjent, seksjoner: [{ type: 'tekst', tittel: 'Med lenke', avsnitt: ['Se [utkastet](/b/) her.'] }] } },
+    { fil: 'b.md', data: { ...gyldigSide, url: '/b/', rekkefolge: 2, tittel: 'En annen tittel her ja' } }
+  ]).some((m) => m.includes('ikke er GODKJENT')),
+  'innholdskontrakt: GODKJENT side kan ikke lenke til UTKAST-side'
+);
+krev(
+  validerInnhold([{ fil: 'a.md', data: medSeksjoner([{ type: 'pris', tittel: 'Pris og betaling', avsnitt: ['Du betaler selv.'], sidekolonne: { etikett: 'Merk', avsnitt: ['Noe å merke seg.'] }, priser: [{ navn: 'Undersøkelse', belop_nok: 100 }] }]) }]).some((m) => m.includes('både sidekolonne og priser')),
+  'innholdskontrakt: prisblokk med både sidekolonne og priser feiler'
+);
+krev(
+  validerInnhold([{ fil: 'a.md', data: medSeksjoner([{ type: 'prisliste', tittel: 'Prisliste', priser: [{ navn: 'Undersøkelse', omfang: 'Alt inkludert', belop_nok: 4500 }] }]) }]).some((m) => m.includes('mangler kolonner')),
+  'innholdskontrakt: omfang uten kolonner feiler'
+);
+krev(
+  validerInnhold([{ fil: 'a.md', data: { ...gyldigSide, sidetype: 'forside', url: '/', overordnet: '/testside/' } }, { fil: 'b.md', data: { ...gyldigSide, rekkefolge: 2 } }]).some((m) => m.includes('forsiden kan ikke ha overordnet')),
+  'innholdskontrakt: forside med overordnet feiler'
+);
+krev(
+  tilNorsk([{ keyword: 'minLength', instancePath: '/seksjoner/0/avsnitt/1', params: { limit: 3 } }])[0].includes('minst 3 tegn'),
+  'norske-meldinger: lengdekrav i seksjon navngis'
+);
+
+// --- priser-i-tekst: brødtekst og nye felt ------------------------------------
+krev(priserITekst.skannData({}, 'Undersøkelsen koster 4 500 kr.').length === 1, 'priser-i-tekst: fanger beløp i brødteksten');
+krev(priserITekst.skannData({ seksjoner: [{ type: 'prisliste', priser: [{ navn: 'X', omfang: 'inkl. 500 kr til analyse', belop_nok: 4500 }] }] }).length === 1, 'priser-i-tekst: fanger beløp i omfang');
+krev(priserITekst.skannData({ hode_merknad: 'Fra kr 900' }).length === 1, 'priser-i-tekst: fanger beløp i hode_merknad');
+
+// --- miljø: SITE_URL og PREVIEW_* ----------------------------------------------
+for (const [verdi, navn] of [['https://www.eksempel.no/', 'skråstrek til slutt'], ['http://www.eksempel.no', 'http'], ['https://www.eksempel.no/sti', 'sti']]) {
+  let kastet = false;
+  try { lesMiljo({ SITE_URL: verdi }); } catch (e) { kastet = e.message.includes('SITE_URL'); }
+  krev(kastet, `miljo: SITE_URL med ${navn} avvises`);
+}
+krev(lesMiljo({ SITE_URL: 'https://www.eksempel.no' }).siteUrl === 'https://www.eksempel.no', 'miljo: gyldig SITE_URL godtas');
+{
+  let kastet = false;
+  try { lesMiljo({ PREVIEW_BRUKER: 'a:b', PREVIEW_PASSORD: 'x' }); } catch (e) { kastet = e.message.includes('PREVIEW_BRUKER'); }
+  krev(kastet, 'miljo: kolon i PREVIEW_BRUKER avvises');
+}
+
+// --- noindex per side i produksjon ---------------------------------------------
+{
+  const midl = fs.mkdtempSync(path.join(os.tmpdir(), 'noindex-prod-'));
+  const d = path.join(midl, 'dist');
+  fs.mkdirSync(path.join(d, 'stille'), { recursive: true });
+  fs.mkdirSync(path.join(d, 'aapen'), { recursive: true });
+  fs.writeFileSync(`${d}.manifest.json`, JSON.stringify({ produksjon: true, context: 'production', ciSyntetisk: true, basicAuthAktiv: false, siteUrl: 'https://example.invalid', sider: [{ url: '/stille/', sidetype: 'forsikring', status: 'GODKJENT', noindex: true }, { url: '/aapen/', sidetype: 'statisk', status: 'GODKJENT', noindex: false }] }));
+  fs.writeFileSync(path.join(d, '_headers'), '/*\n  X-Content-Type-Options: nosniff\n');
+  fs.writeFileSync(path.join(d, 'robots.txt'), 'User-agent: *\nAllow: /\n');
+  fs.writeFileSync(path.join(d, 'sitemap.xml'), '<urlset></urlset>');
+  fs.writeFileSync(path.join(d, 'stille', 'index.html'), '<html><head><meta name="robots" content="noindex, nofollow"></head></html>');
+  fs.writeFileSync(path.join(d, 'aapen', 'index.html'), '<html><head></head></html>');
+  krev(noindex.kjorDist(d).length === 0, 'noindex: side med noindex: true får ha meta noindex i produksjon');
+  fs.writeFileSync(path.join(d, 'stille', 'index.html'), '<html><head></head></html>');
+  krev(noindex.kjorDist(d).some((m) => m.includes('noindex: true')), 'noindex: side med noindex: true MÅ ha meta noindex i produksjon');
+  fs.rmSync(midl, { recursive: true, force: true });
+}
+
 fs.rmSync(tmp, { recursive: true, force: true });
 
 if (feilede > 0) {

@@ -82,7 +82,7 @@
 
       {%- elif blokk.type == 'tidslinje' %}
         {%- if blokk.eksempelmerknad %}
-        <p class="eksempel">{{ blokk.eksempelmerknad }}</p>
+        <p class="eksempel">{{ blokk.eksempelmerknad | tekst | safe }}</p>
         {%- endif %}
         <ol class="tidslinje">
           {%- for punkt in blokk.punkter %}

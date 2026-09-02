@@ -326,7 +326,8 @@ main {
 }
 
 .hovedmeny a:hover,
-.hovedmeny a[aria-current='page'] {
+.hovedmeny a[aria-current='page'],
+.hovedmeny a[aria-current='true'] {
   color: var(--farge-primaer);
   text-decoration: underline;
   text-decoration-thickness: 0.12em;

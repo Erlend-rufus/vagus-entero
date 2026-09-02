@@ -1,0 +1,5 @@
+Syntetisk innholdssett for CI-ens produksjonsbygg (CI_SYNTETISK=1).
+Tre GODKJENT-sider med ikke-språklig fylltekst («Xxxx xx xxxxx»), slik at
+produksjonsstien — gate, canonical, sitemap, JSON-LD og alle utdatavakter —
+testes mot ekte HTML i hver PR. Aldri norsk prosa her. Filene brukes bare når
+CI_SYNTETISK er satt (og den er ugyldig i Netlify-bygg).

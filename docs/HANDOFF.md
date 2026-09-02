@@ -225,7 +225,12 @@ Tekst er ikke kodesesjonens; dette er observasjoner, ikke endringer:
   (`parse5`), alle JavaScript-motorer for frontmatter slått av, innholdssider
   bare som `src/innhold/*.md`, passthrough bare for kjente filtyper,
   markdown-lenker bare interne, produksjonsvakten sjekker disken mot
-  manifestet.
+  manifestet. Andre runde: plassholderregelen er «alt i hakeparentes»,
+  GODKJENT kan ikke lenke til UTKAST, prisblokk enten sidekolonne eller
+  tabell, `SITE_URL` og `PREVIEW_*` valideres, `noindex: true` virker i
+  produksjon, CSS-filnavnet er innholdshashet (immutable), HTML utenfor
+  produksjon er `private`, og CI-ens syntetiske produksjonsbygg bygger nå
+  tre godkjente fylltekst-sider så hele produksjonsstien testes i hver PR.
 - **02.09.2026** — Lighthouse i CI aggregerer per audit-median (to av tre
   kjøringer må bryte budsjettet); rapportene lastes opp som artefakt ved brudd.
 - **02.09.2026** — Grensesnittavtalen tatt inn: `[TEKST KOMMER]` i kontrakten

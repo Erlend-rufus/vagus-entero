@@ -37,8 +37,17 @@ export function kjorDist(distKatalog) {
     if (!fs.existsSync(sitemapSti)) {
       feil.push('sitemap.xml mangler i produksjonsbygg');
     }
+    // Sider med noindex: true i frontmatter SKAL ha meta-robots noindex også i
+    // produksjon (de holdes ute av søk og sitemap med vilje); alle andre skal
+    // ikke ha den.
+    const noindexSider = new Set(manifest.sider.filter((s) => s.noindex).map((s) => s.url));
     for (const fil of htmlFiler) {
-      if (/<meta name="robots" content="noindex/.test(lesTekst(fil))) {
+      const relativ = '/' + path.relative(distKatalog, fil).split(path.sep).join('/');
+      const url = relativ.endsWith('/index.html') ? relativ.slice(0, -'index.html'.length) : relativ;
+      const harMeta = /<meta name="robots" content="noindex/.test(lesTekst(fil));
+      if (noindexSider.has(url) && !harMeta) {
+        feil.push(`${fil}: siden har noindex: true, men meta-robots noindex mangler i produksjonsbygget`);
+      } else if (!noindexSider.has(url) && harMeta) {
         feil.push(`${fil}: gjenglemt meta-robots noindex i produksjonsbygg`);
       }
     }

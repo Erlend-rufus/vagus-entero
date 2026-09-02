@@ -63,7 +63,7 @@ det punktet. Nye synder fanges alltid.
 |---|---|
 | `innholdskontrakt` | brudd på innholdskontrakten (se `docs/INNHOLDSKONTRAKT.md`), inkludert plassholdere i en GODKJENT side og prisrader uten beløp |
 | `datafiler` | `src/_data/klinikk.json` og `ui.json` som bryter skjemaene sine, og reserverte felt som er fylt ut før visningen finnes |
-| `priser-i-tekst` | beløp i løpende tekst — priser hører bare i prisrader |
+| `priser-i-tekst` | beløp i løpende tekst (alle prosafelt og brødteksten) — priser hører bare i `belop_nok` |
 | `ordliste-skann` | treff i forbudslistene — i kildefiler, bygde utdata og commit-meldinger |
 | `sporing` | sporingssignaturer i kode eller utdata |
 | `lagring` | forsøk på lagring i brukerutstyr (nettstedet skal ikke lagre noe som helst) |

@@ -18,3 +18,7 @@
 
 [build.environment]
   NODE_VERSION = "24"
+  # Forhåndsvisningspassordet skrives med vilje til _headers (Basic-Auth).
+  # Netlifys hemmelighetsskann ville ellers stoppe bygget når verdien
+  # dukker opp i publiseringskatalogen.
+  SECRETS_SCAN_OMIT_KEYS = "PREVIEW_PASSORD,PREVIEW_BRUKER"

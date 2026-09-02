@@ -17,7 +17,7 @@ malgruppe:         # selvbetalende | henviser | forsikring
 tittel:            # Sidens H1, og <title> hvis sidetittel mangler. 10–60 tegn.
 sidetittel:        # valgfri: <title> uten suffiks, f.eks. «Koloskopi på Straume».
                    #   Bygget legger til « | Vagus Entero». 10–70 tegn.
-menytittel:        # valgfri: kort etikett i meny og brødsmulesti (3–30 tegn)
+menytittel:        # valgfri: kort etikett i menyen (3–30 tegn)
 meta_beskrivelse:  # 70–155 tegn.
 status:            # UTKAST | KLAR_FOR_MEDISINSK_GJENNOMGANG | GODKJENT
 godkjent_av:       # null til fagansvarlig lege har signert. Deretter navnet.
@@ -78,9 +78,11 @@ plassholdere som ligner på ekte tekst.
    står bare i `belop_nok`-felter.
 8. Bestillingsruten `/bestill/` (sidetype `bestilling`) har egen mal og er
    den eneste siden integrasjonspartneren rører. Innholdssidene er statiske.
-9. En `GODKJENT` side kan ikke inneholde noen plassholder i hakeparentes med
-   stor forbokstav — `[TEKST KOMMER]`, `[PLASSHOLDER: …]`, `[PREPARAT]`,
-   `[KLOKKESLETT]` — verken i frontmatter eller brødtekst.
+9. En `GODKJENT` side kan ikke inneholde noen plassholder: alt i hakeparentes
+   — `[TEKST KOMMER]`, `[PLASSHOLDER: …]`, `[PREPARAT]`, `[KLOKKESLETT]` —
+   regnes som plassholder, i frontmatter og brødtekst. Lenkesyntaksen
+   `[tekst](/sti/)` er unntaket. En godkjent side kan heller ikke lenke til
+   en side som ikke er godkjent — målet må godkjennes først.
 10. `rekkefolge` må være entydig blant sidene i menyen, og blant sidene i
     bunnteksten.
 11. Frontmatter er YAML, aldri kode: filen må starte med en ren `---`-linje.
@@ -160,12 +162,14 @@ obligatorisk for godkjenning):
     priser:
       - navn: ""                  # navn på undersøkelsen/tjenesten
         omfang: ""                # valgfri: hva som inngår
-        belop_nok: 0              # hele kroner inkl. mva, eller null
+        belop_nok: 4500           # hele kroner inkl. mva (over 0), eller null
     merknad: ""                   # valgfri dempet merknad under tabellen
 ```
 
-Rader med `belop_nok: null` vises uten beløp; finnes ingen beløp, vises
-tabellen uten priskolonne og uten tabellmerknad.
+Rader med `belop_nok: null`: finnes det ingen beløp i tabellen, vises alle
+radene uten priskolonne og uten tabellmerknad; finnes det beløp, utelates
+radene uten. `omfang` vises bare når `kolonner` finnes. En GODKJENT side kan
+ikke ha rader uten beløp.
 
 ## Seksjonsblokker
 
@@ -184,7 +188,7 @@ krem → sand → krem.
 | `praktisk` | `punkter` (2–6) med `tittel` og `tekst` | korte praktiske opplysninger i kolonner, valgfri `merknad` under |
 | `kort` | `kort` (2–6) med `tittel` | rutenett av lenkekort med `fagterm`, `illustrasjon` og `url` |
 | `kort_bred` | `avsnitt` | én tjeneste på tvers, med `illustrasjon` og `knapp`. Har blokken `under`, står overskriften over kortet; ellers inne i kortet (forsidens mønster) |
-| `pris` | `avsnitt` | den dype petrol-blokken, med `knapper` og enten `sidekolonne` (`etikett` + `avsnitt`, f.eks. «Merk», «Praktisk») eller `priser` som liten tabell |
+| `pris` | `avsnitt` | den dype petrol-blokken, med `knapper` og enten `sidekolonne` (`etikett` + `avsnitt`, f.eks. «Merk», «Praktisk») eller `priser` som liten tabell — aldri begge |
 | `prisliste` | `priser` | full prisliste, se «Prisliste» over |
 
 Strektegningene som kan brukes i `illustrasjon`: `gastroskopi`, `koloskopi`,

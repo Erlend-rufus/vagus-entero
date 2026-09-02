@@ -23,7 +23,7 @@ function tilNorsk(fil, feilliste) {
   for (const feil of feilliste || []) {
     const sti = (feil.instancePath || '').replace(/^\//, '').replace(/\//g, '.') || '(rot)';
     if (feil.keyword === 'required') {
-      meldinger.add(`${fil}: obligatorisk felt «${feil.params.missingProperty}» mangler — bruk null når verdien er ukjent`);
+      meldinger.add(`${fil}: obligatorisk felt «${sti === '(rot)' ? '' : sti + '.'}${feil.params.missingProperty}» mangler${sti === '(rot)' ? ' — bruk null når verdien er ukjent' : ' — et utfylt objekt må ha alle feltene sine'}`);
     } else if (feil.keyword === 'additionalProperties') {
       meldinger.add(`${fil}: ukjent felt «${feil.params.additionalProperty}» — skjemaet tillater ingen felter utenfor kontrakten`);
     } else if (feil.keyword === 'pattern' || feil.keyword === 'format') {

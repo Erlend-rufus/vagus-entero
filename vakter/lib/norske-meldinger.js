@@ -77,6 +77,16 @@ function seksjonsmelding(feil) {
     return `seksjon nr. ${nr}: ukjent felt «${feil.params.additionalProperty}»`;
   }
   const felt = rest.length > 0 ? rest.join(' → ') : 'blokken';
+  if (feil.keyword === 'minLength' || feil.keyword === 'maxLength') {
+    return `seksjon nr. ${nr}: «${felt}» er for ${feil.keyword === 'minLength' ? 'kort' : 'lang'} (${feil.keyword === 'minLength' ? 'minst' : 'høyst'} ${feil.params.limit} tegn)`;
+  }
+  if (feil.keyword === 'minItems' || feil.keyword === 'maxItems') {
+    return `seksjon nr. ${nr}: «${felt}» har for ${feil.keyword === 'minItems' ? 'få' : 'mange'} elementer (${feil.keyword === 'minItems' ? 'minst' : 'høyst'} ${feil.params.limit})`;
+  }
+  if (feil.keyword === 'enum' || feil.keyword === 'const') {
+    return `seksjon nr. ${nr}: «${felt}» har en verdi som ikke er tillatt`;
+  }
+  if (feil.keyword === 'anyOf') return null; // følgefeil av delregelen som allerede er meldt
   const type = feil.parentSchema && feil.parentSchema.properties && feil.parentSchema.properties.type
     ? feil.parentSchema.properties.type.const
     : null;
@@ -98,6 +108,8 @@ export function tilNorsk(ajvFeil) {
       meldinger.add(iSeksjon);
       continue;
     }
+    if (iSeksjon === null && /^\/seksjoner\//.test(feil.instancePath || '')) continue;
+    if (feil.keyword === 'anyOf') continue; // følgefeil: den konkrete delregelen er allerede meldt
     const felt = feltFraSti(feil.instancePath, feil.params);
     if (feil.keyword === 'required') {
       meldinger.add(

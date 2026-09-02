@@ -25,7 +25,10 @@ export function kjorDist(distKatalog) {
       feil.push(`_headers: «${navnet}» mangler eller avviker fra sikkerhet/policy.json`);
     }
   }
-  if (!headers.includes(`Cache-Control: ${policy.cache.html}`)) {
+  const manifestSti = `${distKatalog}.manifest.json`;
+  const produksjon = fs.existsSync(manifestSti) ? JSON.parse(lesTekst(manifestSti)).produksjon === true : false;
+  const forventetHtmlCache = produksjon ? policy.cache.html : policy.cache.html.replace('public', 'private');
+  if (!headers.includes(`Cache-Control: ${forventetHtmlCache}`)) {
     feil.push('_headers: Cache-Control for HTML mangler eller avviker fra sikkerhet/policy.json');
   }
   for (const [sti, verdi] of Object.entries(policy.cache.stier)) {
