@@ -161,7 +161,7 @@
         </ul>
 
       {%- elif blokk.type == 'kort_bred' %}
-        <div class="kort-bred">
+        <div class="kort-bred{{ '' if blokk.illustrasjon else ' kort-bred-enkel' }}">
           {%- if blokk.illustrasjon %}{{ merke(blokk.illustrasjon, '', 96) }}{% endif %}
           <div>
             {%- if not blokk.under %}

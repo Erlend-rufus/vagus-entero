@@ -77,7 +77,7 @@ Fakta om klinikken (org.nr, adresse, telefon, e-post, lege, tilsyn, bestilling)
 skrives aldri i innholdsfiler — de ligger i `src/_data/klinikk.json`, og
 `null` utelates fra nettstedet.
 
-## Rutekartet slik det er bygget (02.09.2026)
+## Rutekartet slik det er bygget (05.09.2026)
 
 Alle URL-er har avsluttende skråstrek (Netlify omdirigerer `/koloskopi` dit).
 
@@ -85,31 +85,32 @@ Alle URL-er har avsluttende skråstrek (Netlify omdirigerer `/koloskopi` dit).
 |---|---|---|---|---|
 | 01 | Forside | `/` | `forside.md` | design + tekst |
 | — | (ikke i ClickUp) | `/undersokelser/` | `undersokelser.md` | design |
-| 02 | Gastroskopi | `/gastroskopi/` | `gastroskopi.md` | design + tekst |
-| 03 | Koloskopi | `/koloskopi/` | `koloskopi.md` | design + tekst |
-| 04 | Anoskopi og rektoskopi | `/undersokelse-av-endetarmen/` | `undersokelse-av-endetarmen.md` | design + tekst (omdøpt til ClickUps sti) |
-| — | (ikke i ClickUp) | `/proktologi/` | `proktologi.md` | design + tekst |
-| 05 | Hemoroider | `/hemoroider/` | `hemoroider.md` | skjelett, `[TEKST KOMMER]` |
-| 06 | Analfissur | `/analfissur/` | `analfissur.md` | skjelett |
-| 07 | Blod i avføringen | `/blod-i-avforingen/` | `blod-i-avforingen.md` | skjelett |
-| 08 | Magesmerter | `/magesmerter/` | `magesmerter.md` | skjelett |
-| 09 | IBS | `/irritabel-tarm/` | `irritabel-tarm.md` | skjelett |
-| 10 | Refluks og halsbrann | `/refluks/` | `refluks.md` | skjelett |
-| 11 | Overvekt og fedme | `/overvekt-og-fedme/` | `overvekt-og-fedme.md` | design + tekst |
+| 02 | Gastroskopi | `/gastroskopi/` | `gastroskopi.md` | tekstpakke runde 1 (02.09) |
+| 03 | Koloskopi | `/koloskopi/` | `koloskopi.md` | tekstpakke runde 1 (02.09) |
+| 04 | Anoskopi og rektoskopi | `/undersokelse-av-endetarmen/` | `undersokelse-av-endetarmen.md` | tekstpakke runde 1 (02.09); omdøpt til ClickUps sti |
+| — | (ikke i ClickUp) | `/proktologi/` | `proktologi.md` | tekstpakke runde 1 (02.09) |
+| 05 | Hemoroider | `/hemoroider/` | `hemoroider.md` | tekstpakke runde 1 (02.09) |
+| 06 | Analfissur | `/analfissur/` | `analfissur.md` | tekstpakke runde 1 (02.09) |
+| 07 | Blod i avføringen | `/blod-i-avforingen/` | `blod-i-avforingen.md` | tekstpakke runde 1 (02.09) |
+| 08 | Magesmerter | `/magesmerter/` | `magesmerter.md` | tekstpakke runde 1 (02.09) |
+| 09 | IBS | `/irritabel-tarm/` | `irritabel-tarm.md` | tekstpakke runde 1 (02.09) |
+| 10 | Refluks og halsbrann | `/refluks/` | `refluks.md` | tekstpakke runde 1 (02.09) |
+| 11 | Overvekt og fedme | `/overvekt-og-fedme/` | `overvekt-og-fedme.md` | tekstpakke runde 1 (02.09) |
 | 12 | Priser | `/priser/` | `priser.md` | design + tekst |
-| 13 | Om klinikken og behandlerne | `/om-klinikken/` | `om-klinikken.md` | design + tekst |
-| 14 | Slik foregår det | `/slik-foregar-det/` | `slik-foregar-det.md` | skjelett |
+| 13 | Om klinikken og behandlerne | `/om-klinikken/` | `om-klinikken.md` | tekst 03.–04.09 (legens biografi, ettersendt) |
+| 14 | Slik foregår det | `/slik-foregar-det/` | `slik-foregar-det.md` | skjelett, ikke skrevet ennå |
 | 15 | For henvisende leger | `/for-henvisende-leger/` | `for-henvisende-leger.md` | design + tekst |
 | 16 | For forsikringsselskaper | `/for-forsikringsselskaper/` | `for-forsikringsselskaper.md` | design + tekst (`noindex: true` kan settes) |
 | 17 | Kontakt og timebestilling | `/kontakt/` | `kontakt.md` | design + tekst |
 | 18 | Personvernerklæring | `/personvern/` | `personvern.md` | design + tekst |
-| — | (bookingen) | `/bestill/` | `bestill.md` | isolert rute, egen mal `layouts/bestill.njk` |
+| — | (bookingen) | `/bestill/` | `bestill.md` | skjelett, ikke skrevet ennå; isolert rute, egen mal `layouts/bestill.njk` |
 | — | (404) | `/ikke-funnet/` | `ikke-funnet.md` | skjelett, `noindex: true`; Netlify viser den for ukjente adresser når den er GODKJENT |
 
 Spriket: designet har `/undersokelser/` og `/proktologi/`, som ClickUp ikke
-har; ClickUp har sju sider designet ikke har (05–10 og 14) — de ligger nå som
-ruteskjeletter og venter på tekstpakke og på designrunde 3. Alle 21 rutene
-står som UTKAST og finnes bare i forhåndsvisning.
+har; ClickUp har sju sider designet ikke har (05–10 og 14). Seks av dem fikk
+tekst i runde 1 og venter på designrunde 3; `/slik-foregar-det/` og
+`/bestill/` er fortsatt skjeletter. Alle 22 rutene står som UTKAST til
+fagansvarlig lege har godkjent skriftlig, og finnes bare i forhåndsvisning.
 
 ## Besluttet, og hvor det står i koden
 
@@ -193,13 +194,27 @@ Tekst er ikke kodesesjonens; dette er observasjoner, ikke endringer:
   persondatastrømmen (Netlifys tilgangslogger med IP-adresse, USA, 30 dager,
   jf. `docs/NETLIFY-BESLUTNING.md`) er ikke nevnt.
 - Klinikkfakta står i tekst med plassholdere (adresse, telefon, e-post,
-  org.nr, autorisasjonsnummer) i `personvern.md`, `om-klinikken.md`,
-  `kontakt.md` og fagfolk-sidene. Når visningen fra `klinikk.json` er
+  org.nr, autorisasjonsnummer) i `personvern.md`, `kontakt.md` og
+  fagfolk-sidene. Når visningen fra `klinikk.json` er
   bygget, bør setningene peke dit i stedet.
-- `meta_beskrivelse` er utledet av `ingress` på sidene fra designet (ordrett
-  på de fleste, avkortet med «…» på overvekt-og-fedme).
-- `sidetittel` er ikke satt på noen side; formatet er «Koloskopi på
-  Straume | Vagus Entero».
+- `meta_beskrivelse` er utledet av `ingress` på de gjenværende designsidene
+  (`undersokelser`, `priser`, `kontakt`, `personvern`, fagfolk-sidene).
+  Tekstpakkens tolv sider har egne.
+- `sidetittel` er satt på tekstpakkens tolv sider, forsiden og `kontakt`;
+  mangler på `undersokelser`, `priser`, `personvern`, fagfolk-sidene,
+  `slik-foregar-det`, `bestill` og `ikke-funnet`. Formatet er «Koloskopi på
+  Straume | Vagus Entero» (suffikset legges til av malen).
+- Prisblokken på undersøkelsessidene (`type: pris` med `priser`-rader) viser
+  tabellen først når minst én rad har `belop_nok`. Til da vises bare teksten
+  og knappene; radnavnene og rad-`merknad` («Vevsprøver tas ved behov …») er
+  usynlige i forhåndsvisningen. Det er villet: ingen tomme priskolonner.
+- `hode_knapper` på tekstpakkens sider har «Bestill time» og «Ring oss».
+  Begge er skjult i forhåndsvisningen til `klinikk.json` har `telefon` og
+  `bestilling.url`; det er knappereglene, ikke en feil i filene.
+- `verktoy/valider-en.mjs` fra tekstpakken ligger i repoet:
+  `node verktoy/valider-en.mjs src/innhold/<fil>.md` sjekker én fil mot
+  kontrakt, ordlister, beløp i tekst, tankestreker, plassholdere og lenker,
+  med resten av nettstedet som kontekst.
 - Designets telefonknapp i «Ring oss»-kortet på `/kontakt/` viser
   telefonnummeret som knappetekst; bygget bruker «Ring oss».
 - Designets samleside «For fagfolk» i toppmenyen ble ikke levert — de to
@@ -221,6 +236,13 @@ Tekst er ikke kodesesjonens; dette er observasjoner, ikke endringer:
 
 ## Endringer
 
+- **05.09.2026** — Tekstpakke runde 1 (02.09) satt inn: elleve sider byttet
+  ut, og `om-klinikken.md` i versjonen fra 03.–04.09 med legens biografi.
+  Alle vakter, begge byggvarianter, selvtestene og axe grønne; pakkens egen
+  `verktoy/valider-en.mjs` er tatt inn og grønn på alle tolv. Bredt kort
+  uten illustrasjon fikk egen kolonneoppdeling (`kort-bred-enkel`); før la
+  teksten seg i illustrasjonskolonnen. Status er UTKAST overalt til
+  fagansvarlig lege har godkjent skriftlig.
 - **02.09.2026 (revisjon)** — 45 agenter gjennomgikk paritet mot designfilen,
   kode, kontrakt, vakter og sikkerhet; 227 bekreftede funn rettet eller
   avgjort. Kode: prisliste-seksjonen rendres (tidligere aldri), byggkrasj ved
