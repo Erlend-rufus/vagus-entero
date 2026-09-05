@@ -949,6 +949,12 @@ a.kort:hover .kort-les {
   padding: 2.25rem 2.5rem;
 }
 
+/* Uten illustrasjon (Om klinikken): ingen tom illustrasjonskolonne, ellers
+   havner teksten i 96 px-kolonnen. */
+.kort-bred-enkel {
+  grid-template-columns: 1fr auto;
+}
+
 .kort-bred img {
   width: 96px;
   height: 96px;

@@ -64,6 +64,15 @@ plassholdere (`[PLASSHOLDER: …]`, `[00 00 00 00]`, `[PREPARAT]`) tåles i
 UTKAST, men behandles likt: alt i hakeparentes stopper godkjenning. Skriv
 aldri egne plassholdere som ligner på ekte tekst.
 
+## Sjekk én fil før levering
+
+`node verktoy/valider-en.mjs src/innhold/<fil>.md` validerer én fil mot
+kontrakten, ordlistene, beløp i løpende tekst, tankestreker, plassholdere og
+interne lenker, med resten av nettstedet som kontekst. Den stopper på det
+samme som bygget stopper på, pluss tekstprosessens egne regler (ingen
+tankestreker, ingen plassholdere i synlig tekst, tom brødtekst etter
+frontmatter, alle lenker ført i `interne_lenker_ut`).
+
 ## Reglene bygget håndhever
 
 1. Mangler et obligatorisk felt → bygget feiler og navngir felt og fil.
