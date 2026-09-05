@@ -234,6 +234,118 @@ Tekst er ikke kodesesjonens; dette er observasjoner, ikke endringer:
   bestilling åpner) og `apner_nytt_vindu` (skjermleserteksten i «Bestill
   time»). Produksjonsbygget stopper til de er levert.
 
+## Til innholdsprosessen — gjennomgang av tekstpakke runde 1 (05.09)
+
+Tretten lesere gikk gjennom de tolv nye filene mot briefens regler, én per
+fil og én på tvers. 81 observasjoner, alle med sitat verifisert ordrett mot
+filene. Kodesesjonen har ikke endret tekst, med ett unntak som står først.
+Det som allerede står i filens `apne_punkter`, er utelatt.
+
+**Rettet i koden (05.09)**
+- Et åpent punkt i `gastroskopi.md` nevnte varemerket på et blodfortynnende
+  legemiddel. Ordlisten `preparatnavn.txt` manglet det, så vakten slapp det
+  gjennom. Varemerket er byttet til virkestoffnavnet i punktet, og listen er
+  utvidet med de vanlige blodfortynnende og blodplatehemmende merkene.
+  Ingen andre varemerker finnes i innholdet.
+
+**Motsigelser mellom sider (må samordnes før noen av dem blir GODKJENT)**
+- `undersokelser.md` lover for endetarmsplager «behandles ofte i samme time,
+  i lokalbedøvelse» og har prisraden «Lite inngrep i lokalbedøvelse».
+  `proktologi.md`: «Strikkbehandling gjøres uten bedøvelse», og om det skjer
+  i samme time «avtaler du med legen». `hemoroider.md` og
+  `undersokelse-av-endetarmen.md` har bevisst tatt «ofte» ut.
+- Gastroskopi og koloskopi samme dag: `gastroskopi.md` sier at
+  koloskopiforberedelsene kommer «i tillegg» til seks timers faste uten
+  drikke; `koloskopi.md` sier forberedelsene er «de samme som til koloskopi
+  alene» og tillater klare væsker fram til tidspunktet i oppskriften.
+- Varighet: `undersokelser.md` sier 10–20 minutter (gastroskopi) og 20–45
+  (koloskopi); undersidene sier 10 til 30 og 30 til 60, `refluks.md`
+  gjentar 10 til 30 og `blod-i-avforingen.md` «en halv til én time».
+- `undersokelser.md` sier «bedøvelse tilbys» (koloskopi) der `koloskopi.md`
+  skiller uttrykkelig mellom narkose og lett sedasjon; «Ingen tømming
+  nødvendig» (endetarm) der undersidene beskriver miniklyster ved
+  rektoskopi; «Overvekt er en medisinsk tilstand» der
+  `overvekt-og-fedme.md` sier at det er fedme som er det, og at overvekt
+  uten risikofaktor ikke trenger behandling.
+- Åpningsdato: forsiden og `for-forsikringsselskaper.md` sier «1. januar
+  2027», `om-klinikken.md` «januar 2027» med forbehold om at datoen ikke er
+  avklart. Forsidens `apne_punkter` mangler forbeholdet.
+- Bestilling: `kontakt.md` sier at pasienten velger undersøkelse selv i
+  pasientportalen; `magesmerter.md` og `blod-i-avforingen.md` sier at
+  første time er en samtale, og at kikkertundersøkelse avgjøres sammen med
+  legen. `om-klinikken.md` kaller portalen «timebestillingen».
+- Prislisten på `/priser/` mangler rader undersidene viser til: sedasjon som
+  tillegg (gastroskopi, koloskopi), strikkbehandling og injeksjon (endetarm,
+  proktologi), anoskopi og rektoskopi hver for seg, «Konsultasjon med
+  undersøkelse» (proktologi), oppfølgingskonsultasjon (overvekt, med annet
+  radnavn enn prislisten) og konsultasjon som første time (magesmerter,
+  irritabel tarm). Prislisten er lovpålagt og skal være den ene kilden.
+- `koloskopi.md` er internt uenig om følge hjem etter sedasjon: «bør ha noen
+  som følger deg hjem», «Krever at noen henter deg» og «noen må kjøre deg
+  hjem». Åpent punkt 52 beskriver teksten som at den bare sier «bør».
+- `irritabel-tarm.md`: faktastripen «Utredes med» utelater undersøkelsen av
+  magen, som teksten fører to steder.
+- Åpne punkter som siterer tekst som ikke lenger står i filen:
+  `hemoroider.md` (punkt 11), `analfissur.md` (punkt 21 peker til
+  faktastripen; påstanden står i første seksjon), `blod-i-avforingen.md`
+  (punkt 28), `magesmerter.md` (punkt 23 er foreldet mot punkt 21),
+  `om-klinikken.md` (punkt 5 skriver «School», teksten «Society»).
+
+**Påstander om klinikkens rutiner som ikke er ført som åpne punkter**
+- Behandlingsforsikring dekker undersøkelsen: standardsetning på tolv sider,
+  ingen har den som åpent punkt. `analfissur.md`, `refluks.md` og
+  `om-klinikken.md` mangler forbeholdet «sjekk med forsikringsselskapet»;
+  for overvekt og fedme er dekningen særlig usikker.
+- Svar på funn samme dag, «får du vite med en gang»: hemoroider, endetarm,
+  blod i avføringen, magesmerter, koloskopi, gastroskopi.
+- Sykepleieren er med under hele undersøkelsen, følger med etter sedasjon,
+  tar imot og svarer på telefon: `koloskopi.md`, `om-klinikken.md`
+  (`gastroskopi.md` har det som åpent punkt).
+- Klinikken som første kontaktpunkt ved blødning etter hjemreise
+  (gastroskopi, koloskopi, endetarm): telefon og åpningstider er ikke
+  avklart, og kilden sier «lege eller sykehus».
+- «ofte i samråd med fastlegen» om blodfortynnende (gastroskopi, koloskopi,
+  proktologi).
+- Aldersgrense 18 år som fakta (endetarm, magesmerter, overvekt);
+  `analfissur.md` har den som åpent punkt. «Over 18 år» utelukker
+  18-åringer; menes «fra 18 år»?
+- Gastroskopi og koloskopi i samme besøk tilbys (`koloskopi.md`); valget om
+  sedasjon kan endres «helt fram til undersøkelsen starter»
+  (`gastroskopi.md`); tildekking under undersøkelsen (`hemoroider.md`,
+  `blod-i-avforingen.md`; endetarm har det som åpent punkt); «slipper du å
+  gjenta undersøkelser» (`irritabel-tarm.md`); samme lege gjør samtale og
+  gastroskopi (`refluks.md`); «møte de samme to hver gang» og venterom «for
+  få pasienter om gangen» (`om-klinikken.md`).
+
+**Klinikkfakta i tekst**
+- «Legen er spesialist i mage- og tarmkirurgi» står på sju sider;
+  `om-klinikken.md` bruker den formelle betegnelsen «generell kirurgi og
+  gastroenterologisk kirurgi». `klinikk.json` har `lege: null` og feltet
+  `lege.spesialitet`. Velg én formulering, helst fra datafilen.
+- `om-klinikken.md` nevner bygningsnavnet i faktastripen og teksten;
+  adressen er `null` til leiekontrakt foreligger.
+
+**Tone (helsepersonelloven § 13)**
+- «forekommer nesten aldri» om komplikasjoner (gastroskopi, koloskopi).
+- `om-klinikken.md`: «grundig utredning … oppdatert medisinsk kunnskap» er
+  et løfte om klinikken; «vært med på å innføre kikkhullskirurgi ved
+  tykktarmskreft i Norge» er en pionerpåstand uten dokumentasjon.
+- «Mange søker etter «… i narkose»» (gastroskopi, koloskopi) og «det folk
+  oftest lurer på» (magesmerter) er skrevet for søkemotoren.
+- «Tillegg i pris.» i sedasjonskortene (gastroskopi, koloskopi) er en
+  prisantydning utenfor prisblokken.
+
+**Kontrakt**
+- `stil: "sekundaer"` på «Ring oss» har ingen virkning; stilen avledes av
+  klinikkens tilstand. Harmløst.
+- `om-klinikken.md`: «Navn og bakgrunn presenteres her når det er avklart»
+  (`liten` på sykepleierkortet) og «Bilder av klinikken … kommer på denne
+  siden når de er klare» er prosaplassholdere som rendres og passerer
+  vakten. Bruk `[TEKST KOMMER]` eller ta dem ut.
+- Gastroskopi, koloskopi, endetarm og Om klinikken lenker til
+  `/slik-foregar-det/`, som er skjelett. Ingen av dem kan bli GODKJENT før
+  den er det.
+
 ## Endringer
 
 - **05.09.2026** — Tekstpakke runde 1 (02.09) satt inn: elleve sider byttet
@@ -242,7 +354,10 @@ Tekst er ikke kodesesjonens; dette er observasjoner, ikke endringer:
   `verktoy/valider-en.mjs` er tatt inn og grønn på alle tolv. Bredt kort
   uten illustrasjon fikk egen kolonneoppdeling (`kort-bred-enkel`); før la
   teksten seg i illustrasjonskolonnen. Status er UTKAST overalt til
-  fagansvarlig lege har godkjent skriftlig.
+  fagansvarlig lege har godkjent skriftlig. Gjennomgang av tekstene med
+  tretten lesere: 81 verifiserte observasjoner under «Til
+  innholdsprosessen»; et varemerke i et åpent punkt byttet til virkestoff,
+  og preparatnavn-listen utvidet.
 - **02.09.2026 (revisjon)** — 45 agenter gjennomgikk paritet mot designfilen,
   kode, kontrakt, vakter og sikkerhet; 227 bekreftede funn rettet eller
   avgjort. Kode: prisliste-seksjonen rendres (tidligere aldri), byggkrasj ved
