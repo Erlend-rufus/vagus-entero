@@ -795,18 +795,27 @@ main > :first-child:has(> .sidehode):not(:has(> .fakta)) + section.flate-sand > 
 }
 
 /* ---- Spørsmål og svar (JS-fritt) ----------------------------------------- */
-/* 75ch i både design og bygg — bevisst unntak fra readme-regelen om 65ch,
-   fordi spørsmålslinjen deler bredden med +/–-tegnet. */
+/* Hvert par er et kort på sand (hvitt på sandflate) med +/– i en rund pille
+   på 44 px. <details>/<summary> gjør jobben uten JavaScript; ikonet styres
+   av [open]. Referanse: BYQ Supply, Reforma «Centered FAQ Accordion»,
+   bygget om til tokenene. 75ch i både design og bygg — bevisst unntak fra
+   readme-regelen om 65ch, fordi spørsmålslinjen deler bredden med tegnet. */
 .sporsmal {
   max-width: 75ch;
 }
 
 .sporsmal details {
-  border-block-end: 1px solid var(--farge-delelinje);
+  background: var(--farge-flate);
+  border-radius: var(--radius-kort);
+  padding: 0.375rem 1.5rem;
 }
 
-.sporsmal details:first-of-type {
-  border-block-start: 1px solid var(--farge-delelinje);
+.sporsmal details + details {
+  margin-block-start: var(--avstand-4);
+}
+
+.flate-sand .sporsmal details {
+  background: var(--farge-flate-kort);
 }
 
 .sporsmal summary {
@@ -815,11 +824,11 @@ main > :first-child:has(> .sidehode):not(:has(> .fakta)) + section.flate-sand > 
   justify-content: space-between;
   gap: var(--avstand-5);
   min-height: 56px;
-  padding: 0.875rem var(--avstand-1);
+  padding: 0.875rem 0;
   cursor: pointer;
   font-size: 1.25rem;
   font-weight: var(--vekt-utheving);
-  color: var(--farge-primaer);
+  color: var(--farge-tekst);
   list-style: none;
 }
 
@@ -830,56 +839,6 @@ main > :first-child:has(> .sidehode):not(:has(> .fakta)) + section.flate-sand > 
 .sporsmal summary::after {
   content: '+';
   flex: none;
-  font-family: var(--skrift-overskrift);
-  font-size: 1.75rem;
-  color: var(--farge-aksent);
-  line-height: 1;
-}
-
-.sporsmal details[open] summary::after {
-  content: '–';
-}
-
-.sporsmal summary:hover {
-  color: var(--farge-primaer-mork);
-}
-
-.sporsmal .svar {
-  padding: 0 var(--avstand-1) 1.25rem;
-}
-
-.sporsmal .svar p {
-  max-width: 60ch;
-  margin-block-end: 0;
-}
-
-/* ---- Spørsmål og svar som kort ------------------------------------------- */
-/* Referanse: BYQ Supply, Reforma «Centered FAQ Accordion», bygget om til
-   tokenene. Samme <details>-mønster som .sporsmal, men hvert par er et kort
-   på sand (hvitt på sandflate) med +/– i en rund pille på 44 px. Fortsatt
-   uten JavaScript; ikonet styres av [open]. */
-.sporsmal-kort details,
-.sporsmal-kort details:first-of-type {
-  border: 0;
-  background: var(--farge-flate);
-  border-radius: var(--radius-kort);
-  padding: 0.375rem 1.5rem;
-}
-
-.sporsmal-kort details + details {
-  margin-block-start: var(--avstand-4);
-}
-
-.flate-sand .sporsmal-kort details {
-  background: var(--farge-flate-kort);
-}
-
-.sporsmal-kort summary {
-  padding-inline: 0;
-  color: var(--farge-tekst);
-}
-
-.sporsmal-kort summary::after {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -887,20 +846,27 @@ main > :first-child:has(> .sidehode):not(:has(> .fakta)) + section.flate-sand > 
   height: var(--klikkflate-min);
   border-radius: 50%;
   background: rgba(12, 68, 75, 0.08);
-  color: var(--farge-primaer);
+  font-family: var(--skrift-overskrift);
   font-size: 1.5rem;
-}
-
-.sporsmal-kort summary:hover {
   color: var(--farge-primaer);
+  line-height: 1;
 }
 
-.sporsmal-kort summary:hover::after {
+.sporsmal details[open] summary::after {
+  content: '–';
+}
+
+.sporsmal summary:hover::after {
   background: rgba(12, 68, 75, 0.14);
 }
 
-.sporsmal-kort .svar {
+.sporsmal .svar {
   padding: 0 0 1.125rem;
+}
+
+.sporsmal .svar p {
+  max-width: 60ch;
+  margin-block-end: 0;
 }
 
 /* ---- Veier inn (to likestilte valg) -------------------------------------- */
@@ -1171,11 +1137,12 @@ a.kort:hover .kort-les {
   grid-row: 1 / span 2;
 }
 
-/* ---- Prosessliste på petrol ---------------------------------------------- */
-/* Referanse: BYQ Supply, Avenir «Numbered Process Framework List», bygget
-   om til tokenene. Samme flate og radius som prisblokken: nummer, tittel og
-   avsnitt i tre kolonner med hårlinje mellom radene. Nummeret er dekor;
-   <ol> bærer rekkefølgen. Ingen animasjon. */
+/* ---- Prosessliste på petrol (steg-blokker med fire steg) ----------------- */
+/* Fire steg får ikke plass i tre kolonner; seksjoner.njk rendrer dem som
+   nummerert liste på samme flate og radius som prisblokken: nummer, tittel
+   og avsnitt i tre kolonner med hårlinje mellom radene. Nummeret er dekor;
+   <ol> bærer rekkefølgen. Referanse: BYQ Supply, Avenir «Numbered Process
+   Framework List», bygget om til tokenene. Ingen animasjon. */
 .prosess {
   background: var(--farge-primaer);
   color: #fff;
@@ -1188,6 +1155,18 @@ a.kort:hover .kort-les {
   font-size: clamp(1.9375rem, 1.2rem + 2.2vw, 2.5rem);
   max-width: 24ch;
   margin-block: 0 var(--avstand-7);
+}
+
+.prosess h2:has(+ .prosess-under) {
+  margin-block-end: var(--avstand-4);
+}
+
+.prosess-under {
+  color: var(--farge-primaer-lys);
+  font-size: 1.1875rem;
+  line-height: 1.6;
+  max-width: 62ch;
+  margin-block: 0 var(--avstand-6);
 }
 
 .prosess-liste {
@@ -1222,7 +1201,7 @@ a.kort:hover .kort-les {
   color: var(--farge-primaer-lys);
   line-height: 1.65;
   margin: 0;
-  max-width: 44ch;
+  max-width: 48ch;
 }
 
 .prosess :focus-visible {
@@ -1670,8 +1649,7 @@ a.kort:hover .kort-les {
     grid-column: auto;
   }
 
-  .sporsmal-kort details,
-  .sporsmal-kort details:first-of-type {
+  .sporsmal details {
     padding-inline: 1.125rem;
   }
 

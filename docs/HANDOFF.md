@@ -123,6 +123,7 @@ fagansvarlig lege har godkjent skriftlig, og finnes bare i forhåndsvisning.
 | `enteroklinikken.no` synlig i bunn; org.nr 938 387 127 | `src/_data/klinikk.json` (`domene`, `org_nr`), `komponenter/footer.njk` |
 | Bunntekst etter ehandelsloven § 8 | `footer.njk` — adresse, e-post, mva-status, yrkestittel med land, tillatelse, tilsynsmyndighet rendres når `klinikk.json` har dem |
 | «Ring oss» primær til bookingen er live; «Bestill time» primær etterpå, med varsellinje | `komponenter/knapper.njk` — tilstanden avledes av `klinikk.bestilling.url`; linjen er `ui.bestilling_apner` (tekst kommer) |
+| Fire steg = prosessliste på petrol; spørsmål og svar som kort | `komponenter/seksjoner.njk` (`.prosess`, `.sporsmal`) etter referanser fra BYQ Supply (06.09); kontaktblokken er fortsatt bare katalogkandidat |
 | Priser aldri i løpende tekst | vakten `priser-i-tekst`; prislisten har én kilde (`prisliste`-seksjonen), pristabellen rendres med caption og kolonnehoder |
 | Lenker i tekst bare internt; brødtekst uten rå HTML; frontmatter uten kode | `verktoy/tekst.js` (filteret `tekst`), `eleventy.config.js` (markdown `html: false`, `---js` avvist), vakten `innebygd-kode` |
 | Ingen innebygd kode, ingen ekstern last i noen form | vaktene `innebygd-kode`, `eksterne-verter`, `lenker` og `jsonld` leser HTML med ekte parser (`parse5`): attributter, `<meta content>`, `//`- og `\\`-adresser, entiteter, dupliserte attributter, innebygde blokker, SVG |
@@ -184,24 +185,27 @@ valget i `src/stiler/hoved.css`:
 - Fontene mangler tegnet «↗» i latin-subsettet; pilen i «Bestill time» er
   derfor inline SVG.
 
-**Kandidater fra BYQ Supply (05.09).** Tre seksjoner er bygget om til
-tokenene som ren HTML og CSS i komponentkatalogen (`/komponentkatalog/`,
-bare i forhåndsvisning), uten JavaScript og uten eksterne ressurser:
+**Fra BYQ Supply (05.–06.09).** Tre seksjoner er bygget om til tokenene
+som ren HTML og CSS, uten JavaScript og uten eksterne ressurser. To av dem er
+i bruk i malene fra 06.09; den tredje ligger i komponentkatalogen
+(`/komponentkatalog/`, bare i forhåndsvisning):
 
 - Prosessliste på petrol (`.prosess`, referanse Avenir «Numbered Process
   Framework List»): nummer, tittel og avsnitt i tre kolonner på samme flate
-  som prisblokken. Kandidat for «Slik foregår det» og for `steg`-blokkene.
-- Spørsmål og svar som kort (`.sporsmal-kort`, referanse Reforma «Centered
-  FAQ Accordion»): samme `details`-mønster som i dag, men hvert par er et
-  kort med +/– i en rund pille på 44 px. Varianter på krem og sand.
+  som prisblokken. I bruk: `steg`-blokker med fire steg rendres slik (ni
+  sider); to og tre steg står fortsatt i kolonner som i designet.
+- Spørsmål og svar som kort (`.sporsmal`, referanse Reforma «Centered FAQ
+  Accordion»): samme `details`-mønster, men hvert par er et kort med +/– i
+  en rund pille på 44 px. I bruk på alle `sporsmal`-blokker (fjorten
+  sider); hvite kort på sand.
 - Kontaktblokk med åpen faktastripe (`.kontakt`, `.fakta-aapen`, referanse
   Babka «Contact Info with Details Grid»): etikett, overskrift, én stor
   lenke, linje og fire etikett/verdi-par uten bokser. Kandidat for
   kontaktsiden og som erstatning for faktastripen i sidehodet.
 
-Ingen av dem er koblet til innholdskontrakten ennå; det avgjøres sammen
-med rammeverksvalget. Lisensvilkårene for BYQ Supply er ikke kontrollert
-fra kodesesjonen (nettstedet er sperret i miljøet).
+Kontaktblokken venter på klinikkfakta og på grensesnittstrengene for
+etikettene. Lisensvilkårene for BYQ Supply er ikke kontrollert fra
+kodesesjonen (nettstedet er sperret i miljøet).
 
 ## Til innholdsprosessen — funn fra revisjonen 02.09
 
@@ -367,6 +371,11 @@ Det som allerede står i filens `apne_punkter`, er utelatt.
 
 ## Endringer
 
+- **06.09.2026** — To av BYQ-seksjonene inn i malene: `steg`-blokker med fire
+  steg rendres som prosessliste på petrol (før brakk fjerde steg ned på egen
+  rad i tre kolonner), og alle `sporsmal`-blokker rendres som kort. Ingen
+  kontraktendring, ingen tekstendring. Kontaktblokken er fortsatt bare i
+  katalogen.
 - **05.09.2026** — Tre seksjoner etter referanser fra BYQ Supply bygget om
   til tokenene i komponentkatalogen (prosessliste på petrol, spørsmål og svar
   som kort, kontaktblokk med åpen faktastripe), ren HTML og CSS uten

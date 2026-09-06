@@ -61,14 +61,17 @@
     </div>
   </section>
   {%- else %}
+  {#- Fire steg får ikke plass i tre kolonner; da rendres blokken som
+      nummerert liste på petrol med overskriften inne i flaten. -#}
+  {%- set prosess = blokk.type == 'steg' and (blokk.steg | length) >= 4 %}
   <section class="{{ 'flate-sand' if blokk.flate == 'sand' else '' }}">
     <div class="seksjon-indre sek">
       {#- kort_bred uten «under» er forsidens mønster: overskriften står inne i
           kortet. Med «under» står overskrift og undertekst over kortet. -#}
-      {%- if blokk.type != 'kort_bred' or blokk.under %}
+      {%- if not prosess and (blokk.type != 'kort_bred' or blokk.under) %}
       <h2>{{ blokk.tittel }}</h2>
       {%- endif %}
-      {%- if blokk.under %}
+      {%- if blokk.under and not prosess %}
       <p class="under">{{ blokk.under | tekst | safe }}</p>
       {%- endif %}
 
@@ -92,6 +95,19 @@
         {%- if blokk.etter %}
         <p class="tidslinje-etter">{{ blokk.etter | tekst | safe }}</p>
         {%- endif %}
+
+      {%- elif blokk.type == 'steg' and prosess %}
+        <div class="prosess">
+          <h2>{{ blokk.tittel }}</h2>
+          {%- if blokk.under %}
+          <p class="prosess-under">{{ blokk.under | tekst | safe }}</p>
+          {%- endif %}
+          <ol class="prosess-liste">
+            {%- for steg in blokk.steg %}
+            <li><span class="prosess-nr" aria-hidden="true">{{ '0' if loop.index < 10 }}{{ loop.index }}</span><h3>{{ steg.tittel }}</h3><p>{{ steg.tekst | tekst | safe }}</p></li>
+            {%- endfor %}
+          </ol>
+        </div>
 
       {%- elif blokk.type == 'steg' %}
         {%- if blokk.strek %}

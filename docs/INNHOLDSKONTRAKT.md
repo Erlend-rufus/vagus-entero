@@ -199,8 +199,8 @@ krem → sand → krem.
 |---|---|---|
 | `tekst` | `avsnitt` (1–8) | vanlig brødtekst, valgfri `merknad` til slutt |
 | `tidslinje` | `punkter` med `naar` og `tekst` | forberedelser dag for dag; `eksempelmerknad` gir den terrakotta-rammede advarselen; valgfritt avsluttende avsnitt `etter` |
-| `steg` | `steg` (2–4) med `tittel` og `tekst` | «Slik foregår det»; `strek: true` tegner bølgelinjen over |
-| `sporsmal` | `sporsmal` (2–14) med `sporsmal` og `svar` | spørsmål og svar, utvides uten JavaScript |
+| `steg` | `steg` (2–4) med `tittel` og `tekst` | «Slik foregår det»; `strek: true` tegner bølgelinjen over. To og tre steg står i kolonner; fire steg rendres som nummerert liste på petrol |
+| `sporsmal` | `sporsmal` (2–14) med `sporsmal` og `svar` | spørsmål og svar som kort, utvides uten JavaScript |
 | `veier` | `veier` (2–4) med `tittel` og `avsnitt` | likestilte valg som kort, med valgfri `illustrasjon`, `undertittel` (liten linje rett under overskriften: fagterm, varighet, spesialitet), `liten` (liten linje etter avsnittene) og `knapp` |
 | `praktisk` | `punkter` (2–6) med `tittel` og `tekst` | korte praktiske opplysninger i kolonner, valgfri `merknad` under |
 | `kort` | `kort` (2–6) med `tittel` | rutenett av lenkekort med `fagterm`, `illustrasjon` og `url` |
