@@ -184,6 +184,25 @@ valget i `src/stiler/hoved.css`:
 - Fontene mangler tegnet «↗» i latin-subsettet; pilen i «Bestill time» er
   derfor inline SVG.
 
+**Kandidater fra BYQ Supply (05.09).** Tre seksjoner er bygget om til
+tokenene som ren HTML og CSS i komponentkatalogen (`/komponentkatalog/`,
+bare i forhåndsvisning), uten JavaScript og uten eksterne ressurser:
+
+- Prosessliste på petrol (`.prosess`, referanse Avenir «Numbered Process
+  Framework List»): nummer, tittel og avsnitt i tre kolonner på samme flate
+  som prisblokken. Kandidat for «Slik foregår det» og for `steg`-blokkene.
+- Spørsmål og svar som kort (`.sporsmal-kort`, referanse Reforma «Centered
+  FAQ Accordion»): samme `details`-mønster som i dag, men hvert par er et
+  kort med +/– i en rund pille på 44 px. Varianter på krem og sand.
+- Kontaktblokk med åpen faktastripe (`.kontakt`, `.fakta-aapen`, referanse
+  Babka «Contact Info with Details Grid»): etikett, overskrift, én stor
+  lenke, linje og fire etikett/verdi-par uten bokser. Kandidat for
+  kontaktsiden og som erstatning for faktastripen i sidehodet.
+
+Ingen av dem er koblet til innholdskontrakten ennå; det avgjøres sammen
+med rammeverksvalget. Lisensvilkårene for BYQ Supply er ikke kontrollert
+fra kodesesjonen (nettstedet er sperret i miljøet).
+
 ## Til innholdsprosessen — funn fra revisjonen 02.09
 
 Tekst er ikke kodesesjonens; dette er observasjoner, ikke endringer:
@@ -348,6 +367,10 @@ Det som allerede står i filens `apne_punkter`, er utelatt.
 
 ## Endringer
 
+- **05.09.2026** — Tre seksjoner etter referanser fra BYQ Supply bygget om
+  til tokenene i komponentkatalogen (prosessliste på petrol, spørsmål og svar
+  som kort, kontaktblokk med åpen faktastripe), ren HTML og CSS uten
+  JavaScript. Kandidater til designprosessen; ikke i kontrakten ennå.
 - **05.09.2026** — Tekstpakke runde 1 (02.09) satt inn: elleve sider byttet
   ut, og `om-klinikken.md` i versjonen fra 03.–04.09 med legens biografi.
   Alle vakter, begge byggvarianter, selvtestene og axe grønne; pakkens egen
