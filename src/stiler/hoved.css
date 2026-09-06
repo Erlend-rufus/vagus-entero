@@ -539,6 +539,67 @@ main {
   overflow-wrap: anywhere;
 }
 
+/* ---- Kontaktblokk og åpen faktastripe ------------------------------------ */
+/* Referanse: BYQ Supply, Babka «Contact Info with Details Grid», bygget om
+   til tokenene. Etikett, overskrift og én stor lenke (telefon eller e-post),
+   en linje, og fire etikett/verdi-par uten bokser. Verdiene kommer fra
+   klinikk.json. Ingen skjema, ingen animasjon. */
+.kontakt-etikett,
+.fakta-aapen dt {
+  color: var(--farge-tekst-dempet);
+  font-size: 0.875rem;
+  font-weight: var(--vekt-utheving);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.kontakt-etikett {
+  margin-block: 0 var(--avstand-3);
+}
+
+.kontakt h2 {
+  margin-block: 0 var(--avstand-4);
+}
+
+.kontakt-lenke {
+  display: inline-block;
+  font-family: var(--skrift-overskrift);
+  font-size: clamp(1.625rem, 1.2rem + 1.6vw, 2.125rem);
+  font-weight: var(--vekt-overskrift);
+  line-height: 1.15;
+  color: var(--farge-primaer);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.kontakt-lenke:hover {
+  color: var(--farge-primaer-mork);
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.kontakt-linje {
+  border: 0;
+  border-block-start: 1px solid var(--farge-delelinje);
+  margin-block: var(--avstand-7) var(--avstand-6);
+}
+
+.fakta-aapen {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--avstand-6);
+  margin: 0;
+}
+
+.fakta-aapen dt {
+  margin-block-end: var(--avstand-2);
+}
+
+.fakta-aapen dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
 /* ---- Seksjoner ----------------------------------------------------------- */
 .sek {
   padding-block: var(--avstand-8);
@@ -790,6 +851,56 @@ main > :first-child:has(> .sidehode):not(:has(> .fakta)) + section.flate-sand > 
 .sporsmal .svar p {
   max-width: 60ch;
   margin-block-end: 0;
+}
+
+/* ---- Spørsmål og svar som kort ------------------------------------------- */
+/* Referanse: BYQ Supply, Reforma «Centered FAQ Accordion», bygget om til
+   tokenene. Samme <details>-mønster som .sporsmal, men hvert par er et kort
+   på sand (hvitt på sandflate) med +/– i en rund pille på 44 px. Fortsatt
+   uten JavaScript; ikonet styres av [open]. */
+.sporsmal-kort details,
+.sporsmal-kort details:first-of-type {
+  border: 0;
+  background: var(--farge-flate);
+  border-radius: var(--radius-kort);
+  padding: 0.375rem 1.5rem;
+}
+
+.sporsmal-kort details + details {
+  margin-block-start: var(--avstand-4);
+}
+
+.flate-sand .sporsmal-kort details {
+  background: var(--farge-flate-kort);
+}
+
+.sporsmal-kort summary {
+  padding-inline: 0;
+  color: var(--farge-tekst);
+}
+
+.sporsmal-kort summary::after {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--klikkflate-min);
+  height: var(--klikkflate-min);
+  border-radius: 50%;
+  background: rgba(12, 68, 75, 0.08);
+  color: var(--farge-primaer);
+  font-size: 1.5rem;
+}
+
+.sporsmal-kort summary:hover {
+  color: var(--farge-primaer);
+}
+
+.sporsmal-kort summary:hover::after {
+  background: rgba(12, 68, 75, 0.14);
+}
+
+.sporsmal-kort .svar {
+  padding: 0 0 1.125rem;
 }
 
 /* ---- Veier inn (to likestilte valg) -------------------------------------- */
@@ -1060,6 +1171,64 @@ a.kort:hover .kort-les {
   grid-row: 1 / span 2;
 }
 
+/* ---- Prosessliste på petrol ---------------------------------------------- */
+/* Referanse: BYQ Supply, Avenir «Numbered Process Framework List», bygget
+   om til tokenene. Samme flate og radius som prisblokken: nummer, tittel og
+   avsnitt i tre kolonner med hårlinje mellom radene. Nummeret er dekor;
+   <ol> bærer rekkefølgen. Ingen animasjon. */
+.prosess {
+  background: var(--farge-primaer);
+  color: #fff;
+  border-radius: var(--radius-flate);
+  padding: 3.25rem 4rem 1.5rem;
+}
+
+.prosess h2 {
+  color: #fff;
+  font-size: clamp(1.9375rem, 1.2rem + 2.2vw, 2.5rem);
+  max-width: 24ch;
+  margin-block: 0 var(--avstand-7);
+}
+
+.prosess-liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.prosess-liste li {
+  display: grid;
+  grid-template-columns: minmax(3.5rem, 1fr) 4fr 5fr;
+  gap: var(--avstand-5);
+  padding-block: var(--avstand-5) var(--avstand-7);
+  border-block-start: 1px solid var(--farge-delelinje-mork);
+}
+
+.prosess-liste li:last-child {
+  padding-block-end: var(--avstand-5);
+}
+
+.prosess-nr,
+.prosess-liste h3 {
+  font-family: var(--skrift-overskrift);
+  font-size: var(--tekst-3);
+  font-weight: var(--vekt-overskrift);
+  line-height: 1.2;
+  color: #fff;
+  margin: 0;
+}
+
+.prosess-liste p {
+  color: var(--farge-primaer-lys);
+  line-height: 1.65;
+  margin: 0;
+  max-width: 44ch;
+}
+
+.prosess :focus-visible {
+  outline-color: #fff;
+}
+
 /* ---- Pristabell ---------------------------------------------------------- */
 .pristabell {
   width: 100%;
@@ -1240,6 +1409,19 @@ a.kort:hover .kort-les {
 
   .fakta {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fakta-aapen {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .prosess-liste li {
+    grid-template-columns: auto 1fr;
+    gap: var(--avstand-3) var(--avstand-5);
+  }
+
+  .prosess-liste p {
+    grid-column: 2;
   }
 
   .steg,
@@ -1459,6 +1641,38 @@ a.kort:hover .kort-les {
 
   .hode-merknad {
     max-width: none;
+  }
+
+  .fakta-aapen {
+    grid-template-columns: 1fr;
+    gap: var(--avstand-5);
+  }
+
+  .kontakt-linje {
+    margin-block: var(--avstand-6) var(--avstand-5);
+  }
+
+  .prosess {
+    padding: 2rem 1.5rem 0.75rem;
+  }
+
+  .prosess h2 {
+    margin-block-end: var(--avstand-5);
+  }
+
+  .prosess-liste li {
+    grid-template-columns: 1fr;
+    gap: var(--avstand-2);
+    padding-block: var(--avstand-4) var(--avstand-5);
+  }
+
+  .prosess-liste p {
+    grid-column: auto;
+  }
+
+  .sporsmal-kort details,
+  .sporsmal-kort details:first-of-type {
+    padding-inline: 1.125rem;
   }
 
   .fakta > div {
