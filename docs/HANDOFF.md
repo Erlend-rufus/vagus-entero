@@ -95,7 +95,7 @@ Alle URL-er har avsluttende skråstrek (Netlify omdirigerer `/koloskopi` dit).
 | 08 | Magesmerter | `/magesmerter/` | `magesmerter.md` | tekstpakke runde 1 (02.09) |
 | 09 | IBS | `/irritabel-tarm/` | `irritabel-tarm.md` | tekstpakke runde 1 (02.09) |
 | 10 | Refluks og halsbrann | `/refluks/` | `refluks.md` | tekstpakke runde 1 (02.09) |
-| 11 | Overvekt og fedme | `/overvekt-og-fedme/` | `overvekt-og-fedme.md` | tekstpakke runde 1 (02.09) |
+| 11 | Overvekt og fedme | `/overvekt-og-fedme/` | `overvekt-og-fedme.md` | tekstpakke runde 1 (02.09); **parkert 11.09.2026** (`noindex: true`, ute av meny, bunntekst, forside, Undersøkelser og prislister; filen beholdes) |
 | 12 | Priser | `/priser/` | `priser.md` | design + tekst |
 | 13 | Om klinikken og behandlerne | `/om-klinikken/` | `om-klinikken.md` | tekst 03.–04.09 (legens biografi, ettersendt) |
 | 14 | Slik foregår det | `/slik-foregar-det/` | `slik-foregar-det.md` | skjelett, ikke skrevet ennå |
@@ -109,8 +109,12 @@ Alle URL-er har avsluttende skråstrek (Netlify omdirigerer `/koloskopi` dit).
 Spriket: designet har `/undersokelser/` og `/proktologi/`, som ClickUp ikke
 har; ClickUp har sju sider designet ikke har (05–10 og 14). Seks av dem fikk
 tekst i runde 1 og venter på designrunde 3; `/slik-foregar-det/` og
-`/bestill/` er fortsatt skjeletter. Alle 22 rutene står som UTKAST til
-fagansvarlig lege har godkjent skriftlig, og finnes bare i forhåndsvisning.
+`/bestill/` er fortsatt skjeletter. Etter medisinsk gjennomgang runde 1
+(11.09.2026, innarbeidet 15.09.2026) står gastroskopi, koloskopi, blod i
+avføringen, magesmerter, irritabel tarm og refluks som
+KLAR_FOR_MEDISINSK_GJENNOMGANG; alle andre ruter er UTKAST. Ingen side er
+GODKJENT, og alt finnes bare i forhåndsvisning til fagansvarlig lege har
+godkjent skriftlig.
 
 ## Besluttet, og hvor det står i koden
 
@@ -134,6 +138,9 @@ fagansvarlig lege har godkjent skriftlig, og finnes bare i forhåndsvisning.
 | Bookingen isolert, innholdssidene statiske | `layouts/bestill.njk`, monteringspunkt `#bestilling-portal`. En lenke til portalen krever oppføring i `vakter/ordlister/eksterne-hvitliste.txt` og `bestilling.merknad`; å bygge portalen inn krever i tillegg at CSP-en åpnes bevisst (`script-src`, `connect-src`, `frame-src` i `sikkerhet/policy.json`) — se `docs/LANSERING.md` |
 | Ingen hemmeligheter i koden | alt i miljøvariabler (`PRODUKSJON`, `SITE_URL`); `docs/LANSERING.md` |
 | WCAG: nettstedet testes mot 2.2 AA (superset av 2.1 AA) | `verktoy/a11y-test.mjs` (axe, alle sider, 0 brudd), Lighthouse-budsjett i `verktoy/lighthouserc.cjs` |
+| Fedmedelen utgår foreløpig (Kristian Eeg Storli, 11.09.2026) | `overvekt-og-fedme.md` (`noindex: true`, `i_navigasjon: false`, `i_bunntekst: false`, første åpne punkt); kort, lenker og prisrader tatt ut av forside, Undersøkelser, Priser, Om klinikken og fagfolk-sidene. Filen beholdes |
+| Lege, tilsyn og adresse er bekreftet (medisinsk gjennomgang runde 1) | `src/_data/klinikk.json` (`lege` med navn, HPR og spesialitet; `tilsyn`; `adresse` med `bygg`), `skjema/klinikk.schema.json` (`adresse.bygg` valgfritt), `footer.njk` viser bygget foran gateadressen. `Physician`-JSON-LD sendes fortsatt bare ut på GODKJENT-sider med `jsonld_type: Physician` (`verktoy/jsonld.js`) |
+| Kanoniske setninger fra runde 1 står ordrett; egne formuleringer er synlige | de ti innholdsfilene: samlepunktet «Endret 15.09.2026 etter medisinsk gjennomgang runde 1 …» og punktet «Formulert av kodesesjonen 15.09.2026 …» i `apne_punkter`, som bekreftes i runde 2 |
 
 ## Blokkert, og av hva
 
@@ -141,16 +148,19 @@ fagansvarlig lege har godkjent skriftlig, og finnes bare i forhåndsvisning.
   bevist. Trenger en eksplisitt beslutning før mer bygges.
 - **Bookingportalen.** Integrasjonspartneren venter på API-dokumentasjon.
   Til da: `bestilling: null`, ingen «Bestill time», `/bestill/` viser telefon.
-- **Klinikkfakta.** Adresse (leiekontrakt), telefon, e-post, fagansvarlig
-  lege med HPR, tilsynsopplysninger, mva-status, priser, åpningstider — alt
-  `null` i `klinikk.json` til det foreligger. Produksjonsbygget nekter å
-  starte uten de lanseringskritiske.
+- **Klinikkfakta.** Adresse (Sartor Helsehus, Sartorvegen 8, 5354 Straume),
+  fagansvarlig lege med HPR og tilsynsopplysninger kom inn 15.09.2026 fra
+  medisinsk gjennomgang runde 1. Telefon, e-post, bestilling, mva-status,
+  priser og åpningstider er fortsatt `null` i `klinikk.json` til det
+  foreligger. Produksjonsbygget nekter å starte uten de lanseringskritiske.
 - **Analyse og samtykke.** Ikke bygget. Nettstedet lagrer ingenting og laster
   ingenting eksternt, så det finnes ingenting å samtykke til i dag. Når
   analyse velges (databehandleravtale, EU-hosting), må CSP-en åpnes bevisst
   og en samtykkeløsning bygges der «avvis» er like lett som «godta».
 - **Logo.** Klinikken leverer fil innen 1. november, ellers ordmerke.
-- **Fedmetilbudet.** Siden finnes, men tilbudet er uavklart.
+- **Fedmetilbudet.** Utgår foreløpig etter beslutning fra Kristian Eeg
+  Storli 11.09.2026. Siden finnes med `noindex` og er ute av alt som lenker
+  til den; teksten tas opp igjen bare på ny beslutning.
 - **Forhåndsvisningene.** `Disallow: /` hindrer crawling, så noindex-signalet
   leses ikke; Basic-Auth (`PREVIEW_BRUKER`/`PREVIEW_PASSORD` i Netlify) er
   den reelle beskyttelsen og bør slås på nå. Alternativet står i
@@ -264,6 +274,11 @@ fil og én på tvers. 81 observasjoner, alle med sitat verifisert ordrett mot
 filene. Kodesesjonen har ikke endret tekst, med ett unntak som står først.
 Det som allerede står i filens `apne_punkter`, er utelatt.
 
+Flere av punktene under er avgjort i medisinsk gjennomgang runde 1
+(11.09.2026) og innarbeidet 15.09.2026 (sedasjon, blodfortynnende uten
+fastlegen, «samme time», legens spesialitet fra `klinikk.json`, fedme).
+Listen står som historikk; det gjeldende er innholdsfilenes `apne_punkter`.
+
 **Rettet i koden (05.09)**
 - Et åpent punkt i `gastroskopi.md` nevnte varemerket på et blodfortynnende
   legemiddel. Ordlisten `preparatnavn.txt` manglet det, så vakten slapp det
@@ -371,6 +386,35 @@ Det som allerede står i filens `apne_punkter`, er utelatt.
 
 ## Endringer
 
+- **15.09.2026** — Medisinsk gjennomgang runde 1 (Kristian Eeg Storli,
+  11.09.2026) innarbeidet etter arbeidsordre 15.09. `klinikk.json` har nå
+  lege (navn, HPR, spesialitet), tilsyn og adresse; skjemaet fikk
+  `adresse.bygg`, og bunnteksten viser bygget foran gateadressen. Telefon,
+  e-post, bestilling, åpningstider, priser og mva-status er fortsatt `null`.
+  Fedmedelen er parkert: filen beholdes med `noindex`, ute av meny,
+  bunntekst, forside, Undersøkelser og alle prislister, uten døde lenker.
+  Del A (sedasjon ved behov og aldri som standard, halsspray standard ved
+  gastroskopi, medisin «i en tynn nål i armen», proktologi uten sedasjon og
+  narkose, følge og kjøreforbud, faste, tømming og klyster, blodfortynnende,
+  graviditet og allergier, observasjonstid, svar på vevsprøver 1 til 4 uker,
+  samtale og undersøkelse i samme time, egen time for strikk og injeksjon,
+  polypper bare ved koloskopi, blodprøver «når det er grunn til det»,
+  lavFODMAP, 18 år, faresignaler) og Del B per side er tatt inn i ti
+  innholdsfiler. Kanoniske setninger står ordrett; hver fil har et
+  samlepunkt «Endret 15.09.2026 …» og et punkt «Formulert av kodesesjonen
+  15.09.2026 …» med setningene som bekreftes i runde 2. Ti
+  innarbeidingsagenter og ti uavhengige etterprøvinger; tre filer fikk en
+  rettingsrunde. Status: gastroskopi, koloskopi, blod i avføringen,
+  magesmerter, irritabel tarm og refluks er KLAR_FOR_MEDISINSK_GJENNOMGANG;
+  endetarm, proktologi, hemoroider og analfissur er UTKAST (spørsmål 47 til
+  59 ubesvart, sendt på nytt 15.09.2026); ingen side er GODKJENT.
+  Undersøkelser-kortene er samordnet med undersøkelsessidene (varighet,
+  egen time); forsiden og Undersøkelser fikk `interne_lenker_ut` og
+  tankestreker byttet fordi `valider-en` krever det. Validatoren er
+  fortsatt rød på `priser.md`, `for-henvisende-leger.md` og
+  `for-forsikringsselskaper.md` på grunn av designets `[PLASSHOLDER]`-tekst
+  (innholdsprosessen). `valider-en` grønn på alle ti, alle vakter og begge
+  byggvarianter grønne.
 - **06.09.2026** — To av BYQ-seksjonene inn i malene: `steg`-blokker med fire
   steg rendres som prosessliste på petrol (før brakk fjerde steg ned på egen
   rad i tre kolonner), og alle `sporsmal`-blokker rendres som kort. Ingen
