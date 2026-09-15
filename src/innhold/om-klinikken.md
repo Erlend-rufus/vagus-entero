@@ -56,7 +56,7 @@ seksjoner:
   - type: "tekst"
     tittel: "Hva klinikken er"
     avsnitt:
-      - "Vagus Entero Klinikken utreder og behandler plager i spiserør, magesekk, tarm og endetarm hos voksne. Klinikken utfører gastroskopi, koloskopi og undersøkelse av endetarmen, tar vevsprøver, og behandler hemoroider og analfissur med små inngrep. Klinikken tilbyr også medisinsk utredning og behandling av overvekt og fedme."
+      - "Vagus Entero Klinikken utreder og behandler plager i spiserør, magesekk, tarm og endetarm hos voksne. Klinikken utfører gastroskopi, koloskopi og undersøkelse av endetarmen, tar vevsprøver, og behandler hemoroider og analfissur med små inngrep."
       - "Klinikken er privat og har ingen avtale med det offentlige. Det betyr at du betaler for undersøkelsen selv, eller at behandlingsforsikringen din dekker den. Du trenger ikke henvisning for å bestille time, men har du en henvisning fra fastlegen, tar du den gjerne med."
       - "Klinikken holder til i Sartor Helsehus på Straume i Øygarden, vest for Bergen. Den drives av én lege og én sykepleier, og den er laget for at du skal møte de samme to hver gang."
   - type: "veier"

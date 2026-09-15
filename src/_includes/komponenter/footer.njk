@@ -5,7 +5,7 @@
 ] -%}
 {#- Bunnteksten bærer ehandelsloven § 8-opplysningene og, når klinikken har
     dem, opplysningene tjenesteloven krever om regulert yrke. Alt som er null
-    utelates — det står aldri en plassholder her. -#}
+    utelates, det står aldri en plassholder her. -#}
 <footer class="bunn" aria-label="{{ ui.bunntekst }}">
   <div class="bunn-indre">
     <div>
@@ -14,7 +14,7 @@
       <p class="bunn-domene">{{ klinikk.domene }}</p>
       {%- endif %}
       {%- if klinikk.adresse %}
-      <p>{{ klinikk.adresse.gate }}, {{ klinikk.adresse.postnummer }} {{ klinikk.adresse.poststed }}</p>
+      <p>{% if klinikk.adresse.bygg %}{{ klinikk.adresse.bygg }}, {% endif %}{{ klinikk.adresse.gate }}, {{ klinikk.adresse.postnummer }} {{ klinikk.adresse.poststed }}</p>
       {%- endif %}
       {%- if klinikk.org_nr %}
       <p>{{ ui.org_nr_etikett }} {{ klinikk.org_nr | orgnr }}</p>

@@ -243,4 +243,5 @@ bestillingsportal) bor i `src/_data/klinikk.json`, validert mot
 `skjema/klinikk.schema.json` i hvert bygg. Ukjent = `null`, og bygget
 utelater da feltet fra nettstedet og fra strukturerte data. Skriv aldri slike
 fakta i innholdsfiler. `apningstider` og `ventetid` er reservert: de må stå
-som `null` til en visning er bygget.
+som `null` til en visning er bygget. Adressen kan ha `bygg` (for eksempel
+helsehuset); bunnteksten viser det foran gateadressen.
