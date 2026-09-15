@@ -51,9 +51,6 @@ seksjoner:
       - navn: "Små inngrep ved endetarmsplager (proktologi)"
         omfang: "[PLASSHOLDER]"
         belop_nok: null
-      - navn: "Medisinsk utredning av overvekt og fedme, første konsultasjon"
-        omfang: "[PLASSHOLDER]"
-        belop_nok: null
       - navn: "Vevsprøve og analyse"
         omfang: "[PLASSHOLDER]"
         belop_nok: null

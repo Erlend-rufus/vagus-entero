@@ -55,7 +55,7 @@ seksjoner:
     veier:
       - tittel: "Vi tar imot"
         avsnitt:
-          - "Utredning av dyspepsi, refluks, endret avføringsmønster, blod i avføringen, jernmangelanemi til utredning, magesmerter, endetarmsplager, samt medisinsk utredning av overvekt og fedme."
+          - "Utredning av dyspepsi, refluks, endret avføringsmønster, blod i avføringen, jernmangelanemi til utredning, magesmerter og endetarmsplager."
         liten: "Gastroskopi, koloskopi, anoskopi, rektoskopi og små proktologiske inngrep."
       - tittel: "Vi tar ikke imot"
         avsnitt:
@@ -96,7 +96,5 @@ seksjoner:
       - navn: "Koloskopi"
         belop_nok: null
       - navn: "Anoskopi og rektoskopi"
-        belop_nok: null
-      - navn: "Første konsultasjon, overvekt"
         belop_nok: null
 ---

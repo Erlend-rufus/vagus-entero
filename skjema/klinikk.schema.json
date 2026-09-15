@@ -91,6 +91,11 @@
         "poststed": {
           "type": "string",
           "minLength": 2
+        },
+        "bygg": {
+          "type": "string",
+          "minLength": 2,
+          "description": "Bygningsnavn som vises foran gateadressen, f.eks. et helsehus. Valgfritt."
         }
       }
     },

@@ -11,10 +11,12 @@ status: "UTKAST"
 godkjent_av: null
 godkjent_dato: null
 jsonld_type: "MedicalProcedure"
+noindex: true
 interne_lenker_ut:
   - "/undersokelser/"
   - "/priser/"
 apne_punkter:
+  - "Parkert 11.09.2026 etter beslutning fra Kristian Eeg Storli: fedmedelen utgår foreløpig. Teksten er ferdig og kan settes inn igjen uten omskriving. Fjern noindex og gjenopprett interne lenker når klinikken bestemmer seg."
   - "Hele teksten skal gjennom medisinsk gjennomgang og signeres av fagansvarlig lege før status kan bli GODKJENT."
   - "Direktoratet for medisinske produkter: teksten er skrevet for å ikke kobles til noe legemiddel, verken direkte eller indirekte. Fagansvarlig bør lese den med det for øye."
   - "Bekreft hvem som utfører fedmeutredningen ved klinikken, og hvilke behandlingsformer som tilbys ved oppstart."

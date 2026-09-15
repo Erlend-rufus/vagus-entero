@@ -11,10 +11,14 @@ status: "UTKAST"
 godkjent_av: null
 godkjent_dato: null
 jsonld_type: "MedicalClinic"
-interne_lenker_ut: []
+interne_lenker_ut:
+  - "/gastroskopi/"
+  - "/koloskopi/"
+  - "/undersokelse-av-endetarmen/"
+  - "/proktologi/"
 apne_punkter:
   - "Hele teksten skal gjennom medisinsk gjennomgang og signeres av fagansvarlig lege før status kan bli GODKJENT"
-  - "Prisene er ikke fastsatt — beløpene står som null og utelates fra siden"
+  - "Prisene er ikke fastsatt. Beløpene står som null og utelates fra siden"
 i_navigasjon: false
 i_bunntekst: false
 rekkefolge: 0
@@ -28,7 +32,7 @@ hode_knapper:
 seksjoner:
   - type: "kort"
     tittel: "Undersøkelser og behandling"
-    under: "Egne sider om hver undersøkelse kommer her etter hvert – med tydelig informasjon om forberedelser, gjennomføring og hva du kan forvente."
+    under: "Egne sider om hver undersøkelse kommer her etter hvert, med tydelig informasjon om forberedelser, gjennomføring og hva du kan forvente."
     kort:
       - tittel: "Kikkertundersøkelse av spiserør og magesekk"
         fagterm: "(gastroskopi)"
@@ -46,17 +50,6 @@ seksjoner:
         fagterm: "(proktologi)"
         illustrasjon: "proktologi"
         url: "/proktologi/"
-  - type: "kort_bred"
-    tittel: "Overvekt og fedme"
-    flate: "sand"
-    avsnitt:
-      - "Medisinsk utredning og behandling av overvekt og fedme."
-    illustrasjon: "overvekt"
-    knapp:
-      tekst: "Les om tilbudet"
-      handling: "intern"
-      url: "/overvekt-og-fedme/"
-      stil: "sekundaer"
   - type: "steg"
     tittel: "Slik foregår det"
     steg:

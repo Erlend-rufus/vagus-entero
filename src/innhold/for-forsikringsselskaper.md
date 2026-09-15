@@ -60,9 +60,6 @@ seksjoner:
       - navn: "Små inngrep ved endetarmsplager (proktologi)"
         omfang: "[PLASSHOLDER]"
         belop_nok: null
-      - navn: "Medisinsk utredning av overvekt og fedme"
-        omfang: "[PLASSHOLDER]"
-        belop_nok: null
   - type: "praktisk"
     tittel: "Kapasitet, svartid og rapportering"
     flate: "sand"

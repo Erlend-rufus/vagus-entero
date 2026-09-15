@@ -5,11 +5,25 @@
   "domene": "enteroklinikken.no",
   "org_nr": "938387127",
   "mva_status": null,
-  "adresse": null,
+  "adresse": {
+    "gate": "Sartorvegen 8",
+    "postnummer": "5354",
+    "poststed": "Straume",
+    "bygg": "Sartor Helsehus"
+  },
   "telefon": null,
   "epost": null,
-  "lege": null,
-  "tilsyn": null,
+  "lege": {
+    "navn": "Kristian Eeg Storli",
+    "hpr_nummer": "7070373",
+    "spesialitet": "Spesialist i generell kirurgi og gastroenterologisk kirurgi"
+  },
+  "tilsyn": {
+    "yrkestittel": "Lege, spesialist i generell kirurgi og gastroenterologisk kirurgi",
+    "land": "Norge",
+    "tillatelse": "Autorisasjon og spesialistgodkjenning fra Helsedirektoratet, HPR-nummer 7070373",
+    "myndighet": "Statsforvalteren i Vestland og Statens helsetilsyn"
+  },
   "bestilling": null,
   "apningstider": null,
   "ventetid": null
