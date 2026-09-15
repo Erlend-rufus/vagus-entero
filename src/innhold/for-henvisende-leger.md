@@ -19,7 +19,7 @@ apne_punkter:
   - "Seksjonen «Hva pasienten og du får tilbake» har plassholdere som klinikken må fylle ut"
   - "Designets knapp «Skriv ut som A4» med merknaden om utskriftsversjonen er ikke bygget: en JS-fri utskriftsvei (utskrifts-CSS eller egen A4-side) må besluttes først"
   - "Hele teksten skal gjennom medisinsk gjennomgang og signeres av fagansvarlig lege før status kan bli GODKJENT"
-  - "Prisene er ikke fastsatt — beløpene står som null og utelates fra siden"
+  - "Prisene er ikke fastsatt. Beløpene står som null og utelates fra siden"
   - "Leveransens brødsmulesti går via en «For fagfolk»-side som ikke ble levert. Siden er derfor lagt rett under forsiden, og lenken ligger i bunnteksten i stedet for i hovedmenyen"
 i_navigasjon: false
 i_bunntekst: true

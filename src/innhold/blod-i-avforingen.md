@@ -7,7 +7,7 @@ sidetittel: "Blod i avføringen: undersøkelse privat på Straume ved Bergen"
 menytittel: "Blod i avføringen"
 meta_beskrivelse: "Blod i avføringen skyldes oftest hemoroider eller en rift, men skal alltid undersøkes. Utredning privat på Straume ved Bergen, uten henvisning."
 ingress: "Synlig blod i avføringen er vanlig, og de fleste årsaker er godartede. Det skal likevel alltid undersøkes, fordi årsaken ikke kan avgjøres uten at legen har sett. Utredningen hos oss starter med en samtale og en kort undersøkelse av endetarmen, og koloskopi når det er nødvendig."
-status: "UTKAST"
+status: KLAR_FOR_MEDISINSK_GJENNOMGANG
 godkjent_av: null
 godkjent_dato: null
 jsonld_type: "MedicalSignOrSymptom"

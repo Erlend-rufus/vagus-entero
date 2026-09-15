@@ -7,7 +7,7 @@ sidetittel: "Overvekt og fedme: medisinsk utredning på Straume ved Bergen"
 menytittel: "Overvekt og fedme"
 meta_beskrivelse: "Medisinsk utredning av overvekt og fedme hos voksne på Straume ved Bergen: samtale, målinger og blodprøver hos lege. Bestill time uten henvisning."
 ingress: "Fedme er en medisinsk tilstand med sammensatte årsaker, og den utredes som andre tilstander: med samtale, målinger og blodprøver hos lege. Behandlingen bygger på det utredningen viser, og følges opp over tid."
-status: "UTKAST"
+status: UTKAST
 godkjent_av: null
 godkjent_dato: null
 jsonld_type: "MedicalProcedure"

@@ -7,7 +7,7 @@ sidetittel: "Analfissur: behandling på Straume ved Bergen"
 menytittel: "Analfissur"
 meta_beskrivelse: "Sprekk i endetarmsåpningen (analfissur) gir skarp smerte og lyst rødt blod ved avføring. Undersøkelse og behandling på Straume ved Bergen, uten henvisning."
 ingress: "En analfissur er en liten sprekk i huden ved endetarmsåpningen. Den gir skarp smerte når avføringen passerer, og ofte litt lyst rødt blod på papiret. Tilstanden er vanlig. De fleste sprekker gror av seg selv når avføringen holdes myk, og de som ikke gror, kan behandles med salve eller injeksjon."
-status: "UTKAST"
+status: UTKAST
 godkjent_av: null
 godkjent_dato: null
 jsonld_type: "MedicalCondition"

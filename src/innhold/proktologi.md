@@ -7,7 +7,7 @@ sidetittel: "Proktologisk behandling privat på Straume ved Bergen"
 menytittel: "Proktologi"
 meta_beskrivelse: "Strikkbehandling av hemoroider, injeksjon ved kronisk analfissur og salver på resept. Privat behandling av endetarmsplager på Straume ved Bergen."
 ingress: "Hemoroider, sprekk i endetarmsåpningen (analfissur) og andre plager fra endetarmen er vanlige, og operasjon er aktuelt først når råd, medisin og små inngrep ikke er nok. Legen undersøker først, og behandler med strikk, injeksjon eller medisin på resept når det er grunnlag for det."
-status: "UTKAST"
+status: UTKAST
 godkjent_av: null
 godkjent_dato: null
 jsonld_type: "MedicalProcedure"

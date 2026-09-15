@@ -7,7 +7,7 @@ sidetittel: "Irritabel tarm (IBS): utredning privat på Straume ved Bergen"
 menytittel: "Irritabel tarm"
 meta_beskrivelse: "Irritabel tarm (IBS) gir magesmerter, oppblåsthet og en mage som veksler mellom løs og treg, uten skade i tarmen. Utredning privat på Straume ved Bergen."
 ingress: "Irritabel tarm er vanlig og ufarlig, men ofte plagsom: magesmerter, oppblåsthet og en mage som veksler mellom løs og treg, uten at det finnes skade i tarmen. Ingen prøve kan bekrefte tilstanden. Utredningen utelukker andre sykdommer og gir råd om hvordan plagene kan bli lettere å leve med."
-status: "UTKAST"
+status: KLAR_FOR_MEDISINSK_GJENNOMGANG
 godkjent_av: null
 godkjent_dato: null
 jsonld_type: "MedicalCondition"

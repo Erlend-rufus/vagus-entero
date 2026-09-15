@@ -15,7 +15,7 @@ apne_punkter:
   - "Seksjonen «Prisliste» har plassholdere som klinikken må fylle ut"
   - "Seksjonen «Betaling, forsikring og avbestilling» har plassholdere som klinikken må fylle ut"
   - "Hele teksten skal gjennom medisinsk gjennomgang og signeres av fagansvarlig lege før status kan bli GODKJENT"
-  - "Prisene er ikke fastsatt — beløpene står som null og utelates fra siden"
+  - "Prisene er ikke fastsatt. Beløpene står som null og utelates fra siden"
 i_navigasjon: true
 i_bunntekst: false
 rekkefolge: 2
@@ -59,7 +59,7 @@ seksjoner:
     flate: "sand"
     punkter:
       - tittel: "Slik betaler du"
-        tekst: "[PLASSHOLDER: betalingsmåter — kort, Vipps, faktura]. Du betaler i klinikken etter timen."
+        tekst: "[PLASSHOLDER: betalingsmåter, slik som kort, Vipps eller faktura]. Du betaler i klinikken etter timen."
       - tittel: "Behandlingsforsikring"
         tekst: "Har du behandlingsforsikring, kan undersøkelsen være dekket. Sjekk vilkårene med forsikringsselskapet ditt før du bestiller."
       - tittel: "Avbestilling"

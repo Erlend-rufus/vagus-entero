@@ -7,7 +7,7 @@ sidetittel: "Anoskopi og rektoskopi privat på Straume ved Bergen"
 menytittel: "Endetarmsundersøkelse"
 meta_beskrivelse: "Anoskopi og rektoskopi privat på Straume ved Bergen. Kort undersøkelse av endetarmen ved blod i avføringen, hemoroider og rift. Bestill uten henvisning."
 ingress: "Legen ser inn i endetarmsåpningen og endetarmen gjennom et rør. Undersøkelsen tar vanligvis rundt 5 minutter, krever verken faste eller tømming av hele tarmen, gjøres uten sedasjon, og du får vite hva legen så før du reiser hjem."
-status: "UTKAST"
+status: UTKAST
 godkjent_av: null
 godkjent_dato: null
 jsonld_type: "MedicalProcedure"

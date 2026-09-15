@@ -7,7 +7,7 @@ sidetittel: "Hemoroider: behandling med strikk på Straume ved Bergen"
 menytittel: "Hemoroider"
 meta_beskrivelse: "Hemoroider gir blod på papiret, kløe og en kul som kommer ut. Om plagene, hva du kan gjøre selv, og strikkbehandling (strikkligatur) på Straume ved Bergen."
 ingress: "Hemoroider er utvidede blodårer like innenfor endetarmsåpningen, og omtrent én av tre får det i løpet av livet. De fleste klarer seg med enkle råd. Plager som varer ved, kan behandles med strikk på klinikken på Straume, uten henvisning."
-status: "UTKAST"
+status: UTKAST
 godkjent_av: null
 godkjent_dato: null
 jsonld_type: "MedicalCondition"

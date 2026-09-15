@@ -7,7 +7,7 @@ sidetittel: "Refluks og halsbrann: utredning privat på Straume ved Bergen"
 menytittel: "Refluks og halsbrann"
 meta_beskrivelse: "Halsbrann og sure oppstøt (refluks): hva det er, hva du kan gjøre selv og når gastroskopi trengs. Utredning privat på Straume ved Bergen, uten henvisning."
 ingress: "Halsbrann og sure oppstøt skyldes at magesyre kommer opp i spiserøret. Plagene er svært vanlige, og mange får dem under kontroll med egne grep og medisin. Når plagene varer ved eller kommer tilbake, kan gastroskopi vise om slimhinnen i spiserøret er skadet."
-status: "UTKAST"
+status: KLAR_FOR_MEDISINSK_GJENNOMGANG
 godkjent_av: null
 godkjent_dato: null
 jsonld_type: "MedicalCondition"

@@ -18,10 +18,10 @@ apne_punkter:
   - "Seksjonen «Fagprofil, utstyr og lokaler» har plassholdere som klinikken må fylle ut"
   - "Seksjonen «Kvalitet, internkontroll og dekning» har plassholdere som klinikken må fylle ut"
   - "Seksjonen «Kontakt om avtale» har plassholdere som klinikken må fylle ut"
-  - "Designets merknad under sidehodet («Avtalehenvendelser: [PLASSHOLDER: navn, rolle, e-post, telefon].») er utelatt til kontaktpunktet finnes — settes som hode_merknad da"
-  - "Designets knapper «Kontakt om avtale» og «Last ned som PDF» (sidehode og prisblokk) mangler mål — avklar hvor de skal peke og om PDF-en skal finnes. Siden har derfor ingen knapper ennå; pasientknappene hører ikke hjemme her"
+  - "Designets merknad under sidehodet («Avtalehenvendelser: [PLASSHOLDER: navn, rolle, e-post, telefon].») er utelatt til kontaktpunktet finnes, og settes som hode_merknad da"
+  - "Designets knapper «Kontakt om avtale» og «Last ned som PDF» (sidehode og prisblokk) mangler mål. Avklar hvor de skal peke og om PDF-en skal finnes. Siden har derfor ingen knapper ennå; pasientknappene hører ikke hjemme her"
   - "Hele teksten skal gjennom medisinsk gjennomgang og signeres av fagansvarlig lege før status kan bli GODKJENT"
-  - "Prisene er ikke fastsatt — beløpene står som null og utelates fra siden"
+  - "Prisene er ikke fastsatt. Beløpene står som null og utelates fra siden"
   - "Leveransens brødsmulesti går via en «For fagfolk»-side som ikke ble levert. Siden er derfor lagt rett under forsiden, og lenken ligger i bunnteksten i stedet for i hovedmenyen"
 i_navigasjon: false
 i_bunntekst: true
