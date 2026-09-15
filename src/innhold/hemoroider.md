@@ -17,6 +17,9 @@ interne_lenker_ut:
   - "/proktologi/"
   - "/priser/"
 apne_punkter:
+  - "Endret 15.09.2026 etter medisinsk gjennomgang runde 1 (Kristian Eeg Storli, 11.09.2026): avsnittet om kraftig blødning under «Når hemoroider bør undersøkes» er erstattet med den kanoniske setningen om legevakt og innleggelse som øyeblikkelig hjelp (K27), med svimmelhet beholdt i en egen setning; innledningen til «Slik foregår utredningen hos oss» har fått setningene om at samtale og undersøkelse skjer i samme time (K17) og at undersøkelsen og behandlingene gjøres uten sedasjon og uten narkose (K6); setningen om vevsprøvesvar i steget «Svar med en gang» er erstattet med den kanoniske (K16, 1 til 4 uker, per telefon eller brev); under strikkbehandling er setningen om at samme eller egen time avtales med legen erstattet med at behandling settes opp i en egen time (K19), og det er lagt til et avsnitt om følge og bilkjøring etter behandling og etter sedasjon (K9 og K8). K1, K7, K11, K13, K26 og K28 er ikke tatt inn, fordi siden ikke har tekst om sedasjonsmedisin, bedøvende gel eller injeksjonsbehandling, klyster, blodfortynnende som forberedelse, aldersgrense eller svart avføring; forberedelser står på siden om undersøkelse av endetarmen."
+  - "Spørsmål 47 til 59 i medisinsk gjennomgang runde 1 er ikke besvart. Sendt på nytt 15.09.2026 som eget dokument."
+  - "Formulert av kodesesjonen 15.09.2026 etter arbeidsordre (medisinsk gjennomgang runde 1): «Det samme gjelder blødning sammen med svimmelhet. Dette er ikke en sak for en bestilt time hos oss.» Bekreftes av Kristian Eeg Storli i runde 2."
   - "Hele teksten skal gjennom medisinsk gjennomgang og signeres av fagansvarlig lege før status kan bli GODKJENT."
   - "Kilde for medisinske beskrivelser: nhi.no, Hemoroider (sist oppdatert 15.12.2022), https://nhi.no/sykdommer/kirurgi/magetarmsykdommer/hemoroider/all. Hentet 02.09.2026. Hovedkilde for hva hemoroider er, at en tredel av befolkningen har det, årsaker, de fire gradene og symptomene per grad, at plagene kommer og går, diagnostikk (finger og skop, at grad 1 ikke kan kjennes, at andre årsaker skal utelukkes, koloskopi ved behov), livsstilsråd, at reseptbelagt salve skal føres et lite stykke inn i endetarmen og brukes i kortere perioder (virkestoff og dosering er bevisst utelatt, se eget punkt), at stikkpiller ofte er mindre effektive, strikkbehandling (gummistrikk rundt roten, visner og faller av etter noen dager, grad 2 og 3, uten bedøvelse, inntil tre per omgang, gjentas etter noen uker), operasjon (ubehag, tilbakefall, anbefales til den som er mye plaget), blodpropp i ytre hemoroide (snitt) og prognose (tilbakevendende, fremfall). Skal kontrolleres av fagansvarlig lege."
   - "Kilde for medisinske beskrivelser: helsenorge.no, Hemoroidar (sist oppdatert 17.08.2026, innholdsleverandør Helsedirektoratet), https://www.helsenorge.no/sykdom/mage-og-tarm/hemoroider/. Hentet 02.09.2026. Brukt til symptomene kul ved åpningen, følelse av ufullstendig tømming og blod på papiret eller i skålen, at hemoroider er vanlig under graviditet, selvhjelpsrådene, når fastlege bør kontaktes (blødning som ikke gir seg eller kommer tilbake, endret avføringsmønster, ufullstendig tømming, vekttap, nedsatt matlyst og sykdomsfølelse), legevakt ved kraftig blødning eller svimmelhet, og behandlingstrappen (råd og legemidler hos fastlege, kremer, salver og stikkpiller fra apotek, strikkligatur, injeksjoner eller kirurgi hos spesialist). Skal kontrolleres av fagansvarlig lege."
@@ -96,20 +99,20 @@ seksjoner:
     avsnitt:
       - "Hemoroider som ikke plager, trenger ingen behandling. Det er plagene som avgjør om noe skal gjøres, ikke hvor store hemoroidene er. Men noen tegn bør alltid vurderes av lege, selv om det trolig bare er hemoroider."
       - "Det gjelder blødning som ikke gir seg eller stadig kommer tilbake, en kul som må skyves inn eller ikke lar seg skyve inn, kløe, svie eller smerter som varer ved, og en følelse av at tarmen ikke blir tømt. Har avføringsvanene endret seg over tid, eller kommer plagene sammen med ufrivillig vekttap, dårlig matlyst eller sykdomsfølelse, er det en grunn til i seg selv."
-      - "Kraftig blødning fra endetarmen, eller blødning sammen med svimmelhet, er en sak for legevakten, ikke for en bestilt time hos oss. Da kontakter du legevakt med en gang."
+      - "Ved kraftig blødning fra endetarmen skal du kontakte legevakt. Da bør du legges inn på sykehus som øyeblikkelig hjelp. Det samme gjelder blødning sammen med svimmelhet. Dette er ikke en sak for en bestilt time hos oss."
       - "Diagnosen hemoroider bør ikke stilles uten at endetarmen faktisk er undersøkt, helst både ved at legen kjenner inn med en finger og ser inn i tarmen. Indre hemoroider av laveste grad kan ikke kjennes med fingeren, bare ses."
     merknad: "Blod i avføringen skal alltid undersøkes, også når det mest sannsynlig er hemoroider. De fleste årsaker er godartede, men polypper og kreft i endetarm og tykktarm kan gi det samme symptomet, og forskjellen kan ikke ses uten undersøkelse."
   - type: "steg"
     tittel: "Slik foregår utredningen hos oss"
     flate: "sand"
-    under: "Utredningen gjøres på klinikken, og du får vite hva legen så før du reiser hjem. Hva du eventuelt må gjøre på forhånd, står på siden om undersøkelse av endetarmen."
+    under: "Utredningen gjøres på klinikken, og du får vite hva legen så før du reiser hjem. Samtalen med legen og undersøkelsen skjer i samme time. Undersøkelsen og behandlingene gjøres uten sedasjon og uten narkose. Lett beroligende kan gis ved behov, men det er sjelden nødvendig. Hva du eventuelt må gjøre på forhånd, står på siden om undersøkelse av endetarmen."
     steg:
       - tittel: "Samtale"
         tekst: "Legen spør om plagene: hvordan blødningen ser ut og hvor lenge det har vart, om noe buker ut, om kløe, smerter og avføringsvaner. Legen spør også om medisiner du bruker, særlig blodfortynnende."
       - tittel: "Undersøkelse av endetarmen"
         tekst: "Du ligger på siden på benken. Legen ser på huden rundt åpningen, kjenner inn i endetarmen med en finger, og ser inn i endetarmskanalen og nederste del av tarmen gjennom et kort rør med lys (anoskopi og rektoskopi). Det kan kjennes ubehagelig, men det tar noen få minutter, og du er dekket til bortsett fra området som undersøkes."
       - tittel: "Svar med en gang"
-        tekst: "Legen forteller deg hva som ble funnet, hvilken grad hemoroidene har, og hva som er riktig behandling: råd du kan følge selv, salve eller stikkpiller på resept, strikk, eller henvisning til sykehus for operasjon. Tas det vevsprøve, får du beskjed om når svaret kommer."
+        tekst: "Legen forteller deg hva som ble funnet, hvilken grad hemoroidene har, og hva som er riktig behandling: råd du kan følge selv, salve eller stikkpiller på resept, strikk, eller henvisning til sykehus for operasjon. Svar på vevsprøver får du etter 1 til 4 uker, per telefon eller brev. Er det noe mer, blir du kalt inn til en ny time."
       - tittel: "Koloskopi ved behov"
         tekst: "Hos noen anbefaler legen i tillegg koloskopi, en undersøkelse av hele tykktarmen. Det gjelder når blødningen ikke kan forklares av det legen finner i endetarmen, når avføringsvanene har endret seg, eller ut fra alder og sykehistorie. Koloskopi gjøres på klinikken, i en egen time med tømming av tarmen på forhånd."
   - type: "veier"
@@ -130,7 +133,8 @@ seksjoner:
       - tittel: "Strikkbehandling (strikkligatur)"
         avsnitt:
           - "Legen setter en liten gummistrikk rundt roten av hemoroiden, gjennom det samme korte røret som brukes til undersøkelsen. Strikken stanser blodtilførselen, og hemoroiden visner og faller av etter noen dager. Metoden passer særlig ved grad 2 og 3, og gjøres på klinikken uten bedøvelse."
-          - "Inntil tre hemoroider kan behandles i samme omgang, men ubehaget øker når flere behandles samtidig. Behandlingen kan gjentas etter noen uker, og noen trenger den gjentatt. Om strikken settes i samme time som undersøkelsen, eller i en egen time, avtaler du med legen."
+          - "Inntil tre hemoroider kan behandles i samme omgang, men ubehaget øker når flere behandles samtidig. Behandlingen kan gjentas etter noen uker, og noen trenger den gjentatt. Strikkbehandling og injeksjonsbehandling settes opp i en egen time, ikke i samme time som undersøkelsen, med mindre du har et sterkt ønske om det."
+          - "Etter strikkbehandling og injeksjonsbehandling anbefaler vi at du har følge, men du kan kjøre bil selv. Har du fått sedasjon, må du ha følge hjem, og du kan ikke kjøre bil resten av dagen."
         liten: "Gjøres på klinikken, uten innleggelse. Du reiser hjem samme dag."
         knapp:
           tekst: "Les om strikkbehandling"
