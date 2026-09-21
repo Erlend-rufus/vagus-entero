@@ -80,7 +80,7 @@ seksjoner:
   - type: "tekst"
     tittel: "Fagprofil, utstyr og lokaler"
     avsnitt:
-      - "[PLASSHOLDER: fagansvarlig lege med spesialitet og autorisasjonsnummer; øvrige leger og sykepleiere når de er ansatt.]"
+      - "Fagansvarlig lege: {klinikk.lege.navn}, {klinikk.lege.spesialitet} (HPR {klinikk.lege.hpr_nummer}). [PLASSHOLDER: øvrige leger og sykepleiere når de er ansatt.]"
       - "[PLASSHOLDER: endoskopisk utstyr, oppredningsrutiner, patologilaboratorium, lokalenes utforming og antall undersøkelsesrom.]"
   - type: "praktisk"
     tittel: "Kvalitet, internkontroll og dekning"
@@ -91,7 +91,7 @@ seksjoner:
       - tittel: "Avvik og pasientsikkerhet"
         tekst: "[PLASSHOLDER: avvikssystem, melderutiner, oppfølging.]"
       - tittel: "Tilsyn og tillatelser"
-        tekst: "[PLASSHOLDER: tilsynsmyndighet og tillatelse med referanse.]"
+        tekst: "{klinikk.tilsyn.tillatelse}. Tilsynsmyndighet: {klinikk.tilsyn.myndighet}."
       - tittel: "Geografisk dekning"
         tekst: "Klinikken ligger på Straume i Øygarden og dekker Bergen vest, Øygarden, Askøy og Sotra. [PLASSHOLDER: reisetid fra Bergen sentrum.]"
       - tittel: "Adkomst for pasienten"

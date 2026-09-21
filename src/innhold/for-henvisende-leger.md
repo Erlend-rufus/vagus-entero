@@ -45,7 +45,7 @@ seksjoner:
       - tittel: "Kanal"
         tekst: "[PLASSHOLDER: elektronisk henvisning via [kanal], eller post til adressen under.]"
       - tittel: "Adresse"
-        tekst: "Vagus Entero AS\n[PLASSHOLDER: gateadresse]\n[PLASSHOLDER: postnr] Straume"
+        tekst: "Vagus Entero AS\n{klinikk.adresse.gate}\n{klinikk.adresse.postnummer} {klinikk.adresse.poststed}"
       - tittel: "Hva henvisningen bør inneholde"
         tekst: "Aktuell problemstilling, varighet, tidligere utredning, faste medisiner (særlig blodfortynnende), kjente sykdommer og relevante prøvesvar."
     merknad: "Pasienten trenger ikke henvisning for å bestille time hos oss. En henvisning gir likevel legen nyttig sykehistorie, og pasienten kan legge den ved bestillingen."
@@ -64,7 +64,7 @@ seksjoner:
   - type: "tekst"
     tittel: "Faglig profil og utstyr"
     avsnitt:
-      - "[PLASSHOLDER: fagansvarlig lege med spesialitet og autorisasjonsnummer, øvrige leger når de er ansatt.]"
+      - "Fagansvarlig lege: {klinikk.lege.navn}, {klinikk.lege.spesialitet} (HPR {klinikk.lege.hpr_nummer}). [PLASSHOLDER: øvrige leger når de er ansatt.]"
       - "[PLASSHOLDER: endoskopisk utstyr, desinfeksjonsrutiner, patologilaboratorium klinikken bruker, kvalitetsregistre klinikken rapporterer til.]"
     merknad: "Klinikken oppgir ingen tall for volum, ventetid eller kvalitet før de er dokumentert i egen drift."
   - type: "praktisk"

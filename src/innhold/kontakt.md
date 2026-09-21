@@ -53,7 +53,7 @@ seksjoner:
     flate: "sand"
     punkter:
       - tittel: "Adresse"
-        tekst: "[PLASSHOLDER: gateadresse]\n[PLASSHOLDER: postnummer] Straume, Øygarden"
+        tekst: "{klinikk.adresse.gate}\n{klinikk.adresse.postnummer} {klinikk.adresse.poststed}, Øygarden"
       - tittel: "Parkering og kollektiv"
         tekst: "[PLASSHOLDER: parkeringsforhold]\n[PLASSHOLDER: bussholdeplass og linjer]"
       - tittel: "Tilgjengelighet"
