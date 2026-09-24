@@ -13,10 +13,12 @@ jsonld_type: null
 interne_lenker_ut:
   - "/kontakt/"
 apne_punkter:
-  - "Seksjonen «Behandlingsansvarlig» har plassholdere som klinikken må fylle ut"
-  - "Seksjonen «Hva vi behandler, og hvorfor» har plassholdere som klinikken må fylle ut"
-  - "Seksjonen «Databehandlere og utlevering» har plassholdere som klinikken må fylle ut"
-  - "Seksjonen «Lagring og sletting» har plassholdere som klinikken må fylle ut"
+  - "Personvernombud eller kontaktperson for personvern: avsnittet i «Behandlingsansvarlig» utelates til personvern.kontaktperson finnes i klinikk.json"
+  - "Øvrige databehandlere (laboratorium, regnskap): avsnittet i «Databehandlere og utlevering» utelates til personvern.databehandlere finnes i klinikk.json"
+  - "Øvrige lagringstider: avsnittet i «Lagring og sletting» utelates til personvern.lagringstider finnes i klinikk.json"
+  - "«Sist oppdatert» settes automatisk til byggedatoen ({bygg.dato})"
+  - "Plausible Analytics er ikke installert. Kontoen må først opprettes i klinikkens navn. Deretter legges skriptet inn, og CSP og eksterne-verter-hvitlisten oppdateres (forberedt i docs/LANSERING.md)"
+  - "Overføringen til USA (IP-adresser i serverlogger hos Netlify, Inc.): Elevate verifiserer mot Netlifys databehandleravtale. Setningen «Opplysninger lagres i EØS» i samme avsnitt må vurderes opp mot dette"
   - "Seksjonen «Dine rettigheter» har plassholdere som klinikken må fylle ut"
   - "Kontaktlinjene i «Behandlingsansvarlig» og «Spørsmål om personvern» utelates til epost og telefon finnes i klinikk.json"
   - "Hele teksten skal gjennom medisinsk gjennomgang og signeres av fagansvarlig lege før status kan bli GODKJENT"
@@ -24,7 +26,7 @@ apne_punkter:
 i_navigasjon: false
 i_bunntekst: true
 rekkefolge: 30
-hode_merknad: "Sist oppdatert [PLASSHOLDER: dato]. Denne erklæringen skal gjennomgås juridisk før publisering."
+hode_merknad: "Sist oppdatert {bygg.dato}. Denne erklæringen skal gjennomgås juridisk før publisering."
 seksjoner:
   - type: "tekst"
     tittel: "Behandlingsansvarlig"
@@ -32,7 +34,8 @@ seksjoner:
       - "Vagus Entero AS, {klinikk.adresse.gate}, {klinikk.adresse.postnummer} {klinikk.adresse.poststed}, org.nr {klinikk.org_nr}, er behandlingsansvarlig for personopplysningene som behandles i klinikken."
       - tekst: "Kontakt: {klinikk.epost} eller telefon {klinikk.telefon}."
         krever: ["epost", "telefon"]
-      - "[PLASSHOLDER: personvernombud eller kontaktperson for personvern, dersom oppnevnt.]"
+      - tekst: "{klinikk.personvern.kontaktperson}"
+        krever: ["personvern.kontaktperson"]
   - type: "praktisk"
     tittel: "Hva vi behandler, og hvorfor"
     flate: "sand"
@@ -46,19 +49,23 @@ seksjoner:
       - tittel: "Forsikringssaker"
         tekst: "Er undersøkelsen dekket av behandlingsforsikring, utleveres nødvendig dokumentasjon til selskapet — bare når du har samtykket."
       - tittel: "Nettstedet"
-        tekst: "Nettstedet bruker ingen sporing som krever samtykke etter ekomloven § 3-15 — ingen Meta Pixel, TikTok-pixel eller annen tredjepartssporing. Vi bruker [PLASSHOLDER: valgt analyseverktøy], som ikke identifiserer deg som person."
+        tekst: "Nettstedet bruker ingen sporing som krever samtykke etter ekomloven § 3-15 — ingen Meta Pixel, TikTok-pixel eller annen tredjepartssporing. Vi bruker Plausible Analytics, som er driftet i EU og ikke bruker informasjonskapsler, som ikke identifiserer deg som person."
       - tittel: "Henvendelser"
         tekst: "Ringer du oss, noteres det som er nødvendig for å hjelpe deg. Send aldri helseopplysninger på e-post."
   - type: "tekst"
     tittel: "Databehandlere og utlevering"
     avsnitt:
-      - "Databehandleravtale inngås med alle som behandler personopplysninger på våre vegne, inkludert leverandøren som drifter nettstedet. [PLASSHOLDER: øvrige databehandlere — laboratorium, regnskap.]"
-      - "Vi utleverer opplysninger til fastlege, sykehus, laboratorium eller forsikringsselskap bare når du har samtykket, eller når loven pålegger oss det. Opplysninger lagres i EØS. [PLASSHOLDER: eventuell overføring utenfor EØS.]"
+      - "Databehandleravtale inngås med alle som behandler personopplysninger på våre vegne, inkludert leverandøren som drifter nettstedet."
+      - tekst: "{klinikk.personvern.databehandlere}"
+        krever: ["personvern.databehandlere"]
+      - "Vi utleverer opplysninger til fastlege, sykehus, laboratorium eller forsikringsselskap bare når du har samtykket, eller når loven pålegger oss det. Opplysninger lagres i EØS. Nettstedet driftes av Netlify, Inc. i USA. Når du besøker nettstedet, behandles IP-adressen din i serverlogger hos Netlify."
   - type: "tekst"
     tittel: "Lagring og sletting"
     flate: "sand"
     avsnitt:
-      - "Pasientjournal oppbevares så lenge det er nødvendig av hensyn til helsehjelpen, og deretter etter reglene i pasientjournalforskriften. Regnskapsopplysninger oppbevares fem år etter regnskapsårets slutt. [PLASSHOLDER: øvrige lagringstider.]"
+      - "Pasientjournal oppbevares så lenge det er nødvendig av hensyn til helsehjelpen, og deretter etter reglene i pasientjournalforskriften. Regnskapsopplysninger oppbevares fem år etter regnskapsårets slutt."
+      - tekst: "{klinikk.personvern.lagringstider}"
+        krever: ["personvern.lagringstider"]
   - type: "sporsmal"
     tittel: "Dine rettigheter"
     sporsmal:
