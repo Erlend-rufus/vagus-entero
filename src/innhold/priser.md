@@ -12,8 +12,8 @@ godkjent_dato: null
 jsonld_type: null
 interne_lenker_ut: []
 apne_punkter:
-  - "Seksjonen «Prisliste» har plassholdere som klinikken må fylle ut"
-  - "Seksjonen «Betaling, forsikring og avbestilling» har plassholdere som klinikken må fylle ut"
+  - "Prislisten mangler beløp og hva som er inkludert (omfang: null). Forhåndsvisningen viser én samlet markør til de finnes"
+  - "«Slik betaler du», «Avbestilling» og «Kvittering» utelates til betaling.betalingsmater, betaling.avbestilling og betaling.kvittering finnes i klinikk.json"
   - "Hele teksten skal gjennom medisinsk gjennomgang og signeres av fagansvarlig lege før status kan bli GODKJENT"
   - "Prisene er ikke fastsatt. Beløpene står som null og utelates fra siden"
 i_navigasjon: true
@@ -29,7 +29,7 @@ hode_knapper:
 seksjoner:
   - type: "prisliste"
     tittel: "Prisliste"
-    under: "Prisene under er plassholdere. Fullstendig prisliste med totalpriser publiseres på denne siden før klinikken åpner, med tydelig beskjed om hva som er inkludert."
+    under: "Fullstendig prisliste med totalpriser publiseres på denne siden før klinikken åpner, med tydelig beskjed om hva som er inkludert."
     tabellmerknad: "Alle beløp er totalpriser inkludert merverdiavgift."
     kolonner:
       tjeneste: "Undersøkelse eller behandling"
@@ -37,39 +37,42 @@ seksjoner:
       pris: "Pris"
     priser:
       - navn: "Kikkertundersøkelse av spiserør og magesekk (gastroskopi)"
-        omfang: "[PLASSHOLDER: hva som er inkludert]"
+        omfang: null
         belop_nok: null
       - navn: "Kikkertundersøkelse av tykktarmen (koloskopi)"
-        omfang: "[PLASSHOLDER]"
+        omfang: null
         belop_nok: null
       - navn: "Gastroskopi og koloskopi samme dag"
-        omfang: "[PLASSHOLDER]"
+        omfang: null
         belop_nok: null
       - navn: "Undersøkelse av endetarmen (anoskopi og rektoskopi)"
-        omfang: "[PLASSHOLDER]"
+        omfang: null
         belop_nok: null
       - navn: "Små inngrep ved endetarmsplager (proktologi)"
-        omfang: "[PLASSHOLDER]"
+        omfang: null
         belop_nok: null
       - navn: "Vevsprøve og analyse"
-        omfang: "[PLASSHOLDER]"
+        omfang: null
         belop_nok: null
   - type: "praktisk"
     tittel: "Betaling, forsikring og avbestilling"
     flate: "sand"
     punkter:
       - tittel: "Slik betaler du"
-        tekst: "[PLASSHOLDER: betalingsmåter, slik som kort, Vipps eller faktura]. Du betaler i klinikken etter timen."
+        tekst: "{klinikk.betaling.betalingsmater} Du betaler i klinikken etter timen."
+        krever: ["betaling.betalingsmater"]
       - tittel: "Behandlingsforsikring"
         tekst: "Har du behandlingsforsikring, kan undersøkelsen være dekket. Sjekk vilkårene med forsikringsselskapet ditt før du bestiller."
       - tittel: "Avbestilling"
-        tekst: "[PLASSHOLDER: frist for avbestilling og gebyr ved ikke møtt]."
+        tekst: "{klinikk.betaling.avbestilling}"
+        krever: ["betaling.avbestilling"]
       - tittel: "Ingen driftsavtale"
         tekst: "Klinikken har ingen avtale med Helfo. Utgifter hos oss teller ikke mot egenandelstaket, og du får ikke frikort-refusjon."
       - tittel: "Henvisning"
         tekst: "Henvisning fra fastlege endrer ikke prisen hos oss. Du kan bestille time med eller uten henvisning."
       - tittel: "Kvittering"
-        tekst: "[PLASSHOLDER: hvordan du får kvittering til forsikring eller skattefradrag]."
+        tekst: "{klinikk.betaling.kvittering}"
+        krever: ["betaling.kvittering"]
   - type: "pris"
     tittel: "Er du usikker på hva du trenger?"
     avsnitt:

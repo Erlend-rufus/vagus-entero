@@ -30,6 +30,7 @@ import { validerKlinikk, validerUi } from '../lib/datavalidering.js';
 import { lesInnholdsfil } from '../lib/les-innhold.js';
 import { lesMiljo } from '../../verktoy/miljo-logikk.js';
 import { formaterTekst, brodsmuletekst } from '../../verktoy/tekst.js';
+import { utelatSeksjoner, utelatFakta } from '../../verktoy/utelatelse.js';
 import { lagJsonld } from '../../verktoy/jsonld.js';
 
 let feilede = 0;
@@ -485,7 +486,19 @@ krev(
   const gyldigKlinikk = {
     juridisk_navn: 'Testklinikken AS', visningsnavn: 'Testklinikken', kortnavn: 'Test', domene: 'test.invalid',
     org_nr: '123456789', mva_status: null, adresse: null, telefon: null, epost: null, lege: null, tilsyn: null,
-    bestilling: null, apningstider: null, ventetid: null
+    bestilling: null, apningstider: null, ventetid: null,
+    betaling: { betalingsmater: null, avbestilling: null, kvittering: null },
+    adkomst: { parkering: null, kollektiv: null, tilgjengelighet: null, reisetid_bergen: null },
+    henvisning: { kanal: null, epikrise_svartid: null, lege_til_lege: null, ovrige_avgrensninger: null },
+    laboratorium: { navn: null, svartid: null },
+    kvalitet: { kvalitetsregistre: null, avvikssystem: null, internkontroll_dokumentasjon: null },
+    utstyr: null,
+    kapasitet: { rom: null, dager_per_uke: null, undersokelser_per_uke: null },
+    avtale: {
+      kontakt: { navn: null, rolle: null, epost: null, telefon: null },
+      avtaleform: null, svartid: null, rapportering: null, fakturering: null, avbestilling: null, journalintegrasjon: null
+    },
+    personvern: { kontaktperson: null, databehandlere: null, lagringstider: null }
   };
   krev(validerKlinikk(gyldigKlinikk, 'test.json').length === 0, 'datafiler: gyldig klinikk.json passerer');
   krev(
@@ -843,6 +856,71 @@ krev(
   validerInnhold([{ fil: 'a.md', data: { ...gyldigSide, ...godkjent, ingress: 'Ring oss på telefon [00 00 00 00] i åpningstiden vår.' } }]).some((m) => m.includes('plassholder')),
   'innholdskontrakt: sifferplassholder [00 00 00 00] stopper GODKJENT'
 );
+
+// --- oppdiktet kontaktinfo (alle statuser) ----------------------------------
+for (const plantet of ['Telefon [00 00 00 00]', 'Org.nr [000 000 000]', 'Skriv til [E-post] i dag', 'Ring [Telefon til klinikken] nå', 'Send til [navn@test.invalid] nå']) {
+  krev(
+    validerInnhold([{ fil: 'a.md', data: { ...gyldigSide, ingress: `Ingress med ${plantet} og mer tekst her.` } }]).some((m) => m.includes('oppdiktet kontaktinfo')),
+    `innholdskontrakt: «${plantet}» stopper også en UTKAST-side`
+  );
+}
+krev(
+  validerInnhold([{ fil: 'a.md', data: { ...gyldigSide, ingress: 'Ring oss på {klinikk.telefon}, eller les [priser](/testside/).' } }]).every((m) => !m.includes('oppdiktet kontaktinfo')),
+  'innholdskontrakt: datareferanse og intern lenke er ikke oppdiktet kontaktinfo'
+);
+{
+  const midl = fs.mkdtempSync(path.join(os.tmpdir(), 'kontaktplassholder-'));
+  fs.mkdirSync(path.join(midl, 'dist', 'side'), { recursive: true });
+  fs.writeFileSync(path.join(midl, 'dist', 'side', 'index.html'), '<p>Telefon <span>[00 00 00 00]</span></p>');
+  fs.writeFileSync(path.join(midl, 'dist.manifest.json'), JSON.stringify({ produksjon: false, sider: [] }));
+  krev(
+    tekstKommer.kjorDist(path.join(midl, 'dist')).some((m) => m.includes('oppdiktet kontaktinfo')),
+    'tekst-kommer: fanger sifferplassholder i rendret tekst også i forhåndsvisning'
+  );
+  fs.rmSync(midl, { recursive: true, force: true });
+}
+
+// --- utelatelse (krever) -----------------------------------------------------
+krev(
+  validerInnhold([{ fil: 'a.md', data: medSeksjoner([{ type: 'tekst', tittel: 'En overskrift', avsnitt: [{ tekst: 'Ring {klinikk.telefon}.', krever: ['telefon'] }] }]) }]).length === 0,
+  'utelatelse: avsnitt med krever passerer kontrakten'
+);
+krev(
+  validerInnhold([{ fil: 'a.md', data: medSeksjoner([{ type: 'tekst', tittel: 'En overskrift', avsnitt: [{ tekst: 'Ring {klinikk.tlf}.', krever: ['tlf'] }] }]) }]).some((m) => m.includes('krever «tlf»')),
+  'utelatelse: krever til et felt som ikke finnes i klinikkskjemaet feiler'
+);
+{
+  const klinikkUtenTlf = { telefon: null, epost: 'post@test.invalid', adkomst: { parkering: 'Gratis parkering.' } };
+  const blokker = [
+    { type: 'tekst', tittel: 'Blandet', avsnitt: ['Fast tekst.', { tekst: 'Ring {klinikk.telefon}.', krever: ['telefon'] }] },
+    { type: 'praktisk', tittel: 'Bare manglende', punkter: [{ tittel: 'Telefon', tekst: 'Ring {klinikk.telefon}.', krever: ['telefon'] }, { tittel: 'Buss', tekst: '{klinikk.adkomst.kollektiv}', krever: ['adkomst.kollektiv'] }] },
+    { type: 'praktisk', tittel: 'Oppfylt', punkter: [{ tittel: 'Parkering', tekst: '{klinikk.adkomst.parkering}', krever: ['adkomst.parkering'] }, { tittel: 'Fast', tekst: 'Fast tekst som alltid står.' }] }
+  ];
+  const forhand = utelatSeksjoner(blokker, { klinikk: klinikkUtenTlf, produksjon: false });
+  const prod = utelatSeksjoner(blokker, { klinikk: klinikkUtenTlf, produksjon: true });
+  krev(
+    forhand[0].avsnitt.length === 2 && forhand[0].avsnitt[1].venter === 'telefonnummer',
+    'utelatelse: forhåndsvisning bytter manglende avsnitt med markør'
+  );
+  krev(prod[0].avsnitt.length === 1 && prod[0].avsnitt[0] === 'Fast tekst.', 'utelatelse: produksjon fjerner manglende avsnitt helt');
+  krev(
+    forhand[1].type === 'venter' && forhand[1].venter === 'telefonnummer, buss og holdeplass',
+    'utelatelse: tom seksjon blir én samlet markør i forhåndsvisning, uten overskrift'
+  );
+  krev(prod.length === 2 && prod.every((b) => b.tittel !== 'Bare manglende'), 'utelatelse: tom seksjon forsvinner med overskrift i produksjon');
+  krev(prod[1].punkter.length === 2 && !('krever' in prod[1].punkter[0]), 'utelatelse: oppfylt krever beholder elementet');
+  const fakta = utelatFakta([{ term: 'Telefon', verdi: '{klinikk.telefon}', krever: ['telefon'] }, { term: 'Sted', verdi: 'Teststed' }], { klinikk: klinikkUtenTlf, produksjon: true });
+  krev(fakta.length === 1 && fakta[0].term === 'Sted', 'utelatelse: faktapunkt med manglende felt utelates');
+  const priser = utelatSeksjoner([{ type: 'prisliste', tittel: 'Priser', priser: [{ navn: 'A', belop_nok: null, omfang: null }, { navn: 'B', belop_nok: null, omfang: null }] }], { klinikk: klinikkUtenTlf, produksjon: false });
+  krev(priser[0].venter_priser === true && priser[0].har_omfang === false, 'utelatelse: prisliste uten beløp får én samlet markør');
+  let kastet = false;
+  try {
+    formaterTekst('Ring {klinikk.telefon}.');
+  } catch {
+    kastet = true;
+  }
+  krev(kastet, 'utelatelse: {klinikk.telefon} uten erklært krever stopper fortsatt bygget');
+}
 
 fs.rmSync(tmp, { recursive: true, force: true });
 

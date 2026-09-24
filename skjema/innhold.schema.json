@@ -231,6 +231,9 @@
                 "maxLength": 40
               }
             ]
+          },
+          "krever": {
+            "$ref": "#/$defs/krever"
           }
         }
       }
@@ -294,6 +297,9 @@
             "type": "string",
             "minLength": 3,
             "maxLength": 900
+          },
+          {
+            "$ref": "#/$defs/betinget_tekst"
           }
         ]
       }
@@ -798,6 +804,9 @@
                         "type": "string",
                         "minLength": 3,
                         "maxLength": 300
+                      },
+                      {
+                        "$ref": "#/$defs/betinget_tekst"
                       }
                     ]
                   },
@@ -902,6 +911,9 @@
                         "maxLength": 400
                       }
                     ]
+                  },
+                  "krever": {
+                    "$ref": "#/$defs/krever"
                   }
                 }
               }
@@ -1266,8 +1278,12 @@
                         "type": "string",
                         "minLength": 2,
                         "maxLength": 200
+                      },
+                      {
+                        "type": "null"
                       }
-                    ]
+                    ],
+                    "description": "Hva som er inkludert i prisen, eller null når det ikke er avklart (cellen står da tom, og kolonnen faller bort når ingen rad har omfang)."
                   },
                   "belop_nok": {
                     "type": [
@@ -1367,6 +1383,35 @@
         "overvekt",
         "fordoyelse-hero"
       ]
+    },
+    "krever": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z_]+(\\.[a-z_]+)*$"
+      },
+      "description": "Feltene i src/_data/klinikk.json elementet krever. Er ett av dem null, bygges ikke elementet: uten PRODUKSJON står en merket linje i stedet, med PRODUKSJON er det borte. Se docs/INNHOLDSKONTRAKT.md (Utelatelse)."
+    },
+    "betinget_tekst": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tekst",
+        "krever"
+      ],
+      "description": "Et tekstelement som bare bygges når klinikkfeltene i krever finnes.",
+      "properties": {
+        "tekst": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 900
+        },
+        "krever": {
+          "$ref": "#/$defs/krever"
+        }
+      }
     }
   }
 }

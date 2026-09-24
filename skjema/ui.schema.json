@@ -23,7 +23,9 @@
     "org_nr_etikett",
     "hpr_etikett",
     "bestilling_apner",
-    "apner_nytt_vindu"
+    "apner_nytt_vindu",
+    "venter_pa_klinikken",
+    "venter_priser"
   ],
   "properties": {
     "hopp_til_innhold": {
@@ -97,6 +99,16 @@
     "apner_nytt_vindu": {
       "type": "string",
       "minLength": 2
+    },
+    "venter_pa_klinikken": {
+      "type": "string",
+      "minLength": 2,
+      "description": "Markoer i forhaandsvisningen for et element som er utelatt fordi et felt i klinikk.json mangler. Vises aldri i produksjon (arbeidsordre 24.09.2026)."
+    },
+    "venter_priser": {
+      "type": "string",
+      "minLength": 2,
+      "description": "Feltnavnet i markoeren naar ingen prisrad har beloep. Vises aldri i produksjon."
     }
   }
 }

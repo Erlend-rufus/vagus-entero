@@ -19,7 +19,16 @@
     "apningstider",
     "ventetid",
     "kortnavn",
-    "mva_status"
+    "mva_status",
+    "betaling",
+    "adkomst",
+    "henvisning",
+    "laboratorium",
+    "kvalitet",
+    "utstyr",
+    "kapasitet",
+    "avtale",
+    "personvern"
   ],
   "properties": {
     "juridisk_navn": {
@@ -105,14 +114,16 @@
         "null"
       ],
       "minLength": 2,
-      "pattern": "^\\+?[0-9][0-9 ]{6,}$"
+      "pattern": "^\\+?[0-9][0-9 ]{6,}$",
+      "title": "telefonnummer"
     },
     "epost": {
       "type": [
         "string",
         "null"
       ],
-      "format": "email"
+      "format": "email",
+      "title": "e-postadresse"
     },
     "lege": {
       "type": [
@@ -211,9 +222,12 @@
     },
     "apningstider": {
       "type": [
-        "array",
+        "string",
         "null"
-      ]
+      ],
+      "minLength": 2,
+      "title": "åpningstider",
+      "description": "Telefonens aapningstider, f.eks. «hverdager 08–16». Kort verdi; staar etter «åpen» paa kontaktsiden."
     },
     "ventetid": {
       "type": [
@@ -233,6 +247,423 @@
         "oppdatert": {
           "type": "string",
           "format": "date"
+        }
+      }
+    },
+    "betaling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "betalingsmater",
+        "avbestilling",
+        "kvittering"
+      ],
+      "description": "Betaling og avbestilling for selvbetalende (prissiden).",
+      "properties": {
+        "betalingsmater": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "betalingsmåter",
+          "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt. Hvilke betalingsmaater klinikken tar imot."
+        },
+        "avbestilling": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "avbestillingsfrist og gebyr ved ikke møtt",
+          "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt."
+        },
+        "kvittering": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "kvittering til forsikring og skattefradrag",
+          "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt."
+        }
+      }
+    },
+    "adkomst": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "parkering",
+        "kollektiv",
+        "tilgjengelighet",
+        "reisetid_bergen"
+      ],
+      "description": "Veien til klinikken (kontaktsiden og forsikringssiden).",
+      "properties": {
+        "parkering": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "parkering",
+          "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt."
+        },
+        "kollektiv": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "buss og holdeplass",
+          "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt."
+        },
+        "tilgjengelighet": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "tilgjengelighet (trinnfritt, heis, HC-parkering, teleslynge)",
+          "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt."
+        },
+        "reisetid_bergen": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "reisetid fra Bergen sentrum",
+          "description": "Kort verdi til faktalisten paa forsikringssiden, f.eks. «25 min» (maks 40 tegn).",
+          "maxLength": 40
+        }
+      }
+    },
+    "henvisning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kanal",
+        "epikrise_svartid",
+        "lege_til_lege",
+        "ovrige_avgrensninger"
+      ],
+      "description": "Opplysninger til henvisende leger.",
+      "properties": {
+        "kanal": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "henvisningskanal",
+          "description": "Kort verdi som settes inn i en eksisterende setning eller faktaliste. Maks 40 tegn (faktalisten).",
+          "maxLength": 40
+        },
+        "epikrise_svartid": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "svartid på epikrise",
+          "description": "Kort verdi som settes inn i en eksisterende setning eller faktaliste. Maks 40 tegn (faktalisten).",
+          "maxLength": 40
+        },
+        "lege_til_lege": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "lege-til-lege-nummer",
+          "description": "Valgfritt eget nummer for leger. Forblir null hvis klinikken ikke har det; da utelates linjen for godt.",
+          "pattern": "^\\+?[0-9][0-9 ]{6,}$"
+        },
+        "ovrige_avgrensninger": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "øvrige avgrensninger for henvisninger",
+          "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt. Medisinsk: fastsettes av fagansvarlig lege."
+        }
+      }
+    },
+    "laboratorium": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "navn",
+        "svartid"
+      ],
+      "description": "Laboratoriet som analyserer vevsproever.",
+      "properties": {
+        "navn": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "laboratorium for vevsprøver",
+          "description": "Kort verdi som settes inn i en eksisterende setning eller faktaliste."
+        },
+        "svartid": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "svartid på vevsprøver",
+          "description": "Kort verdi som settes inn i en eksisterende setning eller faktaliste."
+        }
+      }
+    },
+    "kvalitet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kvalitetsregistre",
+        "avvikssystem",
+        "internkontroll_dokumentasjon"
+      ],
+      "description": "Kvalitetsarbeid (henviser- og forsikringssiden).",
+      "properties": {
+        "kvalitetsregistre": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "kvalitetsregistre",
+          "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt."
+        },
+        "avvikssystem": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "avvikssystem og melderutiner",
+          "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt."
+        },
+        "internkontroll_dokumentasjon": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "dokumentasjon av internkontroll",
+          "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt."
+        }
+      }
+    },
+    "utstyr": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 2,
+      "title": "endoskopisk utstyr og desinfeksjonsrutiner",
+      "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt."
+    },
+    "kapasitet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rom",
+        "dager_per_uke",
+        "undersokelser_per_uke"
+      ],
+      "description": "Kapasitet (forsikringssiden). Oppgis foerst naar driften er i gang; faktiske tall, ikke anslag.",
+      "properties": {
+        "rom": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "antall undersøkelsesrom",
+          "description": "Kort verdi som staar paa egen linje, f.eks. «To undersøkelsesrom»."
+        },
+        "dager_per_uke": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "dager per uke",
+          "description": "Kort verdi som staar paa egen linje."
+        },
+        "undersokelser_per_uke": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "undersøkelser per uke",
+          "description": "Kort verdi som staar paa egen linje."
+        }
+      }
+    },
+    "avtale": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kontakt",
+        "avtaleform",
+        "svartid",
+        "rapportering",
+        "fakturering",
+        "avbestilling",
+        "journalintegrasjon"
+      ],
+      "description": "Opplysninger for forsikringsselskaper om avtaler.",
+      "properties": {
+        "kontakt": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "navn",
+            "rolle",
+            "epost",
+            "telefon"
+          ],
+          "description": "Kontaktperson for forsikringsavtaler.",
+          "properties": {
+            "navn": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 2,
+              "title": "navn på avtaleansvarlig",
+              "description": "Kort verdi som settes inn i en eksisterende setning eller faktaliste."
+            },
+            "rolle": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 2,
+              "title": "rolle for avtaleansvarlig",
+              "description": "Kort verdi som settes inn i en eksisterende setning eller faktaliste."
+            },
+            "epost": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "email",
+              "title": "e-post til avtaleansvarlig",
+              "description": "Kort verdi som settes inn i en eksisterende setning eller faktaliste."
+            },
+            "telefon": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 2,
+              "title": "telefon til avtaleansvarlig",
+              "description": "Kort verdi som settes inn i en eksisterende setning eller faktaliste.",
+              "pattern": "^\\+?[0-9][0-9 ]{6,}$"
+            }
+          }
+        },
+        "avtaleform": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "avtaleform",
+          "description": "Kort verdi som settes inn i en eksisterende setning eller faktaliste. Maks 40 tegn (faktalisten).",
+          "maxLength": 40
+        },
+        "svartid": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "svartid fra bestilling til time og til epikrise",
+          "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt."
+        },
+        "rapportering": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "format og kanal for rapportering",
+          "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt."
+        },
+        "fakturering": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "fakturering (format, betingelser, referanse, EHF)",
+          "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt."
+        },
+        "avbestilling": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "avbestillingsvilkår i avtalen",
+          "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt."
+        },
+        "journalintegrasjon": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "integrasjon mot selskapets systemer",
+          "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt."
+        }
+      }
+    },
+    "personvern": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kontaktperson",
+        "databehandlere",
+        "lagringstider"
+      ],
+      "description": "Opplysninger til personvernerklaeringen. Skal gjennomgaas juridisk.",
+      "properties": {
+        "kontaktperson": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "personvernombud eller kontaktperson for personvern",
+          "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt."
+        },
+        "databehandlere": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "øvrige databehandlere",
+          "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt."
+        },
+        "lagringstider": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 2,
+          "title": "øvrige lagringstider",
+          "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt."
         }
       }
     }

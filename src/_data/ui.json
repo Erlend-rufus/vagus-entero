@@ -16,5 +16,7 @@
   "org_nr_etikett": "Org.nr",
   "hpr_etikett": "HPR",
   "bestilling_apner": "Digital timebestilling er ikke klar ennå. Ring oss, så hjelper vi deg med en time.",
-  "apner_nytt_vindu": "(åpner i nytt vindu)"
+  "apner_nytt_vindu": "(åpner i nytt vindu)",
+  "venter_pa_klinikken": "Venter på opplysning fra klinikken:",
+  "venter_priser": "priser og hva som er inkludert"
 }

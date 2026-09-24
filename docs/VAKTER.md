@@ -66,7 +66,7 @@ vilje.
 
 | Vakt | Feiler på |
 |---|---|
-| `innholdskontrakt` | brudd på innholdskontrakten (se `docs/INNHOLDSKONTRAKT.md`), inkludert plassholdere i en GODKJENT side og prisrader uten beløp |
+| `innholdskontrakt` | brudd på innholdskontrakten (se `docs/INNHOLDSKONTRAKT.md`), inkludert plassholdere i en GODKJENT side, prisrader uten beløp, oppdiktet kontaktinfo i hakeparentes (alle statuser) og `krever` til felt som ikke finnes i klinikkskjemaet |
 | `datafiler` | `src/_data/klinikk.json` og `ui.json` som bryter skjemaene sine, og reserverte felt som er fylt ut før visningen finnes |
 | `priser-i-tekst` | beløp i løpende tekst (alle prosafelt og brødteksten) — priser hører bare i `belop_nok` |
 | `ordliste-skann` | treff i forbudslistene — i kildefiler, bygde utdata og commit-meldinger |
@@ -80,7 +80,7 @@ vilje.
 | `lenker` | interne lenker uten mål i bygget |
 | `godkjent-status` | side uten GODKJENT i produksjonsbygg; alt som ikke er en innholdsside (komponentkatalogen, løse maler); produksjon uten forside |
 | `klinikk-lansering` | tomme lovpålagte klinikkfelter i ekte produksjonsbygg (ehandelsloven § 8); `CI_SYNTETISK` i et Netlify-bygg |
-| `tekst-kommer` | plassholderen `[TEKST KOMMER]` i et produksjonsbygg |
+| `tekst-kommer` | plassholderen `[TEKST KOMMER]` i et produksjonsbygg; oppdiktet kontaktinfo (`[00 00 00 00]`, `[E-post]` o.l.) i synlig tekst i **alle** bygg |
 | `noindex` | manglende noindex utenfor produksjon (og manglende Basic-Auth-linje når passordvariablene var satt i bygget); gjenglemt noindex/Disallow/Basic-Auth i produksjon |
 | `headere` | avvik mellom bygde `_headers` og `sikkerhet/policy.json` (CSP, faste headere, Cache-Control) |
 

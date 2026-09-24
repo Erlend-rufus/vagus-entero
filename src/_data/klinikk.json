@@ -26,5 +26,56 @@
   },
   "bestilling": null,
   "apningstider": null,
-  "ventetid": null
+  "ventetid": null,
+  "betaling": {
+    "betalingsmater": null,
+    "avbestilling": null,
+    "kvittering": null
+  },
+  "adkomst": {
+    "parkering": null,
+    "kollektiv": null,
+    "tilgjengelighet": null,
+    "reisetid_bergen": null
+  },
+  "henvisning": {
+    "kanal": null,
+    "epikrise_svartid": null,
+    "lege_til_lege": null,
+    "ovrige_avgrensninger": null
+  },
+  "laboratorium": {
+    "navn": null,
+    "svartid": null
+  },
+  "kvalitet": {
+    "kvalitetsregistre": null,
+    "avvikssystem": null,
+    "internkontroll_dokumentasjon": null
+  },
+  "utstyr": null,
+  "kapasitet": {
+    "rom": null,
+    "dager_per_uke": null,
+    "undersokelser_per_uke": null
+  },
+  "avtale": {
+    "kontakt": {
+      "navn": null,
+      "rolle": null,
+      "epost": null,
+      "telefon": null
+    },
+    "avtaleform": null,
+    "svartid": null,
+    "rapportering": null,
+    "fakturering": null,
+    "avbestilling": null,
+    "journalintegrasjon": null
+  },
+  "personvern": {
+    "kontaktperson": null,
+    "databehandlere": null,
+    "lagringstider": null
+  }
 }

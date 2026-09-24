@@ -649,6 +649,31 @@ main > :first-child:has(> .sidehode):not(:has(> .fakta)) + section.flate-sand > 
   margin-block-start: var(--avstand-5);
 }
 
+/* ---- Venter på klinikken (bare forhåndsvisning) --------------------------- */
+/* Et element som er utelatt fordi et klinikkfelt mangler. Markøren skal
+   aldri kunne forveksles med innhold: stiplet ramme, egen flate. Den finnes
+   ikke i produksjonsbygg. */
+.venter {
+  border: 2px dashed var(--farge-aksent);
+  background: var(--farge-flate-kort);
+  color: var(--farge-tekst);
+  border-radius: var(--radius);
+  padding: var(--avstand-2) var(--avstand-3);
+  font-size: 0.9375rem;
+  font-style: italic;
+  max-width: 60ch;
+}
+
+/* Også på mørk flate (prisblokken) beholder markøren sin egen lyse flate. */
+.prisblokk p.venter {
+  color: var(--farge-tekst);
+}
+
+.fakta + .venter,
+.venter + .venter {
+  margin-block-start: var(--avstand-2);
+}
+
 /* ---- Tidslinje ----------------------------------------------------------- */
 .eksempel {
   display: inline-flex;

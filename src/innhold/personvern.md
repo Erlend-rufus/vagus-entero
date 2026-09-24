@@ -18,7 +18,7 @@ apne_punkter:
   - "Seksjonen «Databehandlere og utlevering» har plassholdere som klinikken må fylle ut"
   - "Seksjonen «Lagring og sletting» har plassholdere som klinikken må fylle ut"
   - "Seksjonen «Dine rettigheter» har plassholdere som klinikken må fylle ut"
-  - "Seksjonen «Spørsmål om personvern» har plassholdere som klinikken må fylle ut"
+  - "Kontaktlinjene i «Behandlingsansvarlig» og «Spørsmål om personvern» utelates til epost og telefon finnes i klinikk.json"
   - "Hele teksten skal gjennom medisinsk gjennomgang og signeres av fagansvarlig lege før status kan bli GODKJENT"
   - "Prisene er ikke fastsatt — beløpene står som null og utelates fra siden"
 i_navigasjon: false
@@ -29,7 +29,9 @@ seksjoner:
   - type: "tekst"
     tittel: "Behandlingsansvarlig"
     avsnitt:
-      - "Vagus Entero AS, {klinikk.adresse.gate}, {klinikk.adresse.postnummer} {klinikk.adresse.poststed}, org.nr {klinikk.org_nr}, er behandlingsansvarlig for personopplysningene som behandles i klinikken. Kontakt: [E-post] eller telefon [00 00 00 00]."
+      - "Vagus Entero AS, {klinikk.adresse.gate}, {klinikk.adresse.postnummer} {klinikk.adresse.poststed}, org.nr {klinikk.org_nr}, er behandlingsansvarlig for personopplysningene som behandles i klinikken."
+      - tekst: "Kontakt: {klinikk.epost} eller telefon {klinikk.telefon}."
+        krever: ["epost", "telefon"]
       - "[PLASSHOLDER: personvernombud eller kontaktperson for personvern, dersom oppnevnt.]"
   - type: "praktisk"
     tittel: "Hva vi behandler, og hvorfor"
@@ -75,7 +77,9 @@ seksjoner:
   - type: "pris"
     tittel: "Spørsmål om personvern"
     avsnitt:
-      - "Kontakt klinikken på [E-post] eller telefon [00 00 00 00]. Send aldri helseopplysninger på e-post — bruk pasientportalen eller ring oss."
+      - tekst: "Kontakt klinikken på {klinikk.epost} eller telefon {klinikk.telefon}."
+        krever: ["epost", "telefon"]
+      - "Send aldri helseopplysninger på e-post — bruk pasientportalen eller ring oss."
     sidekolonne:
       etikett: "Merk"
       avsnitt:

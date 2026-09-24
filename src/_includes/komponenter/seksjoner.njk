@@ -9,24 +9,44 @@
     Prosa går gjennom filteret «tekst»: det escaper alt, gjør [tekst](/url/)
     til intern lenke og linjeskift til <br>. Ingen annen HTML slipper inn. -#}
 
+{#- Markøren for et element som er utelatt fordi et klinikkfelt mangler
+    (verktoy/utelatelse.js). Finnes bare uten PRODUKSJON — i produksjon er
+    elementet borte før malen ser det. -#}
+{%- macro venter(markor, ui) -%}
+<p class="venter">{{ ui.venter_pa_klinikken }} {{ markor.venter }}</p>
+{%- endmacro -%}
+
+{%- macro avsnittliste(avsnitt, ui) -%}
+  {%- for a in avsnitt %}
+  {%- if a.venter %}
+  {{ venter(a, ui) }}
+  {%- else %}
+  <p>{{ a | tekst | safe }}</p>
+  {%- endif %}
+  {%- endfor %}
+{%- endmacro -%}
+
 {#- Pristabellen brukes to steder: som egen seksjon (prisliste, med caption
     og kolonnehoder) og kompakt inne i prisblokken. Rader uten beløp vises
     aldri med beløp — finnes ingen beløp, faller beløpskolonnen bort og
     tabellen viser bare tjenestene. -#}
-{%- macro pristabell(priser, kolonner, tabellmerknad, klasse) -%}
+{%- macro pristabell(priser, kolonner, tabellmerknad, klasse, visOmfang) -%}
   {%- set medBelop = priser | medBelop -%}
   {%- set visBelop = medBelop.length > 0 -%}
   {%- set rader = medBelop if visBelop else priser -%}
+  {#- Uten beløp og omfang har tabellen bare én kolonne: da er navnet data,
+      ikke radoverskrift. -#}
+  {%- set radhode = visBelop or (kolonner and visOmfang) -%}
   <table class="pristabell{{ (' ' + klasse) if klasse else '' }}">
     {%- if tabellmerknad and visBelop %}
     <caption>{{ tabellmerknad | tekst | safe }}</caption>
     {%- endif %}
     {%- if kolonner %}
-    <thead><tr><th scope="col">{{ kolonner.tjeneste }}</th><th scope="col">{{ kolonner.omfang }}</th>{% if visBelop %}<th scope="col" class="pris-belop">{{ kolonner.pris }}</th>{% endif %}</tr></thead>
+    <thead><tr><th scope="col">{{ kolonner.tjeneste }}</th>{% if visOmfang %}<th scope="col">{{ kolonner.omfang }}</th>{% endif %}{% if visBelop %}<th scope="col" class="pris-belop">{{ kolonner.pris }}</th>{% endif %}</tr></thead>
     {%- endif %}
     <tbody>
       {%- for rad in rader %}
-      <tr><th scope="row">{{ rad.navn }}{% if rad.merknad %} <span class="pris-merknad">({{ rad.merknad }})</span>{% endif %}</th>{% if kolonner %}<td class="pris-omfang">{{ rad.omfang if rad.omfang else '' }}</td>{% endif %}{% if visBelop %}<td class="pris-belop">{{ rad.belop_nok | kroner }}</td>{% endif %}</tr>
+      <tr>{% if radhode %}<th scope="row">{% else %}<td>{% endif %}{{ rad.navn }}{% if rad.merknad %} <span class="pris-merknad">({{ rad.merknad }})</span>{% endif %}{% if radhode %}</th>{% else %}</td>{% endif %}{% if kolonner and visOmfang %}<td class="pris-omfang">{{ rad.omfang if rad.omfang else '' }}</td>{% endif %}{% if visBelop %}<td class="pris-belop">{{ rad.belop_nok | kroner }}</td>{% endif %}</tr>
       {%- endfor %}
     </tbody>
   </table>
@@ -42,22 +62,29 @@
       <div class="prisblokk{{ '' if harSide else ' prisblokk-enkel' }}">
         <div class="prisblokk-tekst">
           <h2>{{ blokk.tittel }}</h2>
-          {%- for avsnitt in blokk.avsnitt %}
-          <p>{{ avsnitt | tekst | safe }}</p>
-          {%- endfor %}
+          {{- avsnittliste(blokk.avsnitt, ui) }}
+          {%- if blokk.venter_priser %}
+          {{ venter({ venter: ui.venter_priser }, ui) }}
+          {%- endif %}
           {%- if blokk.knapper %}{{ knapperad(blokk.knapper, klinikk, sider, 'prisblokk-handlinger', true, ui) }}{% endif %}
         </div>
         {%- if blokk.sidekolonne %}
         <div class="prisblokk-side">
           <p class="prisblokk-etikett">{{ blokk.sidekolonne.etikett }}</p>
-          {%- for avsnitt in blokk.sidekolonne.avsnitt %}
-          <p>{{ avsnitt | tekst | safe }}</p>
-          {%- endfor %}
+          {{- avsnittliste(blokk.sidekolonne.avsnitt, ui) }}
         </div>
         {%- elif medBelop.length > 0 %}
-        {{ pristabell(blokk.priser, null, null, 'pristabell-kompakt') }}
+        {{ pristabell(blokk.priser, null, null, 'pristabell-kompakt', false) }}
         {%- endif %}
       </div>
+    </div>
+  </section>
+  {%- elif blokk.type == 'venter' %}
+  {#- En seksjon der alle elementene er utelatt: overskriften er borte, bare
+      én markør står igjen i forhåndsvisningen. -#}
+  <section>
+    <div class="seksjon-indre sek">
+      {{ venter(blokk, ui) }}
     </div>
   </section>
   {%- else %}
@@ -76,9 +103,7 @@
       {%- endif %}
 
       {%- if blokk.type == 'tekst' %}
-        {%- for avsnitt in blokk.avsnitt %}
-        <p>{{ avsnitt | tekst | safe }}</p>
-        {%- endfor %}
+        {{- avsnittliste(blokk.avsnitt, ui) }}
         {%- if blokk.merknad %}
         <p class="merknad">{{ blokk.merknad | tekst | safe }}</p>
         {%- endif %}
@@ -135,10 +160,10 @@
             {%- if vei.undertittel %}
             <p class="liten undertittel">{{ vei.undertittel | tekst | safe }}</p>
             {%- endif %}
-            {%- for avsnitt in vei.avsnitt %}
-            <p>{{ avsnitt | tekst | safe }}</p>
-            {%- endfor %}
-            {%- if vei.liten %}
+            {{- avsnittliste(vei.avsnitt, ui) }}
+            {%- if vei.liten and vei.liten.venter %}
+            {{ venter(vei.liten, ui) }}
+            {%- elif vei.liten %}
             <p class="liten">{{ vei.liten | tekst | safe }}</p>
             {%- endif %}
             {%- if vei.knapp %}{{ knapp(vei.knapp, klinikk, sider, false, ui) }}{% endif %}
@@ -149,7 +174,11 @@
       {%- elif blokk.type == 'praktisk' %}
         <ul class="praktisk">
           {%- for punkt in blokk.punkter %}
+          {%- if punkt.venter %}
+          <li>{{ venter(punkt, ui) }}</li>
+          {%- else %}
           <li><h3>{{ punkt.tittel }}</h3><p>{{ punkt.tekst | tekst | safe }}</p></li>
+          {%- endif %}
           {%- endfor %}
         </ul>
         {%- if blokk.merknad %}
@@ -183,15 +212,16 @@
             {%- if not blokk.under %}
             <h2>{{ blokk.tittel }}</h2>
             {%- endif %}
-            {%- for avsnitt in blokk.avsnitt %}
-            <p>{{ avsnitt | tekst | safe }}</p>
-            {%- endfor %}
+            {{- avsnittliste(blokk.avsnitt, ui) }}
           </div>
           {%- if blokk.knapp %}{{ knapp(blokk.knapp, klinikk, sider, false, ui) }}{% endif %}
         </div>
 
       {%- elif blokk.type == 'prisliste' %}
-        {{ pristabell(blokk.priser, blokk.kolonner if blokk.kolonner else null, blokk.tabellmerknad if blokk.tabellmerknad else null, '') }}
+        {{ pristabell(blokk.priser, blokk.kolonner if blokk.kolonner else null, blokk.tabellmerknad if blokk.tabellmerknad else null, '', blokk.har_omfang) }}
+        {%- if blokk.venter_priser %}
+        {{ venter({ venter: ui.venter_priser }, ui) }}
+        {%- endif %}
         {%- if blokk.merknad %}
         <p class="merknad">{{ blokk.merknad | tekst | safe }}</p>
         {%- endif %}

@@ -4,6 +4,12 @@
 **Fra:** Kodesesjonen (Elevate Marketing / Claude Code), etter arbeidsordre fra Erlend Bognøy 21.09.2026 («samle plassholderoversikt»)  
 **Status:** Ren kartlegging. Ingen plassholdere er fylt inn eller foreslått besvart, ingen sides `status` er endret, og ingen `klinikk.json`-felt er koblet inn i malene. `overvekt-og-fedme.md` er listet på lik linje med de andre, ikke rørt utover det.
 
+> **Oppdatert 24.09.2026:** Plassholderne på kontakt-, pris-, henviser-,
+> forsikrings- og personvernsiden er erstattet av felt i `klinikk.json` med
+> utelatelse (`krever`). `apningstider` er ikke lenger reservert. Gjeldende
+> oversikt: `docs/KLINIKKFELT.md` og `docs/LEVERINGSSJEKK.md`. Resten av
+> dette dokumentet er kartleggingen slik den var 21.09.2026.
+
 Trinn 2 (svar på det som kan besvares uten klinikken) og trinn 3 (arbeidsordre med faktiske verdier) kommer som egne, senere arbeidsordrer.
 
 ---
