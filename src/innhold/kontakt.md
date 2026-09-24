@@ -14,8 +14,8 @@ jsonld_type: null
 interne_lenker_ut:
   - "/for-henvisende-leger/"
 apne_punkter:
-  - "Seksjonen «To måter å bestille» har plassholdere som klinikken må fylle ut"
-  - "Seksjonen «Finn fram» har plassholdere som klinikken må fylle ut"
+  - "Linjen med telefon og åpningstider i «To måter å bestille» utelates til telefon og apningstider finnes i klinikk.json"
+  - "«Parkering og kollektiv» og «Tilgjengelighet» i «Finn fram» utelates til adkomst.parkering, adkomst.kollektiv og adkomst.tilgjengelighet finnes i klinikk.json"
   - "Designets kartflate i «Finn fram» er ikke bygget: kart fra tredjepart er forbudt, så et eget statisk kartbilde må leveres av klinikken"
   - "Hele teksten skal gjennom medisinsk gjennomgang og signeres av fagansvarlig lege før status kan bli GODKJENT"
   - "Prisene er ikke fastsatt — beløpene står som null og utelates fra siden"
@@ -38,7 +38,9 @@ seksjoner:
       - tittel: "Ring oss"
         avsnitt:
           - "Vil du snakke med noen først, eller er du usikker på hvilken undersøkelse som passer, ringer du oss."
-        liten: "Telefon [00 00 00 00] · åpen [PLASSHOLDER: åpningstider]"
+        liten:
+          tekst: "Telefon {klinikk.telefon} · åpen {klinikk.apningstider}"
+          krever: ["telefon", "apningstider"]
         knapp:
           tekst: "Ring oss"
           handling: "telefon"
@@ -55,9 +57,11 @@ seksjoner:
       - tittel: "Adresse"
         tekst: "{klinikk.adresse.gate}\n{klinikk.adresse.postnummer} {klinikk.adresse.poststed}, Øygarden"
       - tittel: "Parkering og kollektiv"
-        tekst: "[PLASSHOLDER: parkeringsforhold]\n[PLASSHOLDER: bussholdeplass og linjer]"
+        tekst: "{klinikk.adkomst.parkering}\n{klinikk.adkomst.kollektiv}"
+        krever: ["adkomst.parkering", "adkomst.kollektiv"]
       - tittel: "Tilgjengelighet"
-        tekst: "[PLASSHOLDER: trinnfri adgang, heis, HC-parkering, teleslynge]"
+        tekst: "{klinikk.adkomst.tilgjengelighet}"
+        krever: ["adkomst.tilgjengelighet"]
   - type: "pris"
     tittel: "Før du bestiller"
     avsnitt:

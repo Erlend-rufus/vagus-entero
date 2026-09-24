@@ -1,7 +1,7 @@
 ---
 layout: layouts/base.njk
 ---
-{%- from "komponenter/seksjoner.njk" import seksjoner as visSeksjoner -%}
+{%- from "komponenter/seksjoner.njk" import seksjoner as visSeksjoner, venter -%}
 {%- from "komponenter/illustrasjon.njk" import illustrasjon as visIllustrasjon -%}
 {%- from "komponenter/knapper.njk" import knapperad, bestillingsvarsel -%}
 
@@ -25,11 +25,15 @@ layout: layouts/base.njk
   </div>
 
   {%- if fakta %}
+  {%- set synligeFakta = fakta | utelatFakta(klinikk) %}
   <dl class="fakta">
-    {%- for punkt in fakta %}
-    <div><dt>{{ punkt.term }}</dt><dd>{{ punkt.verdi }}</dd></div>
-    {%- endfor %}
+    {%- for punkt in synligeFakta %}{% if not punkt.venter %}
+    <div><dt>{{ punkt.term }}</dt><dd>{{ punkt.verdi | tekst | safe }}</dd></div>
+    {%- endif %}{% endfor %}
   </dl>
+  {%- for punkt in synligeFakta %}{% if punkt.venter %}
+  {{ venter(punkt, ui) }}
+  {%- endif %}{% endfor %}
   {%- endif %}
 </div>
 
@@ -42,7 +46,7 @@ layout: layouts/base.njk
 {%- endif %}
 
 {%- if seksjoner %}
-{{ visSeksjoner(seksjoner, klinikk, collections.innhold, ui) }}
+{{ visSeksjoner(seksjoner | utelatSeksjoner(klinikk), klinikk, collections.innhold, ui) }}
 {%- endif %}
 
 {% include "komponenter/jsonld.njk" %}

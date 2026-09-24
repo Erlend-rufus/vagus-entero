@@ -89,6 +89,33 @@ Skal portalen **bygges inn** på `/bestill/` (skript eller ramme), må
 `script-src`, `connect-src` og `frame-src` åpnes der — en egen
 personvernbeslutning, jf. `docs/NETLIFY-BESLUTNING.md`.
 
+## Når analyseverktøyet skal på (forberedt, ikke aktivert)
+
+Personvernerklæringen sier fra 24.09.2026 at nettstedet bruker Plausible
+Analytics. Skriptet er **ikke** installert. Rekkefølgen:
+
+1. Kontoen opprettes i klinikkens navn, ikke Elevates (åpent punkt på
+   `personvern.md`).
+2. Innlasting av skript bryter to faste regler: nettstedet har ingen
+   JavaScript, og det refererer ingenting utenfor eget domene. Regelen
+   oppheves bare med en beslutning fra Erlend. Beslutningen skal også si om
+   skriptet lastes fra Plausibles vert, eller via en proxy på eget domene
+   gjennom Netlify-omskriving. Med proxy trengs verken ny vert i
+   hvitelisten eller ny vert i CSP.
+3. Lastes skriptet fra Plausibles vert:
+   - vertsnavnet føres opp i `vakter/ordlister/eksterne-hvitliste.txt`;
+   - `sikkerhet/policy.json` får verten i `script-src` og `connect-src`,
+     som i dag står som `'none'` og `'self'`. Vakten `headere` holder
+     `_headers` og policyen i takt.
+4. Vakten `innebygd-kode` stopper hver `<script>` utenfor JSON-LD. Skriptet
+   må derfor legges inn som en bevisst endring i vakten, med selvtest, og
+   ikke som et unntak i en mal.
+5. Vakten `sporing` må fortsatt være grønn. Plausible setter ingen
+   informasjonskapsler og krever ikke samtykke, og det er grunnen til valget.
+
+Til alt dette er gjort, er erklæringen riktig om verktøyet, men nettstedet
+måler ingenting.
+
 ## Etter flippen
 
 - [ ] Send inn sitemap (f.eks. via Search Console) — eget sjekkpunkt,

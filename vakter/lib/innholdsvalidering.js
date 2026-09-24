@@ -3,6 +3,7 @@ import Ajv from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 import { tilNorsk } from './norske-meldinger.js';
 import { finnLenkemaal } from '../../verktoy/tekst.js';
+import { klinikkfelt } from '../../verktoy/utelatelse.js';
 
 const skjema = JSON.parse(fs.readFileSync('skjema/innhold.schema.json', 'utf8'));
 
@@ -17,6 +18,27 @@ const validerMotSkjema = ajv.compile(skjema);
 // bokstaver. Unntaket er lenkesyntaksen [tekst](/sti/). En GODKJENT side kan
 // ikke inneholde noen plassholder.
 const PLASSHOLDER = /\[[^\]\n]+\](?!\()/;
+
+// Oppdiktet kontaktinfo i hakeparentes: sifferplassholdere som [00 00 00 00]
+// eller [000 000 000], og uttrykk som [E-post], [Telefon …] eller [x@y].
+// Slike står aldri i noen side, uansett status — forhåndsvisningen går til
+// klinikken, og et nummer som ser ekte ut kan bli ringt. Mangler nummeret,
+// brukes {klinikk.telefon} med krever, så utelates linjen (utelatelse.js).
+export const KONTAKTPLASSHOLDER =
+  /\[(?:[\d\s+().-]*\d[\d\s+().-]*|\s*(?:e-?post|telefon(?:nummer)?|tlf\.?|mobil)(?![\p{L}])[^\]\n]*|[^\]\n]*@[^\]\n]*)\](?!\()/iu;
+
+// Alle krever-lister i en side, med sti.
+function alleKrever(verdi, sti, ut) {
+  if (Array.isArray(verdi)) {
+    verdi.forEach((v, i) => alleKrever(v, `${sti}[${i + 1}]`, ut));
+  } else if (verdi && typeof verdi === 'object') {
+    for (const [k, v] of Object.entries(verdi)) {
+      if (k === 'krever' && Array.isArray(v)) ut.push({ sti, krever: v });
+      else alleKrever(v, sti ? `${sti}.${k}` : k, ut);
+    }
+  }
+  return ut;
+}
 
 // Samler alle knappene på en side: sidehodet, veiene og prisblokkene.
 function alleKnapper(data) {
@@ -101,6 +123,29 @@ export function validerInnhold(sider) {
         meld(fil, `seksjon nr. ${i + 1}: prislisten har omfang på rader, men mangler kolonner — omfang vises bare med kolonnehoder`);
       }
     });
+
+    // krever må peke på et dokumentert felt i klinikk.json — en skrivefeil
+    // ville ellers utelatt elementet for alltid, uten at noen merket det.
+    const felt = klinikkfelt();
+    for (const { sti, krever } of alleKrever(data, '', [])) {
+      for (const navn of krever) {
+        if (!felt.has(navn)) {
+          meld(fil, `${sti}: krever «${navn}», som ikke er et felt i skjema/klinikk.schema.json`);
+        } else if (!felt.get(navn)) {
+          meld(fil, `${sti}: krever «${navn}», men feltet mangler title i skjema/klinikk.schema.json — markøren i forhåndsvisningen trenger et navn`);
+        }
+      }
+    }
+
+    for (const { sti, tekst } of alleStrenger(data, '', [])) {
+      const funn = KONTAKTPLASSHOLDER.exec(tekst);
+      if (funn) {
+        meld(
+          fil,
+          `${sti}: «${funn[0]}» ser ut som oppdiktet kontaktinfo — bruk {klinikk.telefon}/{klinikk.epost} med krever, så utelates elementet til opplysningen finnes`
+        );
+      }
+    }
 
     if (Array.isArray(data.bilder) && data.bilder.length > 0) {
       meld(fil, 'bilder er et reservert felt: ingen mal viser bilder ennå, så listen må være tom til visningen finnes (ellers ville bildene forsvinne stille)');

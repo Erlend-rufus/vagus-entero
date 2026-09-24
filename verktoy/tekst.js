@@ -1,7 +1,8 @@
 // Prosa fra innholdsfilene rendres alltid gjennom denne funksjonen. Den
-// escaper alt, og tillater nøyaktig tre ting: interne lenker skrevet som
-// [tekst](/sti/), linjeskift (\n → <br>), og datareferanser til
-// klinikk.json skrevet som {klinikk.felt.underfelt}. Ingen annen HTML eller
+// escaper alt, og tillater nøyaktig fire ting: interne lenker skrevet som
+// [tekst](/sti/), linjeskift (\n → <br>), datareferanser til klinikk.json
+// skrevet som {klinikk.felt.underfelt}, og byggedatoen skrevet som
+// {bygg.dato}. Ingen annen HTML eller
 // kode slipper inn i utdataene fra tekstfeltene — pasienttekst er innhold,
 // ikke kode.
 
@@ -44,6 +45,17 @@ function settInnKlinikkReferanser(tekst) {
   return tekst.replace(KLINIKK_REFERANSE, (_, sti) => hentKlinikkFelt(sti));
 }
 
+// {bygg.dato}: datoen bygget kjøres, skrevet ut på norsk («24. september
+// 2026»). Brukes der en side skal si når den sist ble oppdatert, slik at
+// datoen aldri står som plassholder eller blir liggende utdatert.
+const BYGGEDATO = /\{bygg\.dato\}/g;
+const byggedato = new Intl.DateTimeFormat('nb-NO', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'Europe/Oslo'
+}).format(new Date());
+
 function escapeHtml(tekst) {
   return tekst
     .replace(/&/g, '&amp;')
@@ -54,7 +66,7 @@ function escapeHtml(tekst) {
 
 export function formaterTekst(tekst) {
   if (typeof tekst !== 'string') return tekst;
-  const medReferanser = settInnKlinikkReferanser(tekst);
+  const medReferanser = settInnKlinikkReferanser(tekst).replace(BYGGEDATO, byggedato);
   const escapet = escapeHtml(medReferanser);
   const medLenker = escapet.replace(LENKE, (_, t, url) => `<a href="${url}">${t}</a>`);
   return medLenker.replace(/\r?\n/g, '<br>');

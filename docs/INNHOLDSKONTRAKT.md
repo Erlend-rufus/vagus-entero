@@ -229,6 +229,56 @@ mørk flate). I prisblokken blir primærknappen automatisk invers. «Bestill
 time» og «Ring oss» får stil etter klinikkens tilstand (se `docs/HANDOFF.md`),
 ikke etter innholdsfilen.
 
+## Utelatelse: elementer som venter på klinikken
+
+Et element kan erklære hvilke felt i `klinikk.json` det krever, med
+`krever`. Er ett av feltene `null`, bygges ikke elementet. Det er et valg du
+gjør per element i innholdsfilen, aldri en stille standard:
+`{klinikk.telefon}` i et element som **ikke** har `krever: ["telefon"]`,
+stopper fortsatt bygget når feltet er `null`.
+
+`krever` finnes på:
+
+- et avsnitt (i `avsnitt`-lister i alle blokker, også `sidekolonne`) — skriv
+  avsnittet som `{ tekst, krever }` i stedet for en streng;
+- `liten` i en vei — samme form;
+- et punkt i `praktisk` og et punkt i `fakta` — legg `krever` ved siden av
+  `tittel`/`tekst` eller `term`/`verdi`.
+
+```yaml
+- tittel: "Tilgjengelighet"
+  tekst: "{klinikk.adkomst.tilgjengelighet}"
+  krever: ["adkomst.tilgjengelighet"]
+avsnitt:
+  - "Fast tekst som alltid står."
+  - tekst: "Kontakt: {klinikk.epost} eller telefon {klinikk.telefon}."
+    krever: ["epost", "telefon"]
+```
+
+- **Uten `PRODUKSJON`** (forhåndsvisning) står én stiplet linje der
+  elementet ville stått: «Venter på opplysning fra klinikken: [hva]».
+  Navnet på det som mangler er `title` for feltet i
+  `skjema/klinikk.schema.json`.
+- **Med `PRODUKSJON`** er elementet borte. Ingen markør, ingen tom
+  overskrift.
+- En seksjon der alle elementene er utelatt, utelates helt, med overskrift.
+  I forhåndsvisningen står én samlet markør for seksjonen.
+- `krever` må peke på et felt som finnes i klinikkskjemaet og har `title`,
+  ellers stopper bygget.
+
+Prisrader følger samme regel: `belop_nok: null` og `omfang: null` betyr at
+opplysningen mangler, og den vises ikke. Kolonnen «omfang» faller bort når
+ingen rad har omfang. Har ingen rad beløp, viser forhåndsvisningen én samlet
+markør for tabellen, ikke én per rad.
+
+Oppdiktet kontaktinfo i hakeparentes — sifferplassholdere som
+`[00 00 00 00]` eller `[000 000 000]`, og uttrykk som `[E-post]`,
+`[Telefon …]` eller `[navn@…]` — stopper bygget uansett status. Bruk
+klinikkfeltet med `krever`.
+
+`{bygg.dato}` skrives ut som datoen bygget kjøres («24. september 2026»),
+for eksempel i «Sist oppdatert {bygg.dato}.».
+
 ## Priser som ikke er fastsatt
 
 `belop_nok: null` betyr «ikke fastsatt ennå». Linjen utelates da fra
@@ -242,6 +292,7 @@ Alt faktisk om klinikken (org.nr, adresse, telefon, e-post, lege, tilsyn,
 bestillingsportal) bor i `src/_data/klinikk.json`, validert mot
 `skjema/klinikk.schema.json` i hvert bygg. Ukjent = `null`, og bygget
 utelater da feltet fra nettstedet og fra strukturerte data. Skriv aldri slike
-fakta i innholdsfiler. `apningstider` og `ventetid` er reservert: de må stå
-som `null` til en visning er bygget. Adressen kan ha `bygg` (for eksempel
+fakta i innholdsfiler. `ventetid` er reservert: det må stå som `null` til en
+visning er bygget. Feltene som venter på klinikken, med hvem som svarer og
+hvilke sider de brukes på, står i `docs/KLINIKKFELT.md`. Adressen kan ha `bygg` (for eksempel
 helsehuset); bunnteksten viser det foran gateadressen.

@@ -8,6 +8,7 @@ import { lesInnhold, avvisKodeFrontmatter } from './vakter/lib/les-innhold.js';
 import { validerInnhold } from './vakter/lib/innholdsvalidering.js';
 import { lesOgValiderDatafiler } from './vakter/lib/datavalidering.js';
 import { formaterTekst, brodsmuletekst } from './verktoy/tekst.js';
+import { utelatSeksjoner, utelatFakta } from './verktoy/utelatelse.js';
 
 // Alle innholdssidetyper deler samme layout: forskjellene ligger i
 // innholdets seksjonsblokker, ikke i malen. Bestillingsruten er den ene
@@ -232,6 +233,14 @@ export default function (eleventyConfig) {
   );
   // Prosa: escapet, med [tekst](/sti/) som intern lenke og \n som <br>.
   eleventyConfig.addFilter('tekst', formaterTekst);
+  // Elementer som krever et klinikkfelt som er null, utelates. Uten
+  // PRODUKSJON står en merket linje i stedet (verktoy/utelatelse.js).
+  eleventyConfig.addFilter('utelatSeksjoner', (blokker, klinikk) =>
+    utelatSeksjoner(blokker, { klinikk, produksjon: miljo.produksjon })
+  );
+  eleventyConfig.addFilter('utelatFakta', (fakta, klinikk) =>
+    utelatFakta(fakta, { klinikk, produksjon: miljo.produksjon })
+  );
   eleventyConfig.addFilter('brodsmule', brodsmuletekst);
 
   // ---- Etter bygget: _headers, robots.txt, sitemap.xml, manifest ----------

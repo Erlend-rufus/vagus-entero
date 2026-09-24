@@ -16,7 +16,7 @@ const validerUiSkjema = ajv.compile(uiSkjema);
 
 // Felter som er avtalt i kontrakten, men som ingen mal viser ennå. De skal
 // stå som null til visningen finnes — ellers ville fakta forsvinne stille.
-const RESERVERTE_KLINIKKFELT = ['apningstider', 'ventetid'];
+const RESERVERTE_KLINIKKFELT = ['ventetid'];
 
 function tilNorsk(fil, feilliste) {
   const meldinger = new Set();

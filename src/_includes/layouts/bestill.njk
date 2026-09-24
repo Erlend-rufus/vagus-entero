@@ -3,6 +3,7 @@ layout: layouts/base.njk
 ---
 {%- from "komponenter/knapper.njk" import knapperad, bestillingsvarsel -%}
 {%- from "komponenter/illustrasjon.njk" import illustrasjon as visIllustrasjon -%}
+{%- from "komponenter/seksjoner.njk" import venter -%}
 {#- Den isolerte bestillingsruten. Innholdssidene er statiske og rører aldri
     denne malen; integrasjonspartneren monterer portalen i #bestilling-portal.
     Fram til portalen er live viser siden bare klinikkens telefon og varselet
@@ -30,11 +31,15 @@ layout: layouts/base.njk
   </div>
 
   {%- if fakta %}
+  {%- set synligeFakta = fakta | utelatFakta(klinikk) %}
   <dl class="fakta">
-    {%- for punkt in fakta %}
-    <div><dt>{{ punkt.term }}</dt><dd>{{ punkt.verdi }}</dd></div>
-    {%- endfor %}
+    {%- for punkt in synligeFakta %}{% if not punkt.venter %}
+    <div><dt>{{ punkt.term }}</dt><dd>{{ punkt.verdi | tekst | safe }}</dd></div>
+    {%- endif %}{% endfor %}
   </dl>
+  {%- for punkt in synligeFakta %}{% if punkt.venter %}
+  {{ venter(punkt, ui) }}
+  {%- endif %}{% endfor %}
   {%- endif %}
 </div>
 
@@ -46,5 +51,5 @@ layout: layouts/base.njk
 
 {%- if seksjoner %}
 {%- from "komponenter/seksjoner.njk" import seksjoner as visSeksjoner -%}
-{{ visSeksjoner(seksjoner, klinikk, collections.innhold, ui) }}
+{{ visSeksjoner(seksjoner | utelatSeksjoner(klinikk), klinikk, collections.innhold, ui) }}
 {%- endif %}
