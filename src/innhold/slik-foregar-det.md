@@ -15,7 +15,7 @@ interne_lenker_ut:
   - "/priser/"
   - "/undersokelser/"
 apne_punkter:
-  - "Hele siden mangler tekst — leveres som tekstpakke fra innholdsprosessen (ClickUp: Sitemap)"
+  - "Hele teksten skal gjennom medisinsk gjennomgang og signeres av fagansvarlig lege før status kan bli GODKJENT"
 i_navigasjon: false
 i_bunntekst: false
 rekkefolge: 5
