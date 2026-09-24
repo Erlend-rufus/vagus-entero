@@ -2,10 +2,10 @@
 sidetype: "statisk"
 url: "/ikke-funnet/"
 malgruppe: "selvbetalende"
-tittel: "[TEKST KOMMER]"
-menytittel: "[TEKST KOMMER]"
-meta_beskrivelse: "[TEKST KOMMER]"
-ingress: "[TEKST KOMMER]"
+tittel: "Siden finnes ikke"
+menytittel: "Siden finnes ikke"
+meta_beskrivelse: "Siden du ser etter finnes ikke, eller er flyttet. Gå til forsiden for å finne fram."
+ingress: "Siden du ser etter finnes ikke, eller er flyttet."
 status: "UTKAST"
 godkjent_av: null
 godkjent_dato: null
@@ -19,12 +19,12 @@ i_navigasjon: false
 i_bunntekst: false
 rekkefolge: 99
 hode_knapper:
-  - tekst: "[TEKST KOMMER]"
+  - tekst: "Til forsiden"
     handling: "intern"
     url: "/"
 seksjoner:
   - type: "tekst"
-    tittel: "[TEKST KOMMER]"
+    tittel: "Beklager"
     avsnitt:
-      - "[TEKST KOMMER]"
+      - "Vi fant ikke siden du lette etter. Den kan være flyttet, eller adressen kan være skrevet feil."
 ---

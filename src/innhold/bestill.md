@@ -2,10 +2,10 @@
 sidetype: "bestilling"
 url: "/bestill/"
 malgruppe: "selvbetalende"
-tittel: "[TEKST KOMMER]"
+tittel: "Bestill time"
 menytittel: "Bestill time"
-meta_beskrivelse: "[TEKST KOMMER]"
-ingress: "[TEKST KOMMER]"
+meta_beskrivelse: "Bestill time hos Vagus Entero Klinikken. Du velger selv, uten henvisning."
+ingress: "Bestill time hos Vagus Entero Klinikken."
 status: "UTKAST"
 godkjent_av: null
 godkjent_dato: null

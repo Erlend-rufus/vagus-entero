@@ -404,6 +404,33 @@ krev(
 );
 krev(formaterTekst('linje 1\nlinje 2') === 'linje 1<br>linje 2', 'tekst: linjeskift blir <br>');
 krev(
+  formaterTekst('org.nr {klinikk.org_nr}') === 'org.nr 938387127',
+  'tekst: {klinikk.felt} løses mot ekte klinikk.json'
+);
+krev(
+  formaterTekst('{klinikk.adresse.gate}, {klinikk.adresse.postnummer} {klinikk.adresse.poststed}') ===
+    'Sartorvegen 8, 5354 Straume',
+  'tekst: {klinikk.felt.underfelt} løser nøstet sti'
+);
+krev(
+  (() => {
+    try {
+      formaterTekst('{klinikk.telefon}');
+      return false;
+    } catch (e) {
+      return /kan ikke løses/.test(e.message);
+    }
+  })(),
+  'tekst: {klinikk.felt} på et null-felt stopper bygget i stedet for å gjette'
+);
+krev(
+  // Speiler PLASSHOLDER-mønsteret i vakter/lib/innholdsvalidering.js: «alt i
+  // hakeparenteser er plassholder». {klinikk...}-referansen bruker bevisst
+  // krøllparenteser, så den skal aldri fanges av det mønsteret.
+  !/\[[^\]\n]+\](?!\()/.test('{klinikk.org_nr}'),
+  'tekst: {klinikk.felt} kan aldri leses som [PLASSHOLDER] av GODKJENT-vakten'
+);
+krev(
   brodsmuletekst('Kikkertundersøkelse av tykktarmen (koloskopi)') === 'Kikkertundersøkelse av tykktarmen',
   'brødsmule: parentesen til slutt fjernes'
 );
