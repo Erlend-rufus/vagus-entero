@@ -1,8 +1,8 @@
 # Klinikkfelt som venter på klinikken
 
-**Opprettet:** 24.09.2026 (arbeidsordre «leveringsklart forhåndsbygg»)
+**Opprettet:** 24.09.2026 (arbeidsordre «leveringsklart forhåndsbygg»). **Oppdatert:** 08.10.2026 etter svar fra klinikken
 
-Alle feltene under står som `null` i `src/_data/klinikk.json`. Så lenge et
+Alle feltene i tabellen under står som `null` i `src/_data/klinikk.json`. Så lenge et
 felt er `null`, utelates elementene som krever det (se «Utelatelse» i
 `docs/INNHOLDSKONTRAKT.md`). Forhåndsvisningen viser «Venter på opplysning fra
 klinikken: …» der elementet ville stått. Produksjon viser ingenting.
@@ -23,7 +23,6 @@ Kristian på drift og medisin.
 
 | Felt | Hva | Form | Svarer | Sider |
 |---|---|---|---|---|
-| `telefon` | telefonnummer | kort | Malin | `/kontakt/`, `/personvern/`, i tillegg «Ring oss»-knapper og bunntekst på alle sider |
 | `epost` | e-postadresse | kort | Malin | `/personvern/`, i tillegg bunnteksten på alle sider |
 | `apningstider` | åpningstider for telefonen | kort | Malin | `/kontakt/` |
 | `betaling.betalingsmater` | betalingsmåter | hel setning | Malin | `/priser/` |
@@ -33,11 +32,10 @@ Kristian på drift og medisin.
 | `adkomst.kollektiv` | buss og holdeplass | hel setning | Malin | `/kontakt/`, `/for-forsikringsselskaper/` |
 | `adkomst.tilgjengelighet` | trinnfritt, heis, HC-parkering, teleslynge | hel setning | Malin | `/kontakt/`, `/for-forsikringsselskaper/` |
 | `adkomst.reisetid_bergen` | reisetid fra Bergen sentrum, f.eks. «25 min» | kort (maks 40 tegn) | Malin | `/for-forsikringsselskaper/` |
-| `avtale.kontakt.navn` / `.rolle` / `.epost` / `.telefon` | kontaktperson for forsikringsavtaler | kort | Malin | `/for-forsikringsselskaper/` |
+| `avtale.kontakt.epost` | e-post til kontaktpersonen for forsikringsavtaler | kort | Malin | `/for-forsikringsselskaper/` |
 | `avtale.fakturering` | fakturaformat, betingelser, referanse, EHF | hel setning | Malin | `/for-forsikringsselskaper/` |
 | `personvern.databehandlere` | øvrige databehandlere (laboratorium, regnskap) | hel setning | Malin | `/personvern/` |
 | `henvisning.kanal` | henvisningskanal | kort (maks 40 tegn) | Kristian | `/for-henvisende-leger/` |
-| `henvisning.epikrise_svartid` | svartid på epikrise | kort (maks 40 tegn) | Kristian | `/for-henvisende-leger/` |
 | `henvisning.ovrige_avgrensninger` | øvrige avgrensninger for henvisninger (medisinsk) | hel setning | Kristian | `/for-henvisende-leger/` |
 | `laboratorium.navn` | laboratorium for vevsprøver | kort | Kristian | `/for-henvisende-leger/`, `/for-forsikringsselskaper/` |
 | `laboratorium.svartid` | svartid på vevsprøver | kort | Kristian | `/for-henvisende-leger/`, `/for-forsikringsselskaper/` |
@@ -83,3 +81,22 @@ side. De er fjernet, uten nytt felt:
 «Øvrige leger og sykepleiere når de er ansatt» er fjernet fra begge
 fagsidene. Klinikken har ingen andre ansatte behandlere. Dette står nå som et
 åpent punkt: nye behandlere føres opp når de er ansatt.
+
+## Satt 08.10.2026 (svar fra Malin 25.9 og Kristian 25.9)
+
+Disse feltene har nå verdi og står derfor ikke i tabellen over:
+
+- `telefon`: 920 33 690 (Malin). Brukes også som lege-til-lege-nummer: klinikken har ikke eget nummer, og feltet `henvisning.lege_til_lege` er fjernet.
+- `avtale.kontakt.navn`, `.rolle`, `.telefon`: Malin Pamer, daglig leder, 920 33 690. `.epost` er fortsatt `null`.
+- `henvisning.epikrise_svartid`: «Samme dag» (Kristian).
+- `timelengde.koloskopi`, `.gastroskopi`, `.konsultasjon`, `.rektoskopi` (Malin) og `.anoskopi` (Kristian): **avsatt tid** i minutter, 60, 30, 20, 30 og 30. Det er ikke det samme som hvor lenge selve undersøkelsen tar. Verdiene settes inn i tekst som `{klinikk.timelengde.koloskopi}`.
+
+## Nytt felt som venter
+
+| Felt | Hva | Form | Svarer | Sider |
+|---|---|---|---|---|
+| `lege.bistilling_dokumentert` | skriftlig avklaring av at legens bistilling (arbeidsgiver ved annet sykehus) kan omtales | `true` eller `null` (`false` regnes som `null`) | Kristian | `/om-klinikken/` |
+
+## Holdt på grunn av lokalene
+
+Malin har oppgitt åpningstider, parkering, buss og tilgjengelighet for dagens lokaler. Klinikken skal avklare nye lokaler 12.–13. oktober, så `apningstider` og `adkomst.*` står som `null` til adressen er avgjort. Se `docs/STEDSAVHENGIGHET.md`.
