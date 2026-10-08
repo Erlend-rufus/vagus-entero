@@ -147,6 +147,14 @@
         },
         "spesialitet": {
           "type": "string"
+        },
+        "bistilling_dokumentert": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "title": "dokumentert avklaring av bistilling",
+          "description": "true foerst naar det foreligger skriftlig avklaring av at legens bistilling (arbeidsgiver ved annet sykehus) kan omtales. null = ikke avklart: all omtale av arbeidsgiveren utelates. false behandles som null."
         }
       }
     },

@@ -16,7 +16,8 @@
   "lege": {
     "navn": "Kristian Eeg Storli",
     "hpr_nummer": "7070373",
-    "spesialitet": "Spesialist i generell kirurgi og gastroenterologisk kirurgi"
+    "spesialitet": "Spesialist i generell kirurgi og gastroenterologisk kirurgi",
+    "bistilling_dokumentert": null
   },
   "tilsyn": {
     "yrkestittel": "Lege, spesialist i generell kirurgi og gastroenterologisk kirurgi",
