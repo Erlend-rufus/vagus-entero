@@ -416,7 +416,7 @@ krev(
 krev(
   (() => {
     try {
-      formaterTekst('{klinikk.telefon}');
+      formaterTekst('{klinikk.epost}');
       return false;
     } catch (e) {
       return /kan ikke løses/.test(e.message);
@@ -489,7 +489,7 @@ krev(
     bestilling: null, apningstider: null, ventetid: null,
     betaling: { betalingsmater: null, avbestilling: null, kvittering: null },
     adkomst: { parkering: null, kollektiv: null, tilgjengelighet: null, reisetid_bergen: null },
-    henvisning: { kanal: null, epikrise_svartid: null, lege_til_lege: null, ovrige_avgrensninger: null },
+    henvisning: { kanal: null, epikrise_svartid: null, ovrige_avgrensninger: null },
     laboratorium: { navn: null, svartid: null },
     kvalitet: { kvalitetsregistre: null, avvikssystem: null, internkontroll_dokumentasjon: null },
     utstyr: null,
@@ -498,7 +498,8 @@ krev(
       kontakt: { navn: null, rolle: null, epost: null, telefon: null },
       avtaleform: null, svartid: null, rapportering: null, fakturering: null, avbestilling: null, journalintegrasjon: null
     },
-    personvern: { kontaktperson: null, databehandlere: null, lagringstider: null }
+    personvern: { kontaktperson: null, databehandlere: null, lagringstider: null },
+    timelengde: { koloskopi: null, gastroskopi: null, konsultasjon: null, rektoskopi: null, anoskopi: null }
   };
   krev(validerKlinikk(gyldigKlinikk, 'test.json').length === 0, 'datafiler: gyldig klinikk.json passerer');
   krev(
@@ -915,11 +916,11 @@ krev(
   krev(priser[0].venter_priser === true && priser[0].har_omfang === false, 'utelatelse: prisliste uten beløp får én samlet markør');
   let kastet = false;
   try {
-    formaterTekst('Ring {klinikk.telefon}.');
+    formaterTekst('Skriv til {klinikk.epost}.');
   } catch {
     kastet = true;
   }
-  krev(kastet, 'utelatelse: {klinikk.telefon} uten erklært krever stopper fortsatt bygget');
+  krev(kastet, 'utelatelse: {klinikk.epost} uten erklært krever stopper fortsatt bygget');
 }
 
 fs.rmSync(tmp, { recursive: true, force: true });

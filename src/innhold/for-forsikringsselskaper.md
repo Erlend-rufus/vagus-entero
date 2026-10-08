@@ -18,7 +18,7 @@ apne_punkter:
   - "Punktene i «Kapasitet, svartid og rapportering» utelates til kapasitet.*, avtale.svartid, avtale.rapportering, avtale.fakturering, avtale.avbestilling og avtale.journalintegrasjon finnes i klinikk.json"
   - "Avsnittene om utstyr, laboratorium og kvalitetsregistre i «Fagprofil, utstyr og lokaler» utelates til utstyr, laboratorium.* og kvalitet.kvalitetsregistre finnes i klinikk.json"
   - "«Internkontroll», «Avvik og pasientsikkerhet» og «Adkomst for pasienten» i «Kvalitet, internkontroll og dekning» utelates til kvalitet.internkontroll_dokumentasjon, kvalitet.avvikssystem og adkomst.* finnes i klinikk.json"
-  - "Kontaktpersonen i «Kontakt om avtale» utelates til avtale.kontakt (navn, rolle, e-post, telefon) finnes i klinikk.json"
+  - "E-posten til avtaleansvarlig i «Kontakt om avtale» utelates til avtale.kontakt.epost finnes i klinikk.json (Malin har ikke svart)"
   - "Klinikken har én lege. Nye behandlere føres opp på siden når de er ansatt"
   - "Designets merknad under sidehodet («Avtalehenvendelser: [PLASSHOLDER: navn, rolle, e-post, telefon].») er utelatt til kontaktpunktet finnes, og settes som hode_merknad da"
   - "Designets knapper «Kontakt om avtale» og «Last ned som PDF» (sidehode og prisblokk) mangler mål. Avklar hvor de skal peke og om PDF-en skal finnes. Siden har derfor ingen knapper ennå; pasientknappene hører ikke hjemme her"
@@ -120,8 +120,10 @@ seksjoner:
     tittel: "Kontakt om avtale"
     avsnitt:
       - "Avtalehenvendelser og spørsmål om priser, kapasitet og rapportering rettes til klinikkens avtaleansvarlige."
-      - tekst: "{klinikk.avtale.kontakt.navn}, {klinikk.avtale.kontakt.rolle}\n{klinikk.avtale.kontakt.epost} · {klinikk.avtale.kontakt.telefon}"
-        krever: ["avtale.kontakt.navn", "avtale.kontakt.rolle", "avtale.kontakt.epost", "avtale.kontakt.telefon"]
+      - tekst: "{klinikk.avtale.kontakt.navn}, {klinikk.avtale.kontakt.rolle}\n{klinikk.avtale.kontakt.telefon}"
+        krever: ["avtale.kontakt.navn", "avtale.kontakt.rolle", "avtale.kontakt.telefon"]
+      - tekst: "{klinikk.avtale.kontakt.epost}"
+        krever: ["avtale.kontakt.epost"]
     sidekolonne:
       etikett: "Om denne siden"
       avsnitt:

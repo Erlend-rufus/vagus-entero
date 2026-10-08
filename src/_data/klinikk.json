@@ -11,7 +11,7 @@
     "poststed": "Straume",
     "bygg": "Sartor Helsehus"
   },
-  "telefon": null,
+  "telefon": "920 33 690",
   "epost": null,
   "lege": {
     "navn": "Kristian Eeg Storli",
@@ -40,8 +40,7 @@
   },
   "henvisning": {
     "kanal": null,
-    "epikrise_svartid": null,
-    "lege_til_lege": null,
+    "epikrise_svartid": "Samme dag",
     "ovrige_avgrensninger": null
   },
   "laboratorium": {
@@ -61,10 +60,10 @@
   },
   "avtale": {
     "kontakt": {
-      "navn": null,
-      "rolle": null,
+      "navn": "Malin Pamer",
+      "rolle": "Daglig leder",
       "epost": null,
-      "telefon": null
+      "telefon": "920 33 690"
     },
     "avtaleform": null,
     "svartid": null,
@@ -77,5 +76,12 @@
     "kontaktperson": null,
     "databehandlere": null,
     "lagringstider": null
+  },
+  "timelengde": {
+    "koloskopi": 60,
+    "gastroskopi": 30,
+    "konsultasjon": 20,
+    "rektoskopi": 30,
+    "anoskopi": 30
   }
 }

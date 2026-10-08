@@ -14,7 +14,7 @@ jsonld_type: null
 interne_lenker_ut:
   - "/for-henvisende-leger/"
 apne_punkter:
-  - "Linjen med telefon og åpningstider i «To måter å bestille» utelates til telefon og apningstider finnes i klinikk.json"
+  - "Åpningstidene i «To måter å bestille» utelates til apningstider finnes i klinikk.json. «9–15.30» er oppgitt uten ukedager"
   - "«Parkering og kollektiv» og «Tilgjengelighet» i «Finn fram» utelates til adkomst.parkering, adkomst.kollektiv og adkomst.tilgjengelighet finnes i klinikk.json"
   - "Designets kartflate i «Finn fram» er ikke bygget: kart fra tredjepart er forbudt, så et eget statisk kartbilde må leveres av klinikken"
   - "Hele teksten skal gjennom medisinsk gjennomgang og signeres av fagansvarlig lege før status kan bli GODKJENT"
@@ -38,9 +38,10 @@ seksjoner:
       - tittel: "Ring oss"
         avsnitt:
           - "Vil du snakke med noen først, eller er du usikker på hvilken undersøkelse som passer, ringer du oss."
-        liten:
-          tekst: "Telefon {klinikk.telefon} · åpen {klinikk.apningstider}"
-          krever: ["telefon", "apningstider"]
+          - tekst: "Telefon {klinikk.telefon}"
+            krever: ["telefon"]
+          - tekst: "Åpen {klinikk.apningstider}"
+            krever: ["apningstider"]
         knapp:
           tekst: "Ring oss"
           handling: "telefon"

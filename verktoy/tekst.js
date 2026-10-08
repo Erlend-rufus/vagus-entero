@@ -33,6 +33,7 @@ function hentKlinikkFelt(sti) {
     .reduce((o, k) => (o != null && typeof o === 'object' ? o[k] : undefined), lastKlinikk());
   // Feltet finnes ikke, eller er null/tomt (ukjent fakta): bygget stopper
   // høylytt i stedet for å gjette eller rendre «undefined»/tom streng.
+  if (typeof verdi === 'number' && Number.isFinite(verdi)) return String(verdi);
   if (typeof verdi !== 'string' || verdi === '') {
     throw new Error(
       `Datareferansen «{klinikk.${sti}}» kan ikke løses: feltet finnes ikke, eller er null/tomt i src/_data/klinikk.json.`

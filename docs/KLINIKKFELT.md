@@ -38,7 +38,6 @@ Kristian på drift og medisin.
 | `personvern.databehandlere` | øvrige databehandlere (laboratorium, regnskap) | hel setning | Malin | `/personvern/` |
 | `henvisning.kanal` | henvisningskanal | kort (maks 40 tegn) | Kristian | `/for-henvisende-leger/` |
 | `henvisning.epikrise_svartid` | svartid på epikrise | kort (maks 40 tegn) | Kristian | `/for-henvisende-leger/` |
-| `henvisning.lege_til_lege` | eget lege-til-lege-nummer, **valgfritt** | kort | Kristian | `/for-henvisende-leger/` |
 | `henvisning.ovrige_avgrensninger` | øvrige avgrensninger for henvisninger (medisinsk) | hel setning | Kristian | `/for-henvisende-leger/` |
 | `laboratorium.navn` | laboratorium for vevsprøver | kort | Kristian | `/for-henvisende-leger/`, `/for-forsikringsselskaper/` |
 | `laboratorium.svartid` | svartid på vevsprøver | kort | Kristian | `/for-henvisende-leger/`, `/for-forsikringsselskaper/` |
