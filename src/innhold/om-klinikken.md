@@ -19,6 +19,7 @@ interne_lenker_ut:
   - "/for-henvisende-leger/"
   - "/personvern/"
 apne_punkter:
+  - "All omtale av arbeidsgiveren (Haraldsplass) er utelatt til det foreligger skriftlig avklaring av bistillingen (lege.bistilling_dokumentert i klinikk.json). Kristians muntlige opplysning 25.9 er ikke nok"
   - "Hele teksten skal gjennom gjennomgang og godkjennes skriftlig av Kristian Eeg Storli før status kan bli GODKJENT. Biografien er skrevet om fra hans egen presentasjon (alternativ 2, mottatt på e-post 02.09.2026 kl. 19:48), med språklige endringer som følger av helsepersonelloven § 13. Han må godkjenne omskrivingen."
   - "Arbeidsgiver er navngitt (Haraldsplass Diakonale Sykehus) fordi det står i hans egen tekst. Kristian skrev 03.09.2026 kl. 19:52 at han ikke trenger å varsle Haraldsplass så lenge klinikkarbeidet skjer på halve dager eller ettermiddager, og at prosessene kan startes. Det er hans vurdering og hans ansvar, og e-posten er dokumentasjonen. Sykehusnavnet kan derfor stå. Reserveformulering hvis det senere endrer seg: «Siden 2007 har han arbeidet som overlege ved kirurgisk avdeling på et sykehus i Bergen.»"
   - "Avklart 02.09.2026: setningen om at komplett mesokolisk eksisjon er nasjonal standard står, etter Kristians svar og kontroll mot kilden. Dokumentasjon: Helsedirektoratets handlingsprogram for kreft i tykktarm og endetarm, kapittelet Generelt om kirurgi (sist oppdatert 20.12.2023), anbefaler ordrett at «disseksjon rundt primærtumor og tilhørende tarmkrøs gjøres nøyaktig og i det mesokoliske plan (evidensgrad D)», og definerer nettopp denne disseksjonen som komplett mesokolisk eksisjon. Det handlingsprogrammet ikke krever, er disseksjon av de mest sentrale lymfeknutene (minimum D2), og teksten sier ingenting om det. «Flere andre land» er tatt ut etter Kristians ønske."
@@ -65,7 +66,10 @@ seksjoner:
     veier:
       - tittel: "Kristian Eeg Storli, lege"
         avsnitt:
-          - "Kristian Eeg Storli er spesialist i generell kirurgi og gastroenterologisk kirurgi, og har arbeidet som overlege ved kirurgisk avdeling ved Haraldsplass Diakonale Sykehus siden 2007. Han har doktorgrad fra Universitetet i Bergen på kirurgisk behandling av tykktarmskreft."
+          - "Kristian Eeg Storli er spesialist i generell kirurgi og gastroenterologisk kirurgi."
+          - tekst: "Han har arbeidet som overlege ved kirurgisk avdeling ved Haraldsplass Diakonale Sykehus siden 2007."
+            krever: ["lege.bistilling_dokumentert"]
+          - "Han har doktorgrad fra Universitetet i Bergen på kirurgisk behandling av tykktarmskreft."
           - "Hans fagområde er sykdommer i tykktarm og endetarm: utredning av mage- og tarmplager, betennelsessykdommer i tarmen, og kirurgi ved tykktarmskreft. Ved siden av kirurgien har han i mange år utført gastroskopi, koloskopi, rektoskopi og anoskopi."
           - "Han er født i Bergen i 1971."
         liten: "Spesialist i generell kirurgi og gastroenterologisk kirurgi, ph.d. Norsk autorisasjon og spesialistgodkjenning."
@@ -77,10 +81,16 @@ seksjoner:
     tittel: "Legens bakgrunn"
     under: "Opplysningene under er gitt av Kristian Eeg Storli selv. Publikasjonene kan kontrolleres i de tidsskriftene som er oppgitt."
     avsnitt:
-      - "Kristian Eeg Storli tok medisinsk embetseksamen ved NTNU i Trondheim i 1997, og ble spesialist i generell kirurgi og gastroenterologisk kirurgi i 2007. Samme år begynte han som overlege ved kirurgisk avdeling ved Haraldsplass Diakonale Sykehus, der han fortsatt arbeider."
-      - "Fra 2008 arbeidet han med et doktorgradsprosjekt ved Haraldsplass Diakonale Sykehus og Klinisk institutt 1 ved Universitetet i Bergen. I 2014 disputerte han for ph.d.-graden med avhandlingen «The prognostic impact of radical laparoscopic treatment of colon cancer», som undersøkte langtidsresultatene etter kikkhullskirurgi for tykktarmskreft."
+      - "Kristian Eeg Storli tok medisinsk embetseksamen ved NTNU i Trondheim i 1997, og ble spesialist i generell kirurgi og gastroenterologisk kirurgi i 2007."
+      - tekst: "Samme år begynte han som overlege ved kirurgisk avdeling ved Haraldsplass Diakonale Sykehus, der han fortsatt arbeider."
+        krever: ["lege.bistilling_dokumentert"]
+      - tekst: "Fra 2008 arbeidet han med et doktorgradsprosjekt ved Haraldsplass Diakonale Sykehus og Klinisk institutt 1 ved Universitetet i Bergen."
+        krever: ["lege.bistilling_dokumentert"]
+      - "I 2014 disputerte han for ph.d.-graden med avhandlingen «The prognostic impact of radical laparoscopic treatment of colon cancer», som undersøkte langtidsresultatene etter kikkhullskirurgi for tykktarmskreft."
       - "Arbeidet handlet om komplett mesokolisk eksisjon (KME), en operasjonsteknikk som i dag er nasjonal standard ved operasjon for tykktarmskreft i Norge, og som er anbefalt i Helsedirektoratets handlingsprogram for kreft i tykktarm og endetarm. Han har vært med på å innføre kikkhullskirurgi ved tykktarmskreft i Norge, og underviser ved kurset i minimalt invasiv komplett mesokolisk eksisjon i regi av European Society of Coloproctology (ESCP), som han har vært med på å etablere. Kirurgisk behandling av ulcerøs kolitt og Crohns sykdom har vært et annet arbeidsfelt."
-      - "Endoskopi har vært en fast del av arbeidet hele veien. Han har i mange år utført gastroskopi, koloskopi, rektoskopi og anoskopi, med vevsprøver og fjerning av polypper. På sykehuset har han også utført ERCP, en undersøkelse av galleveiene som klinikken ikke tilbyr."
+      - "Endoskopi har vært en fast del av arbeidet hele veien. Han har i mange år utført gastroskopi, koloskopi, rektoskopi og anoskopi, med vevsprøver og fjerning av polypper."
+      - tekst: "På sykehuset har han også utført ERCP, en undersøkelse av galleveiene som klinikken ikke tilbyr."
+        krever: ["lege.bistilling_dokumentert"]
       - "Ved Vagus Entero Klinikken vil han tilby grundig utredning, tydelig informasjon om hva som er funnet og hva det betyr, og behandling og oppfølging som bygger på oppdatert medisinsk kunnskap."
   - type: "praktisk"
     tittel: "Publisert forskning i utvalg"
