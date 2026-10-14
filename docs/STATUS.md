@@ -11,7 +11,7 @@
 
 **Netlify (lest via Netlify-API 2026-10-14, etter merge)**
 - `vagusentero-no.netlify.app` viser deploy `6acfcb5061a5bea9bf4be93f`, `state: ready`, `context: production`, bygget fra commit **`4bdf0165822ae3a343871d441fb4b794d5078014`** på grenen **`claude/vagus-entero-website-0eiqim`** (publisert 18:35 UTC). Det er innholdet i `main`, men ikke merge-commiten `c74c38e`.
-- **Produksjonsgren:** Deployen har `context: production` og kommer fra arbeidsgrenen, ikke fra `main`. Det tyder sterkt på at produksjonsgrenen i Netlify er `claude/vagus-entero-website-0eiqim`. Jeg kan ikke lese selve innstillingen (API-et viser ikke «production branch»). Merge-commiten ble pushet til `main` 18:51 UTC. Ved to sjekker (rett etter og noen minutter senere) var den aktive deployen fortsatt `6acfcb50…` fra arbeidsgrenen, og ingen deploy fra `main` var vist.
+- **Produksjonsgren:** Deployen har `context: production` og kommer fra arbeidsgrenen, ikke fra `main`. Det tyder sterkt på at produksjonsgrenen i Netlify er `claude/vagus-entero-website-0eiqim`. Jeg kan ikke lese selve innstillingen (API-et viser ikke «production branch»). Merge-commiten ble pushet til `main` 18:51 UTC. Ved to sjekker 18:52 UTC, ett til to minutter etter merge, var den aktive deployen fortsatt `6acfcb50…` fra arbeidsgrenen, og ingen deploy fra `main` var vist. Det er for kort tid til å konkludere.
 - Forhåndsvisningen av PR #25 er `deploy-preview-25`, nå uten PR.
 
 **Gjort utover arbeidsordrene** (alt i PR #20/#25, ingen status endret)
