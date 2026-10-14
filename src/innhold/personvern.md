@@ -49,7 +49,7 @@ seksjoner:
       - tittel: "Forsikringssaker"
         tekst: "Er undersøkelsen dekket av behandlingsforsikring, utleveres nødvendig dokumentasjon til selskapet — bare når du har samtykket."
       - tittel: "Nettstedet"
-        tekst: "Nettstedet bruker ingen sporing som krever samtykke etter ekomloven § 3-15 — ingen Meta Pixel, TikTok-pixel eller annen tredjepartssporing. Vi bruker Plausible Analytics, som er driftet i EU og ikke bruker informasjonskapsler, som ikke identifiserer deg som person."
+        tekst: "Nettstedet bruker ingen sporing som krever samtykke etter ekomloven § 3-15 — ingen Meta Pixel, TikTok-pixel eller annen tredjepartssporing. Vi bruker Plausible Analytics, som er driftet i EU og ikke bruker informasjonskapsler. Verktøyet identifiserer ikke deg som person."
       - tittel: "Henvendelser"
         tekst: "Ringer du oss, noteres det som er nødvendig for å hjelpe deg. Send aldri helseopplysninger på e-post."
   - type: "tekst"

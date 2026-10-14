@@ -20,7 +20,6 @@ apne_punkter:
   - "«Internkontroll», «Avvik og pasientsikkerhet» og «Adkomst for pasienten» i «Kvalitet, internkontroll og dekning» utelates til kvalitet.internkontroll_dokumentasjon, kvalitet.avvikssystem og adkomst.* finnes i klinikk.json"
   - "E-posten til avtaleansvarlig i «Kontakt om avtale» utelates til avtale.kontakt.epost finnes i klinikk.json (Malin har ikke svart)"
   - "Klinikken har én lege. Nye behandlere føres opp på siden når de er ansatt"
-  - "Designets merknad under sidehodet («Avtalehenvendelser: [PLASSHOLDER: navn, rolle, e-post, telefon].») er utelatt til kontaktpunktet finnes, og settes som hode_merknad da"
   - "Designets knapper «Kontakt om avtale» og «Last ned som PDF» (sidehode og prisblokk) mangler mål. Avklar hvor de skal peke og om PDF-en skal finnes. Siden har derfor ingen knapper ennå; pasientknappene hører ikke hjemme her"
   - "Hele teksten skal gjennom medisinsk gjennomgang og signeres av fagansvarlig lege før status kan bli GODKJENT"
   - "Prisene er ikke fastsatt. Beløpene står som null og utelates fra siden"
