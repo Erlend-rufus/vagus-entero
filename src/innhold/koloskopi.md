@@ -21,12 +21,13 @@ interne_lenker_ut:
   - "/slik-foregar-det/"
   - "/priser/"
 apne_punkter:
+  - "Om klinikken behandler gravide og ammende gjelder for salve og injeksjon (Kristian 25.9). Omfanget for øvrige undersøkelser er uavklart, og teksten er ikke endret"
+  - "Avsatt tid for timen (60 minutter) er satt inn etter Malin 25.9. Det er ikke det samme som hvor lenge selve undersøkelsen tar. Venter på Kristians gjennomlesing"
   - "Endret 15.09.2026 etter medisinsk gjennomgang runde 1 (Kristian Eeg Storli, 11.09.2026): sedasjon omtalt som tilbud ved behov, ikke som standard eller som pasientens valg alene, og sedasjonsmedisinen beskrevet som gitt i en tynn nål i armen; følge hjem og kjøreforbud resten av dagen etter sedasjon; observasjonstid med og uten sedasjon, og rundt to timer på klinikken i alt med sedasjon; tømmemiddel på resept som kommer i tillegg til prisen, med klokkeslett i oppskriften; kontakt med klinikken når tømmingen ikke går som den skal; nytt svar om blodfortynnende medisin; si fra om graviditet, hjerte- og lungesykdom, pacemaker og allergier; svar på vevsprøver etter 1 til 4 uker per telefon eller brev; samtale og undersøkelse i samme time; gastroskopi og koloskopi i samme besøk må avtales på forhånd; nytt spørsmål om tidligere koloskopi som er 1 til 2 år gammel; svart, tjæreaktig avføring; «finne ut årsak»; ny formulering om når undersøkelsen gjøres og om hva tømmingen krever; luft etter undersøkelsen; blødning etter polyppfjerning stanses som regel på klinikken; feber blant faresignalene; risikosetningen med «men de kan forekomme»; svar på vevsprøver også i steget «Vevsprøver og polypper»; hvile etterpå knyttet til sedasjon i innledningen til «Slik foregår undersøkelsen». Eldre åpne punkter nedenfor som gjengir teksten slik den var før 15.09.2026, er ikke oppdatert; det er teksten i seksjonene som gjelder."
   - "Formuleringen «beroligende og smertestillende medisin som gis i en tynn nål i armen» er foreslått i arbeidsordren 15.09.2026 og bekreftes av Kristian Eeg Storli i runde 2."
   - "Steget «Etterpå» i «Slik foregår undersøkelsen» hadde tidligere setningen «Er det tatt prøver, får du beskjed om hvordan og når svaret kommer.» Etter at observasjonstid og følge hjem kom inn i steget, er det ikke plass til den innenfor grensen på 400 tegn, og heller ikke til den kanoniske setningen om svar på vevsprøver. Den kanoniske setningen står derfor i steget «Vevsprøver og polypper» og i spørsmålet «Når får jeg svar?». Bekreftes av Kristian Eeg Storli i runde 2."
   - "Kostholdsrådene før tømmingen står som før. Eksakte tidspunkter for overgang til flytende kost og for siste klare væske bekreftes av Kristian Eeg Storli i runde 2."
   - "Setningen «Går ikke tømmingen som den skal, tar du kontakt med oss.» skal peke til telefonnummeret når det finnes i klinikk.json, også utenom åpningstid."
-  - "Setningen «Du får et telefonnummer du kan ringe direkte ved spørsmål.» er ikke lagt inn, fordi telefonnummeret ikke finnes i klinikk.json. Den legges inn når nummeret finnes."
   - "Setningen «Undersøkelsen gjøres når legen trenger å se tarmveggen selv for å finne årsaken til plagene.» står etter arbeidsordren 15.09.2026 og bekreftes av Kristian Eeg Storli i runde 2."
   - "Setningen «Det krever en kveld og en morgen hjemme, og det er dette som gjør at legen ser hele tarmveggen.» står etter arbeidsordren 15.09.2026, både i tidslinjen og i spørsmålet om tømmingen, og bekreftes av Kristian Eeg Storli i runde 2."
   - "Risikosetningen står med «men de kan forekomme» fordi helsepersonelloven § 13 forbyr bagatellisering av risiko. Til bekreftelse i runde 2."
@@ -154,7 +155,7 @@ seksjoner:
         liten: "Ønsker du lett sedasjon, kan du si fra før undersøkelsen starter, så vurderer legen det sammen med deg."
   - type: "steg"
     tittel: "Slik foregår undersøkelsen"
-    under: "Selve undersøkelsen tar vanligvis 30 til 60 minutter, medregnet eventuelle vevsprøver. Regn med lengre tid på klinikken, med samtale før og hvile etterpå hvis du får sedasjon."
+    under: "Selve undersøkelsen tar vanligvis 30 til 60 minutter, medregnet eventuelle vevsprøver. Timen er satt av {klinikk.timelengde.koloskopi} minutter. Regn med lengre tid på klinikken, med samtale før og hvile etterpå hvis du får sedasjon."
     steg:
       - tittel: "Samtale og forberedelse"
         tekst: "Legen går gjennom plagene dine, medisinene du bruker og hvordan tømmingen har gått, og dere avtaler om du skal ha sedasjon. Du legger deg på venstre side på benken. Bare det som er nødvendig, er avdekket."

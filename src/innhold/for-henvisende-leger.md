@@ -13,10 +13,11 @@ jsonld_type: null
 interne_lenker_ut:
   - "/priser/"
 apne_punkter:
-  - "Henvisningskanal, svartid på epikrise og lege-til-lege-nummer i faktalisten, og «Kanal» i «Slik henviser du», utelates til henvisning.kanal, henvisning.epikrise_svartid og henvisning.lege_til_lege finnes i klinikk.json. Lege-til-lege-nummeret er valgfritt"
+  - "Henvisningskanal, svartid på epikrise i faktalisten, og «Kanal» i «Slik henviser du», utelates til henvisning.kanal og henvisning.epikrise_svartid finnes i klinikk.json"
   - "Seksjonen «Hva klinikken tar imot» har plassholdere som klinikken må fylle ut"
   - "Avsnittene om utstyr og kvalitetsregistre i «Faglig profil og utstyr» utelates til utstyr og kvalitet.kvalitetsregistre finnes i klinikk.json"
   - "«Prøvesvar» i «Hva pasienten og du får tilbake» utelates til laboratorium.navn og laboratorium.svartid finnes i klinikk.json"
+  - "Klinikken har ikke eget lege-til-lege-nummer (Malin 25.9): «Ring lege-til-lege» bruker hovednummeret"
   - "Klinikken har én lege. Nye behandlere føres opp på siden når de er ansatt"
   - "Designets knapp «Skriv ut som A4» med merknaden om utskriftsversjonen er ikke bygget: en JS-fri utskriftsvei (utskrifts-CSS eller egen A4-side) må besluttes først"
   - "Hele teksten skal gjennom medisinsk gjennomgang og signeres av fagansvarlig lege før status kan bli GODKJENT"
@@ -37,9 +38,6 @@ fakta:
   - term: "Epikrise"
     verdi: "{klinikk.henvisning.epikrise_svartid}"
     krever: ["henvisning.epikrise_svartid"]
-  - term: "Lege-til-lege"
-    verdi: "{klinikk.henvisning.lege_til_lege}"
-    krever: ["henvisning.lege_til_lege"]
   - term: "Driftsavtale"
     verdi: "Ingen offentlig"
 seksjoner:

@@ -28,7 +28,8 @@
     "utstyr",
     "kapasitet",
     "avtale",
-    "personvern"
+    "personvern",
+    "timelengde"
   ],
   "properties": {
     "juridisk_navn": {
@@ -146,6 +147,14 @@
         },
         "spesialitet": {
           "type": "string"
+        },
+        "bistilling_dokumentert": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "title": "dokumentert avklaring av bistilling",
+          "description": "true foerst naar det foreligger skriftlig avklaring av at legens bistilling (arbeidsgiver ved annet sykehus) kan omtales. null = ikke avklart: all omtale av arbeidsgiveren utelates. false behandles som null."
         }
       }
     },
@@ -345,7 +354,6 @@
       "required": [
         "kanal",
         "epikrise_svartid",
-        "lege_til_lege",
         "ovrige_avgrensninger"
       ],
       "description": "Opplysninger til henvisende leger.",
@@ -369,16 +377,6 @@
           "title": "svartid på epikrise",
           "description": "Kort verdi som settes inn i en eksisterende setning eller faktaliste. Maks 40 tegn (faktalisten).",
           "maxLength": 40
-        },
-        "lege_til_lege": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "minLength": 2,
-          "title": "lege-til-lege-nummer",
-          "description": "Valgfritt eget nummer for leger. Forblir null hvis klinikken ikke har det; da utelates linjen for godt.",
-          "pattern": "^\\+?[0-9][0-9 ]{6,}$"
         },
         "ovrige_avgrensninger": {
           "type": [
@@ -664,6 +662,65 @@
           "minLength": 2,
           "title": "øvrige lagringstider",
           "description": "Hel setning eller et kort avsnitt skrevet av klinikken; vises som eget avsnitt eller punkt."
+        }
+      }
+    },
+    "timelengde": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "koloskopi",
+        "gastroskopi",
+        "konsultasjon",
+        "rektoskopi",
+        "anoskopi"
+      ],
+      "description": "AVSATT tid i minutter for timen (ikke hvor lenge selve undersoekelsen tar). Verdiene settes inn i tekst som {klinikk.timelengde.koloskopi}.",
+      "properties": {
+        "koloskopi": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "title": "timelengde for koloskopi",
+          "description": "Avsatt tid i minutter."
+        },
+        "gastroskopi": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "title": "timelengde for gastroskopi",
+          "description": "Avsatt tid i minutter."
+        },
+        "konsultasjon": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "title": "timelengde for konsultasjon",
+          "description": "Avsatt tid i minutter."
+        },
+        "rektoskopi": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "title": "timelengde for rektoskopi",
+          "description": "Avsatt tid i minutter."
+        },
+        "anoskopi": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "title": "timelengde for anoskopi",
+          "description": "Avsatt tid i minutter."
         }
       }
     }

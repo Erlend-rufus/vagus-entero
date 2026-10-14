@@ -18,6 +18,8 @@ interne_lenker_ut:
   - "/analfissur/"
   - "/priser/"
 apne_punkter:
+  - "Rettet etter Kristians svar 25.9. Venter på hans gjennomlesing og skriftlige godkjenning."
+  - "40-årsgrensen ikke bekreftet av Kristian. Han svarte 25.9: «Alle med frisk rektalblødning kan vi undersøke. Det vurderes individuelt.»"
   - "Endret 15.09.2026 etter medisinsk gjennomgang runde 1 (Kristian Eeg Storli, 11.09.2026): «koloskopi når det trengs» er blitt «koloskopi når det er nødvendig» (ingress og stegtittel); «kan blø litt» er blitt «kan blø noe»; «alltid undersøkes» er blitt «alltid skal undersøkes»; innledningen «Noen ting gjør undersøkelsen ekstra viktig» er erstattet av «Disse tegnene gjør at undersøkelsen bør skje raskt:»; tallet «én av fem» er tatt ut, det står «vanlig» uten tall; ny setning om rektoskopi ved blødning fra endetarmsåpningen og koloskopi fra 50 år under «Når bør det undersøkes»; sedasjon ved koloskopi er skrevet om som tilbud ved behov, med «tynn nål i armen», følge hjem og kjøreforbud resten av dagen; «tømmemiddel» er blitt «tømmemiddel på resept»; svaret om blodfortynnende er erstattet av den kanoniske teksten; svar på vevsprøver, samtale og undersøkelse i samme time, kraftig blødning fra endetarmen og svart avføring har fått de kanoniske setningene; setningen om legevakt eller 113 i svaret om svart avføring er tatt ut."
   - "Formulert av kodesesjonen 15.09.2026 etter arbeidsordre (medisinsk gjennomgang runde 1): «Det er en egen time, med tømming av tarmen dagen før, og lett sedasjon kan gis ved behov.», «Har du behov for lett sedasjon, kan du få beroligende og smertestillende medisin som gis i en tynn nål i armen.», «Ved oppkast av blod ringer du 113.» og «Det tyder på en større blødning enn den du ser lyst rødt på papiret.». Bekreftes av Kristian Eeg Storli i runde 2."
   - "Formuleringen «tynn nål i armen» for sedasjonsmedisin er foreslått i arbeidsordren 15.09.2026 og bekreftes av Kristian Eeg Storli i runde 2."
@@ -68,7 +70,7 @@ fakta:
   - term: "Undersøkes med"
     verdi: "Anoskopi, rektoskopi eller koloskopi"
   - term: "Undersøkelsen av endetarmen tar"
-    verdi: "Omtrent 5 minutter"
+    verdi: "Ca. 10 minutter"
   - term: "Henvisning"
     verdi: "Ikke nødvendig"
 seksjoner:
@@ -98,8 +100,8 @@ seksjoner:
     under: "Blødning fra endetarmen bør vurderes av lege, også når det er lite. Her står hva som gjør undersøkelsen særlig aktuell."
     avsnitt:
       - "Ikke alt som blør i endetarmen er hemoroider, og diagnosen hemoroider bør ikke stilles uten at legen har undersøkt endetarmen, både ved å kjenne inn med en finger og ved å se inn i tarmen. Innvendige hemoroider som bare blør, kan ikke oppdages med fingeren alene. Har det blødd fra endetarmsåpningen, bør du undersøkes med rektoskopi. Fra 50 år går legen oftere direkte til koloskopi."
-      - "Disse tegnene gjør at undersøkelsen bør skje raskt: blødning som kommer tilbake eller ikke gir seg, nyoppstått blødning etter fylte 40 år, avføring som har vært endret i flere uker, en følelse av å ikke få tømt seg helt, ufrivillig vekttap, nedsatt matlyst eller sykdomsfølelse."
-      - "Mange venter lenge med å ta kontakt, av sjenanse eller fordi blodet kommer og går. Undersøkelsen av endetarmen tar noen minutter, og de fleste årsaker er godartede."
+      - "Disse tegnene gjør at undersøkelsen bør skje raskt: blødning som kommer tilbake eller ikke gir seg, nyoppstått blødning etter fylte 40 år, avføring som har vært endret i flere uker, en følelse av å ikke få tømt seg helt, ufrivillig vekttap, nedsatt matlyst eller sykdomsfølelse. Klinikken undersøker voksne med rektalblødning, og det vurderes individuelt."
+      - "Mange venter lenge med å ta kontakt, av sjenanse eller fordi blodet kommer og går. Undersøkelsen av endetarmen tar ca. 10 minutter, og de fleste årsaker er godartede."
     merknad: "Blod i avføringen skal alltid undersøkes. Det gjelder også når det bare er litt, når det har gitt seg av seg selv, og når det mest sannsynlig er hemoroider."
   - type: "steg"
     tittel: "Slik foregår utredningen hos oss"
@@ -109,7 +111,7 @@ seksjoner:
       - tittel: "Samtale"
         tekst: "Legen spør hvordan blodet ser ut, hvor lenge det har vart, om avføringen har endret seg, om du har smerter, kløe eller diaré, hvilke medisiner du bruker, og om det er tarmsykdom i familien. Svarene sier mye om hvor blodet sannsynligvis kommer fra, og avgjør hvilken undersøkelse som trengs."
       - tittel: "Undersøkelse av endetarmen"
-        tekst: "Legen ser på huden rundt endetarmsåpningen, kjenner inn i endetarmen med en finger, og ser inn i endetarmsåpningen og endetarmen gjennom et kort rør med lys (anoskopi og rektoskopi). Det tar omtrent 5 minutter og er vanligvis ikke smertefullt. Samtalen med legen og undersøkelsen skjer i samme time."
+        tekst: "Legen ser på huden rundt endetarmsåpningen, kjenner inn i endetarmen med en finger, og ser inn i endetarmsåpningen og endetarmen gjennom et kort rør med lys (anoskopi og rektoskopi). Det tar ca. 10 minutter, og timen er satt av {klinikk.timelengde.anoskopi} minutter. Undersøkelsen er vanligvis ikke smertefull. Samtalen med legen og undersøkelsen skjer i samme time."
       - tittel: "Koloskopi når det er nødvendig"
         tekst: "Kommer blodet trolig fra lenger opp i tykktarmen, har avføringen endret seg, eller finner ikke legen forklaringen i endetarmen, undersøkes hele tykktarmen med koloskopi. Det er en egen time, med tømming av tarmen dagen før, og lett sedasjon kan gis ved behov."
       - tittel: "Svar og plan videre"
@@ -122,7 +124,7 @@ seksjoner:
         illustrasjon: "endetarm"
         avsnitt:
           - "Legen ser inn i endetarmsåpningen og de nederste 15 til 25 centimeterne av tarmen gjennom et kort rør med lys. Det er undersøkelsen for lyst rødt blod, og den viser hemoroider, rifter og forandringer i slimhinnen i endetarmen."
-          - "Den tar omtrent 5 minutter, krever ikke faste, og du kan gjøre som vanlig etterpå. Luften som blåses inn for å få oversikt, kan sprenge litt underveis. Vevsprøver kan tas ved behov."
+          - "Den tar ca. 10 minutter, krever ikke faste, og du kan gjøre som vanlig etterpå. Luften som blåses inn for å få oversikt, kan sprenge litt underveis. Vevsprøver kan tas ved behov."
         liten: "Aktuell ved lyst rødt blod på papiret, i skålen eller utenpå avføringen."
         knapp:
           tekst: "Les om undersøkelse av endetarmen"
@@ -153,7 +155,7 @@ seksjoner:
       - sporsmal: "Hva betyr det at avføringen er svart?"
         svar: "Svart, tjæreaktig avføring (melena) betyr som regel at det blør fra spiserøret, magesekken eller tolvfingertarmen, og at blodet er brutt ned på veien gjennom tarmen. Det tyder på en større blødning enn den du ser lyst rødt på papiret. Svart, tjæreaktig avføring: ta snarlig kontakt med lege. Slike blødninger utredes vanligvis på sykehus, ikke hos oss."
       - sporsmal: "Er det vondt å bli undersøkt i endetarmen?"
-        svar: "Undersøkelsen er vanligvis ikke smertefull. Du merker at legen kjenner inn med fingeren og fører røret inn, og luften som blåses inn for å få oversikt, kan sprenge litt. Er endetarmsåpningen sår, for eksempel av en rift, kan undersøkelsen kjennes mer, og du sier fra til legen underveis. Mange gruer seg mer for å kle av seg og bli undersøkt der enn for selve undersøkelsen. Du er dekket til bortsett fra området som undersøkes, og det hele er over på omtrent 5 minutter."
+        svar: "Undersøkelsen er vanligvis ikke smertefull. Du merker at legen kjenner inn med fingeren og fører røret inn, og luften som blåses inn for å få oversikt, kan sprenge litt. Er endetarmsåpningen sår, for eksempel av en rift, kan undersøkelsen kjennes mer, og du sier fra til legen underveis. Mange gruer seg mer for å kle av seg og bli undersøkt der enn for selve undersøkelsen. Du er dekket til bortsett fra området som undersøkes, og det hele er over på ca. 10 minutter."
       - sporsmal: "Må jeg tømme tarmen før undersøkelsen?"
         svar: "Før undersøkelse av endetarmen trenger du ikke faste. Skal det gjøres rektoskopi, er det vanligvis nok med et lite klyster 1 til 2 timer før timen, så nederste del av tarmen er tom. Før koloskopi må hele tykktarmen tømmes, med tømmemiddel på resept dagen før. Det du skal gjøre, står i innkallingen du får."
       - sporsmal: "Trenger jeg koloskopi, eller holder det å undersøke endetarmen?"

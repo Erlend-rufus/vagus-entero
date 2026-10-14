@@ -52,7 +52,7 @@ export function lesKlinikk() {
 export function manglendeFelt(krever, klinikk) {
   return (krever || []).filter((sti) => {
     const verdi = hentVerdi(klinikk, sti);
-    return verdi === null || verdi === undefined || verdi === '';
+    return verdi === null || verdi === undefined || verdi === '' || verdi === false;
   });
 }
 
@@ -87,7 +87,11 @@ function lagUtelater(klinikk, produksjon) {
   }
 
   function tekstliste(liste) {
-    return (liste || []).map(tekstelement).filter((e) => e !== null);
+    // Etterfølgende like markører slås sammen til én.
+    return (liste || [])
+      .map(tekstelement)
+      .filter((e) => e !== null)
+      .filter((e, i, alle) => !(e && e.venter && i > 0 && alle[i - 1] && alle[i - 1].venter === e.venter));
   }
 
   // Punkter med egne felt (praktisk, fakta): krever fjernes fra det som rendres.

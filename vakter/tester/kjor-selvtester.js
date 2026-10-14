@@ -30,7 +30,7 @@ import { validerKlinikk, validerUi } from '../lib/datavalidering.js';
 import { lesInnholdsfil } from '../lib/les-innhold.js';
 import { lesMiljo } from '../../verktoy/miljo-logikk.js';
 import { formaterTekst, brodsmuletekst } from '../../verktoy/tekst.js';
-import { utelatSeksjoner, utelatFakta } from '../../verktoy/utelatelse.js';
+import { utelatSeksjoner, utelatFakta, manglendeFelt } from '../../verktoy/utelatelse.js';
 import { lagJsonld } from '../../verktoy/jsonld.js';
 
 let feilede = 0;
@@ -416,7 +416,7 @@ krev(
 krev(
   (() => {
     try {
-      formaterTekst('{klinikk.telefon}');
+      formaterTekst('{klinikk.epost}');
       return false;
     } catch (e) {
       return /kan ikke løses/.test(e.message);
@@ -489,7 +489,7 @@ krev(
     bestilling: null, apningstider: null, ventetid: null,
     betaling: { betalingsmater: null, avbestilling: null, kvittering: null },
     adkomst: { parkering: null, kollektiv: null, tilgjengelighet: null, reisetid_bergen: null },
-    henvisning: { kanal: null, epikrise_svartid: null, lege_til_lege: null, ovrige_avgrensninger: null },
+    henvisning: { kanal: null, epikrise_svartid: null, ovrige_avgrensninger: null },
     laboratorium: { navn: null, svartid: null },
     kvalitet: { kvalitetsregistre: null, avvikssystem: null, internkontroll_dokumentasjon: null },
     utstyr: null,
@@ -498,7 +498,8 @@ krev(
       kontakt: { navn: null, rolle: null, epost: null, telefon: null },
       avtaleform: null, svartid: null, rapportering: null, fakturering: null, avbestilling: null, journalintegrasjon: null
     },
-    personvern: { kontaktperson: null, databehandlere: null, lagringstider: null }
+    personvern: { kontaktperson: null, databehandlere: null, lagringstider: null },
+    timelengde: { koloskopi: null, gastroskopi: null, konsultasjon: null, rektoskopi: null, anoskopi: null }
   };
   krev(validerKlinikk(gyldigKlinikk, 'test.json').length === 0, 'datafiler: gyldig klinikk.json passerer');
   krev(
@@ -913,13 +914,17 @@ krev(
   krev(fakta.length === 1 && fakta[0].term === 'Sted', 'utelatelse: faktapunkt med manglende felt utelates');
   const priser = utelatSeksjoner([{ type: 'prisliste', tittel: 'Priser', priser: [{ navn: 'A', belop_nok: null, omfang: null }, { navn: 'B', belop_nok: null, omfang: null }] }], { klinikk: klinikkUtenTlf, produksjon: false });
   krev(priser[0].venter_priser === true && priser[0].har_omfang === false, 'utelatelse: prisliste uten beløp får én samlet markør');
+  krev(
+    manglendeFelt(['a.b'], { a: { b: false } }).length === 1 && manglendeFelt(['a.b'], { a: { b: true } }).length === 0,
+    'utelatelse: false regnes som manglende, true som oppfylt'
+  );
   let kastet = false;
   try {
-    formaterTekst('Ring {klinikk.telefon}.');
+    formaterTekst('Skriv til {klinikk.epost}.');
   } catch {
     kastet = true;
   }
-  krev(kastet, 'utelatelse: {klinikk.telefon} uten erklært krever stopper fortsatt bygget');
+  krev(kastet, 'utelatelse: {klinikk.epost} uten erklært krever stopper fortsatt bygget');
 }
 
 fs.rmSync(tmp, { recursive: true, force: true });

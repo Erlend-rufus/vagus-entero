@@ -17,6 +17,7 @@ interne_lenker_ut:
   - "/proktologi/"
   - "/priser/"
 apne_punkter:
+  - "Rettet etter Kristians svar 25.9. Venter på hans gjennomlesing og skriftlige godkjenning."
   - "Hele teksten skal gjennom medisinsk gjennomgang og signeres av fagansvarlig lege før status kan bli GODKJENT"
   - "Prisene er ikke fastsatt. Beløpene står som null og utelates fra siden"
   - "Samordnet 15.09.2026 med undersøkelsessidene etter medisinsk gjennomgang runde 1 (Kristian Eeg Storli, 11.09.2026): gastroskopi 5 til 15 minutter, koloskopi 30 til 60 minutter, og små inngrep settes opp i egen time uten sedasjon. Varighetene for anoskopi, rektoskopi og proktologi er ikke bekreftet (spørsmål 47 til 59 ubesvart). Kortteksten om små inngrep er formulert av kodesesjonen og bekreftes i runde 2."
@@ -57,7 +58,7 @@ seksjoner:
           url: "/koloskopi/"
           stil: "sekundaer"
       - tittel: "Undersøkelse av endetarmen"
-        undertittel: "(anoskopi og rektoskopi) · 5 til 15 minutter"
+        undertittel: "(anoskopi og rektoskopi) · ca. 10 minutter"
         avsnitt:
           - "Kort undersøkelse av endetarmsåpningen og endetarmen. Ingen tømming nødvendig."
         illustrasjon: "endetarm"
