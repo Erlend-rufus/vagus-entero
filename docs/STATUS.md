@@ -1,6 +1,6 @@
 # Statusrapport
 
-**Dato:** 2026-10-14. **Arbeidsgren:** `claude/vagus-entero-website-0eiqim` på `0102240` (rapporten er committet oppå denne). **`origin/main`:** `044f657`. Alt under er kjørt og lest av i denne økten, hvis ikke annet står.
+**Dato:** 2026-10-14. **Arbeidsgren:** `claude/vagus-entero-website-0eiqim` på `0102240` ved kjøring (rapporten er committet oppå denne). **`origin/main`:** `044f657`. Alt under er kjørt og lest av i denne økten, hvis ikke annet står.
 
 ## 1. Avvik, hopp over og ikke verifisert (først)
 
