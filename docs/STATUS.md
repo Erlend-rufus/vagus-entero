@@ -1,17 +1,18 @@
 # Statusrapport
 
-**Dato:** 2026-10-14. **Arbeidsgren:** `claude/vagus-entero-website-0eiqim` på `0102240` ved kjøring (rapporten er committet oppå denne). **`origin/main`:** `044f657`. Alt under er kjørt og lest av i denne økten, hvis ikke annet står.
+**Dato:** 2026-10-14. **`origin/main`:** `c74c38e` (merge av PR #25, 20:51 +0200; innhold fra `4bdf016`). **Oppdatert** etter merge. Tallene i seksjon 3–5 er målt på `0102240` (før `4bdf016`, som bare endrer fire innholdsfiler, se seksjon 1), med mindre annet står. Alt er kjørt og lest av i denne økten, hvis ikke annet står.
 
 ## 1. Avvik, hopp over og ikke verifisert (først)
 
 **Ikke verifisert**
-- **Forhåndsvisningen er ikke åpnet.** Sandkassens proxy gir 403 på `*.netlify.app`. Om den er passordbeskyttet er derfor ukjent. Netlify-prosjektet har ikke Netlify-passord (`requiresPassword: false`). Basic-Auth styres av `PREVIEW_BRUKER` og `PREVIEW_PASSORD` i Netlify, og de kan jeg ikke lese. Bygget mitt uten variablene har ingen Basic-Auth (`basicAuthAktiv: false`).
+- **Nettstedet er ikke åpnet.** Sandkassens proxy gir 403 på `*.netlify.app`. Om den er passordbeskyttet er derfor ukjent. Netlify-prosjektet har ikke Netlify-passord (`requiresPassword: false`). Basic-Auth styres av `PREVIEW_BRUKER` og `PREVIEW_PASSORD` i Netlify, og de kan jeg ikke lese. Bygget mitt uten variablene har ingen Basic-Auth (`basicAuthAktiv: false`).
 - **Axe er ikke kjørt i denne økten** (sist 2026-10-08: 0 brudd på `0102240`-innholdet).
 - **Netlifys databehandleravtale** er ikke sjekket (Elevates oppgave).
 
-**Funn om Netlify**
-- Forhåndsvisningen (deploy `6ac73c643c52dc000838fd2e`, PR #25) er `ready` og bygget fra `01022405…`, altså PR-hodet. **Den viser ikke `origin/main` (`044f657`).** PR #25 er ikke merget.
-- Deployen med `context: production` (`6ac73c54a024660008394a91`) er også bygget fra arbeidsgrenen, ikke fra `main`. Jeg kan ikke se hvilken gren som er satt som produksjonsgren i Netlify.
+**Netlify (lest via Netlify-API 2026-10-14, etter merge)**
+- `vagusentero-no.netlify.app` viser deploy `6acfcb5061a5bea9bf4be93f`, `state: ready`, `context: production`, bygget fra commit **`4bdf0165822ae3a343871d441fb4b794d5078014`** på grenen **`claude/vagus-entero-website-0eiqim`** (publisert 18:35 UTC). Det er innholdet i `main`, men ikke merge-commiten `c74c38e`.
+- **Produksjonsgren:** Deployen har `context: production` og kommer fra arbeidsgrenen, ikke fra `main`. Det tyder sterkt på at produksjonsgrenen i Netlify er `claude/vagus-entero-website-0eiqim`. Jeg kan ikke lese selve innstillingen (API-et viser ikke «production branch»). Merge-commiten ble pushet til `main` 18:51 UTC. Ved to sjekker (rett etter og noen minutter senere) var den aktive deployen fortsatt `6acfcb50…` fra arbeidsgrenen, og ingen deploy fra `main` var vist.
+- Forhåndsvisningen av PR #25 er `deploy-preview-25`, nå uten PR.
 
 **Gjort utover arbeidsordrene** (alt i PR #20/#25, ingen status endret)
 - 24.9: flere `klinikk.json`-felt enn listet (`adkomst.reisetid_bergen`, `henvisning.ovrige_avgrensninger`, `kvalitet.internkontroll_dokumentasjon`, `utstyr`, `avtale.*`, `personvern.*`). `apningstider` ble endret fra liste til streng og er ikke lenger reservert. Ny `ui.json`-nøkkel `venter_priser`, ikke godkjent av Erlend. Sifferfyll i `src/komponentkatalog.njk` byttet til X. Pristabellen bruker `<td>` i stedet for `<th>` når bare navnet vises (axe).
@@ -20,18 +21,18 @@
 - Kontaktsiden: telefon og åpningstider delt i to linjer (kontakt.md).
 
 **Ikke gjort / gjenstår**
-- PR #25 er draft og ikke merget. Plausible-skriptet er ikke installert (etter ordre).
-- Foreldede åpne punkter står igjen, for eksempel `koloskopi.md` («telefonnummeret finnes ikke») og `for-forsikringsselskaper.md:23` (bokstavelig «[PLASSHOLDER: …]», i `apne_punkter`, ikke publisert).
+- PR #25 er merget (se seksjon 2). Plausible-skriptet er ikke installert (etter ordre).
+- Foreldede åpne punkter: de to jeg nevnte (`koloskopi.md` «telefonnummeret finnes ikke» og `for-forsikringsselskaper.md` «[PLASSHOLDER: …]») er fjernet i `4bdf016`. `koloskopi.md` har fortsatt et åpent punkt om at tømmesetningen skal peke til telefonnummeret «når det finnes»; telefon finnes nå. Andre kan finnes.
 - Spm. 57, 40-årsgrensen og gravide for øvrige undersøkelser er bare åpne punkter, som ordren ba om.
-- Dobbelt «som» i Plausible-setningen (`personvern.md:52`), fra ordrens ordlyd.
+- Dobbelt «som» i Plausible-setningen er rettet i `4bdf016` (første setning står verbatim, andre er delt: «… informasjonskapsler. Verktøyet identifiserer ikke deg som person.»). Behandlingslisten i `proktologi.md` er omsortert til strikk, salve, injeksjon. Fakta-stripen og innledningen i samme fil nevner fortsatt injeksjon før salver.
 
 ## 2. Git
 
-`origin/main`, nyeste først (alle 2026-09-24 om ikke annet står): `044f657` Merge #20 · `392bbfc` Del 4 · `0681741` Del 2 · `eb76e26` Del 1 · `b57bbba` Merge #19 · `d855600` · `49eed0a` (09-21) · `318f5a8` (09-21) · `1bb087b` Merge #18 (09-15) · `5472c71`, `d84e8a0`, `bc20eec`, `c363aa3`, `2081afc`, `34a804d` (09-15). Arbeidsgrenen er 4 commits foran `main` (`76da8e9`, `a318b3d`, `95c1122`, `0102240`, 2026-10-08).
+`origin/main`, nyeste først: `c74c38e` 2026-10-14 Merge #25 · `4bdf016` 10-14 Rettelser · `a476fc2` 10-14 · `f2d16e6` 10-14 STATUS.md · `0102240` 10-08 Del 4 · `95c1122` 10-08 Del 3 · `a318b3d` 10-08 Del 2 · `76da8e9` 10-08 Del 1 · `044f657` 09-24 Merge #20 · `392bbfc` · `0681741` · `eb76e26` · `b57bbba` Merge #19 · `d855600` (09-24) · `49eed0a` (09-21).
 
 | PR | Tittel | Status |
 |---|---|---|
-| #25 | Svar fra klinikken … (8.10-ordren) | åpen, draft, ikke merget, `mergeable_state: clean`, 2026-10-08 |
+| #25 | Svar fra klinikken … (8.10-ordren) | **merget 2026-10-14** (`c74c38e`) |
 | #21–24 | Dependabot (setup-node, upload-artifact, checkout, alle-gruppen) | åpne, 2026-10-01 |
 | #20 | Leveringsklart forhåndsbygg (24.9-ordren) | merget 2026-09-24 |
 | #19 | Trinn 2-svarene inn | merget 2026-09-24 |
@@ -39,17 +40,17 @@
 | #12, #10, #3, #2, #1 | Dependabot | lukket, ikke merget |
 | #8 | Installer Claude Code-skills, plugins og MCP-servere | åpen, 2026-08-28 |
 
-CI på `0102240`: `bygg-og-vakter` (inkl. Lighthouse) og `historikk` = success, Netlify-sjekkene = success (lest 2026-10-12).
+CI på `4bdf016` (merget hode): `bygg-og-vakter` (inkl. Lighthouse) og `historikk` = success, Netlify-sjekkene = success (lest 2026-10-14).
 
 ## 3. Arbeidsordrene
 
 | Ordre | Status | Commit |
 |---|---|---|
 | 24.9: `klinikk.json`-felt, `krever`-mekanisme, omskrevne plassholdere (kontakt, priser, leger, forsikring, personvern), vakt mot sifferplassholdere, Plausible-tekst (skript ikke installert, `docs/LANSERING.md:92`), `docs/LEVERINGSSJEKK.md` | ferdig, merget | `eb76e26`, `0681741`, `392bbfc`, merge `044f657` |
-| 8.10 del 1: telefon, kontaktperson, epikrise, `timelengde` | ferdig, ikke merget | `76da8e9` |
-| 8.10 del 2: Kristians rettelser | ferdig (se under), ikke merget | `a318b3d` |
-| 8.10 del 3: `docs/STEDSAVHENGIGHET.md` | ferdig, ikke merget | `95c1122` |
-| 8.10 del 4: regenerert `docs/LEVERINGSSJEKK.md` | ferdig, ikke merget | `0102240` |
+| 8.10 del 1: telefon, kontaktperson, epikrise, `timelengde` | ferdig, merget (`c74c38e`) | `76da8e9` |
+| 8.10 del 2: Kristians rettelser | ferdig (se under), merget (`c74c38e`) | `a318b3d` |
+| 8.10 del 3: `docs/STEDSAVHENGIGHET.md` | ferdig, merget (`c74c38e`) | `95c1122` |
+| 8.10 del 4: regenerert `docs/LEVERINGSSJEKK.md` | ferdig, merget (`c74c38e`) | `0102240` |
 
 **Del 2, punkt for punkt** (alle i `src/innhold/`, verifisert med søk)
 - **2a** ca. 5 cm: `undersokelse-av-endetarmen.md:83,145`. Ca. 10 minutter: `undersokelse-av-endetarmen.md:9,85,115,120,157`, `blod-i-avforingen.md:104,114,127,158`, `hemoroider.md:115`, `proktologi.md:121`, `analfissur.md:105,147`, `undersokelser.md:61`. Timen satt av 30: `undersokelse-av-endetarmen.md:120,157`, `blod-i-avforingen.md:114`. Beinholdere: `undersokelse-av-endetarmen.md:125`, `hemoroider.md:115`, `proktologi.md:123`. «Vanligvis ikke vondt»: teksten sto allerede slik (`undersokelse-av-endetarmen.md:115`), ikke endret.
@@ -98,6 +99,13 @@ KLAR = KLAR_FOR_MEDISINSK_GJENNOMGANG. Totalt 6 KLAR, 16 UTKAST, 0 GODKJENT. Tit
 - **Priser:** 0 kronebeløp i tekst. Alle `belop_nok` er `null`.
 - **Adresse:** `om-klinikken.md:51,62` (Sartor Helsehus, Straume) i tillegg til `klinikk.json`. Fullt oversikt i `docs/STEDSAVHENGIGHET.md`.
 
+## 6. Indeksering (lest i lokal `dist/`, bygget uten `PRODUKSJON` på `4bdf016`)
+
+- **23 av 23 HTML-sider** har `<meta name="robots" content="noindex, nofollow">` (eksakt, én unik verdi).
+- **`dist/_headers`** har under `/*`: `X-Robots-Tag: noindex, nofollow` (linje 10), og `Cache-Control: private, max-age=0, must-revalidate`.
+- **`dist/robots.txt`** er nøyaktig to linjer: `User-agent: *` og `Disallow: /`.
+- Dette er lokalt bygg. Jeg har ikke hentet headere eller `robots.txt` fra `vagusentero-no.netlify.app` (proxyen gir 403 mot `*.netlify.app`), så det som faktisk serveres er ikke bekreftet.
+
 ## Hva jeg ikke har sjekket
 
-Om forhåndsvisningen er passordbeskyttet, og hva som står i Netlify-variablene. Om forhåndsvisningen faktisk viser innholdet (jeg har bare deploy-metadata). Hvilken gren Netlify bruker som produksjonsgren. Axe i denne økten. Medisinsk riktighet av noe innhold. Om Kristian har lest sidene. Om foreldede åpne punkter utover de jeg nevner finnes. Dependabot-PR-ene (#21–24) og PR #8.
+Om nettstedet er passordbeskyttet, og hva som står i Netlify-variablene. Om nettstedet faktisk serverer innholdet og indekseringsheaderne (jeg har bare deploy-metadata). Selve innstillingen for produksjonsgren (bare utledet av deploy-konteksten). Om en deploy fra `main` kommer etter merge. Axe i denne økten. Medisinsk riktighet av noe innhold. Om Kristian har lest sidene. Om foreldede åpne punkter utover de jeg nevner finnes. Dependabot-PR-ene (#21–24) og PR #8.
